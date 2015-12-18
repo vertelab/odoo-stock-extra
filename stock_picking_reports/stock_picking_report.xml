@@ -35,6 +35,10 @@
                                             VAT:
                                             <span t-field="o.partner_id.vat" />
                                         </p>
+                                        <p t-if="o.partner_id.ref">
+                                            Ref:
+                                            <span t-field="o.partner_id.ref" />
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-1">
