@@ -33,7 +33,7 @@ location_dest_id (not outgoing)
 Report financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['sale'],
+'depends': ['stock'],
 'data': [ 'stock_picking_report.xml', ],
 'installable': True,
 }
