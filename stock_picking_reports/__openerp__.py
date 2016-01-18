@@ -24,16 +24,14 @@
 'summary': '',
 'category': 'stock',
 'description': """Extended stock picking report with warehouse place.
-Displays
-location_id (not incomming)
-location_dest_id (not outgoing)
 
+New field quant_source_location (reserved_quant_ids stock.quant)
 
 
 Report financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
 'depends': ['stock'],
-'data': [ 'stock_picking_report.xml', ],
+'data': [ 'stock_picking_report.xml','stock_view.xml' ],
 'installable': True,
 }
