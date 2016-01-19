@@ -33,11 +33,17 @@ _logger = logging.getLogger(__name__)
 
 class stock_move(models.Model):
     _inherit = "stock.move"
-    _order = 'date_expected desc, quant_source_location, id'
-    quant_source_location = fields.Char(compute="_quant_source_location",string="Quant Source location",help="Source location from move.reserved_quant_ids (stock.quant)",store=True)
+#    _order = 'date_expected desc, quant_source_location, id'  quant_source_location not stored
+    quant_source_location = fields.Char(compute="_quant_source_location",string="Source location",help="Source location from move.reserved_quant_ids (stock.quant)",store=False) # can't trigger changes in stock.quant for store
     @api.one
+#    @api.onchange('reserved_quant_ids','state')
     def _quant_source_location(self):
-        self.quant_source_location = ','.join([q.location_id.name for q in self.reserved_quant_ids])
+        if self.reserved_quant_ids:
+            self.quant_source_location = ','.join([q.location_id.name for q in self.reserved_quant_ids])
+        elif self.picking_id.pack_operation_ids:
+            self.quant_source_location = _('(transfered)')            
+        else:
+            self.quant_source_location = self.location_id.name + _(' (not reserved)')
         #~ self.quant_source_location = 'Quant:' + ','.join([q.location_id._name_get(q.location_id) for q in self.reserved_quant_ids])
 
 

@@ -21,7 +21,7 @@
 
 
 {
-    'name': 'Warning Messages and Alerts',
+    'name': 'Extended Warning Messages and Alerts',
     'version': '1.0',
     'category': 'Tools',
     'description': """
@@ -32,8 +32,8 @@ Warning messages can be displayed for objects like sale order, purchase order,
 picking and invoice. The message is triggered by the form's onchange event.
     """,
     'author': 'OpenERP SA',
-    'depends': ['base', 'sale_stock', 'purchase'],
-    'data': ['warning_view.xml'],
+    'depends': ['warning'],
+    'data': [], #'warning_view.xml'],
     'demo': [],
     'installable': True,
     'auto_install': False,
