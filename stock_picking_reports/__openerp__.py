@@ -25,7 +25,8 @@
 'category': 'stock',
 'description': """Extended stock picking report with warehouse place.
 
-New field quant_source_location (reserved_quant_ids stock.quant)
+New field quant_source_location (reserved_quant_ids stock.quant) to be used
+in picking reports and views
 
 
 Report financed by Dermanord-Svensk Hudvård AB""",
