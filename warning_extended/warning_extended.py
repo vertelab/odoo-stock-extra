@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+# OpenERP, Open Source Management Solution, third party addon
+# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
@@ -129,9 +129,8 @@ class stock_picking(models.Model):
                 if self.partner_id.sale_warn == 'block':
                     return {'value': {'partner_id': False}, 'warning': warning}
     
-    
-    @api.model
-    def do_enter_transfer_details(self, picking):
+
+    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
         for s in self.env['stock.picking'].browse(picking):
             if s.partner_id.picking_warn != 'no-message':
                 warning = {
@@ -141,7 +140,7 @@ class stock_picking(models.Model):
                 if s.partner_id.sale_warn == 'block':
                     return {'value': {'partner_id': False}, 'warning': warning}    
                 return {'value': {'partner_id': False}, 'warning': warning}    
-            return super(stock_picking,s).do_enter_transfer_details(picking)
+            return super(stock_picking,s).do_enter_transfer_details(picking,context=context)
 
 
 #~ class product_product(osv.osv):
