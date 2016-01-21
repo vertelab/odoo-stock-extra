@@ -1,10 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
+    <data>
+        <record id="vpicktree" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="picking_type_id" position="after">
+                    <field name="user_id"/>
+                    <field name="ready4picking"/>
+                    <field name="pure_cell"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                    <field name="prio"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <filter name="backorder" position="after">
+                    <filter name="ready4picking" domain="[('ready4picking','=',1)]"/>
+                    <filter name="pure_cell" domain="[('pure_cell','=',1)]"/>
+                    <filter name="export_shipping" domain="[('export_shipping','=',1)]"/>
+                </filter>
+                <field name="group_id" position="after">
+                    <field name="user_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                </field>
+                <group string="Group By" position="inside">
+                    <filter string="Expected Delivery Date" domain="[]" context="{'group_by':'expected_delivery_date'}"/>
+                    <filter string="User Id" domain="[]" context="{'group_by':'user_id'}"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="backorder_id" position="after">
+                    <field name="user_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                </field>
+                <field name="origin" position="after">
+                    <field name="creditcard"/>
+                    <field name="export_shipping"/>
+                    <field name="prio"/>
+                    <field name="pure_cell"/>
+                    <field name="ready4picking"/>
+                </field>
+            </field>
+        </record>
+
+<!--
+        <record model="ir.ui.view" id="stock_picking_calendar">
+            <field name="name">stock.picking.calendar</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.stock_picking_calendar"/>
+            <field name="arch" type="xml">
+                <calendar string="Calendar View" position="after">
+                    <calendar string="Expected Delivery Date" date_start="expected_delivery_date" color="partner_id">
+                        <field name="origin"/>
+                        <field name="picking_type_id"/>
+                        <field name="partner_id"/>
+                    </calendar>
+                    <calendar string="Pickup Time" date_start="pickup_time" color="partner_id">
+                        <field name="origin"/>
+                        <field name="picking_type_id"/>
+                        <field name="partner_id"/>
+                    </calendar>
+                </calendar>
+            </field>
+        </record>
+-->
+
+<!--
+        <record model="ir.ui.view" id="stock_picking_calendar_expected">
+            <field name="name">stock.picking.calendar.expected</field>
+            <field name="model">stock.picking</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <calendar string="Expected Delivery Date" date_start="expected_delivery_date" color="expected_delivery_date">
+                    <field name="origin"/>
+                    <field name="picking_type_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                    <field name="partner_id"/>
+                </calendar>
+                <calendar string="Pickup Time" date_start="pickup_time" color="partner_id">
+                    <field name="origin"/>
+                    <field name="picking_type_id"/>
+                    <field name="partner_id"/>
+                </calendar>
+            </field>
+        </record>
+-->
+
+
 <!--
     stock.vpicktree
     stock.view_picking_internal_search
 -->
- 
-  </data>
+
+    </data>
 </openerp>

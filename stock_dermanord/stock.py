@@ -30,7 +30,7 @@ class stock_picking(models.Model):
     _inherit = "stock.picking"
 
     creditcard = fields.Boolean('Credit card',oldname='x_creditcard')
-    expected_delivery_date = fields.Boolean('Expected Delivery Date',oldname='x_expected_delivery_date')
+    expected_delivery_date = fields.Date('Expected Delivery Date',oldname='x_expected_delivery_date')
     export_shipping = fields.Boolean('Foreign shipping',oldname='x_export_shipping')
     picking_user = fields.Char('Old picking user',oldname='x_pickin_user')
     user_id = fields.Many2one(string='Picking user',comodel_name='res.users')

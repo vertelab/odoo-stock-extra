@@ -13,6 +13,27 @@
         <field name="location_dest_id" position="replace" />
       </field>
     </record>
+
+    <record id="vpicktree" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="picking_type_id" position="after">
+                <field name="quant_source_location"/>
+            </field>
+        </field>
+    </record>
+
+        <record id="view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <filter name="backorder" position="after">
+                    <filter name="quant_source_location"/>
+            </field>
+        </record>
     <!--
          <record id="view_picking_form" model="ir.ui.view">
          <field name="name">stock.picking.form</field>
@@ -42,7 +63,7 @@
          </h1>
          <group>
          <group>
-         <field name="partner_id"/>                            
+         <field name="partner_id"/>
          <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
          </group>
          <group>
@@ -80,7 +101,7 @@
          </tree>
          </field>
          <p class="oe_grey" groups="stock.group_tracking_lot">
-         If there is no product but a source package, this means the source package was moved entirely.  If there is a product and a source package, the product was taken from the source package.  
+         If there is no product but a source package, this means the source package was moved entirely.  If there is a product and a source package, the product was taken from the source package.
          </p>
          </page>
          <page string="Additional Info">
@@ -89,7 +110,7 @@
          <field name="move_type"/>
          <field name="picking_type_id"/>
          <field name="picking_type_code" invisible="1"/>
-         <field name="quant_reserved_exist" invisible="1"/>                                    
+         <field name="quant_reserved_exist" invisible="1"/>
          <field name="location_id" invisible="1"/>
          <field name="location_dest_id" invisible="1"/>
          </group>
@@ -110,8 +131,8 @@
          </form>
          </field>
          </record>
-         
-         
+
+
          <record id="view_picking_internal_search" model="ir.ui.view">
          <field name="name">stock.picking.internal.search</field>
          <field name="model">stock.picking</field>
@@ -142,8 +163,8 @@
          </search>
          </field>
          </record>
-         
-         
+
+
          <record id="view_move_search" model="ir.ui.view">
          <field name="name">stock.move.search</field>
          <field name="model">stock.move</field>
@@ -152,7 +173,7 @@
          <search string="Stock Moves">
          <field name="origin" filter_domain="['|', '|', ('origin', 'ilike', self), ('name', 'ilike', self), ('picking_id', 'ilike', self)]" string="Reference"/>
          <field name="date" groups="base.group_no_one"/>
-         
+
          <filter icon="terp-camera_test" string="Ready" name="ready" domain="[('state','=','assigned')]" help="Stock moves that are Available (Ready to process)"/>
          <filter icon="terp-stock" string="To Do" name="future" domain="[('state','in',('assigned','confirmed','waiting'))]" help="Stock moves that are Confirmed, Available or Waiting"/>
          <filter icon="terp-dialog-close" string="Done" name="done" domain="[('state','=','done')]" help="Stock moves that have been processed"/>
