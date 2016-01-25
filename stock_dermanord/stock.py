@@ -39,4 +39,17 @@ class stock_picking(models.Model):
     pure_cell = fields.Boolean('Cell',oldname='x_pure_cell')
     ready4picking = fields.Boolean('Ready for picking',oldname='x_ready4picking')
 
+
+class res_users(models.Model):
+   _inherit="res.users"
+   def Xname_get(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        if context.get('show_short_name_only'):
+            if isinstance(ids, (int, long)):
+                ids = [ids]
+            return [(r.id,'%s,%s' % (r.street,r.city)) for r in self.browse(cr, uid, ids, context=context)]
+        else:
+            return super(res_users, self).name_get(cr, uid, ids, context=context)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

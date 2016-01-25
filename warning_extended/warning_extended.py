@@ -129,9 +129,25 @@ class stock_picking(models.Model):
                 if self.partner_id.sale_warn == 'block':
                     return {'value': {'partner_id': False}, 'warning': warning}
     
-
-    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
-        for s in self.env['stock.picking'].browse(picking):
+    @api.multi
+#    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
+    def action_assign(self,picking,context=None):
+        #raise Warning('%s | %s' % (ids,picking))
+        compose_form = self.env.ref('mail.email_compose_message_wizard_form', False)
+        return {
+            'name': _('Compose Email'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form.id, 'form')],
+            'view_id': compose_form.id,
+            'target': 'new',
+            'context': None,
+        }
+        
+        return {'value': {'partner_id': False}, 'warning': {'title': 'Hello', 'message': 'Hejsan'}}
+        for s in self:
             if s.partner_id.picking_warn != 'no-message':
                 warning = {
                         'title': _("Warning for %s") % s.partner_id.name,
@@ -139,8 +155,9 @@ class stock_picking(models.Model):
                 }
                 if s.partner_id.sale_warn == 'block':
                     return {'value': {'partner_id': False}, 'warning': warning}    
-                return {'value': {'partner_id': False}, 'warning': warning}    
-            return super(stock_picking,s).do_enter_transfer_details(picking,context=context)
+                return {'value': {'partner_id': False}, 'warning': warning}  
+        
+            return super(stock_picking,s).do_enter_transfer_details(picking)
 
 
 #~ class product_product(osv.osv):
