@@ -31,13 +31,16 @@ class stock_picking(models.Model):
 
     creditcard = fields.Boolean('Credit card',oldname='x_creditcard')
     expected_delivery_date = fields.Date('Expected Delivery Date',oldname='x_expected_delivery_date')
-    export_shipping = fields.Boolean('Foreign shipping',oldname='x_export_shipping')
+    claim = fields.Boolean('Claim')
+    #export_shipping = fields.Boolean('Foreign shipping',oldname='x_export_shipping')
     picking_user = fields.Char('Old picking user',oldname='x_pickin_user')
     user_id = fields.Many2one(string='Picking user',comodel_name='res.users')
     pickup_time = fields.Datetime('Pickup time',oldname='x_pickup_time')
     prio = fields.Boolean('Prio',oldname='x_prio')
     pure_cell = fields.Boolean('Cell',oldname='x_pure_cell')
     ready4picking = fields.Boolean('Ready for picking',oldname='x_ready4picking')
+    #~ invoice_type = fields.Selection(string='Invoice Type', [('invoice_in_package','Invoice in package'),('invoice_in_letter','Invoice in letter')])
+    #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
 
 
 class res_users(models.Model):

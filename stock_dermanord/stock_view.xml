@@ -6,14 +6,35 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.vpicktree"/>
             <field name="arch" type="xml">
-                <field name="picking_type_id" position="after">
-                    <field name="user_id"/>
-                    <field name="ready4picking"/>
-                    <field name="pure_cell"/>
-                    <field name="expected_delivery_date"/>
-                    <field name="pickup_time"/>
-                    <field name="prio"/>
-                </field>
+                <tree string="Picking list" position="replace">
+                    <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                        <field name="ready4picking"/>
+                        <field name="prio"/>
+                        <field name="pure_cell"/>
+                        <field name="claim"/>
+                        <field name="expected_delivery_date"/>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="weight"/>
+                        <field name="origin"/>
+                        <field name="invoice_type_id"/>
+                        <field name="date"/>
+                        <field name="backorder_id"/>
+<!--
+                        <field name="invoice_state"/>
+-->
+                        <field name="carrier_id"/>
+                        <field name="pickup_time"/>
+                        <field name="creditcard"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+                        <field name="date_done"/>
+                        <field name="min_date" invisible="1"/>
+                        <field name="group_id" invisible="1"/>
+                        <field name="priority" invisible="1"/>
+                        <field name="picking_type_id" invisible="1"/>
+                    </tree>
+                </tree>
             </field>
         </record>
 
@@ -25,7 +46,7 @@
                 <filter name="backorder" position="after">
                     <filter name="ready4picking" domain="[('ready4picking','=',1)]"/>
                     <filter name="pure_cell" domain="[('pure_cell','=',1)]"/>
-                    <filter name="export_shipping" domain="[('export_shipping','=',1)]"/>
+                    <filter name="claim" domain="[('claim','=',1)]"/>
                 </filter>
                 <field name="group_id" position="after">
                     <field name="user_id"/>
@@ -50,11 +71,11 @@
                     <field name="pickup_time"/>
                 </field>
                 <field name="origin" position="after">
-                    <field name="creditcard"/>
-                    <field name="export_shipping"/>
+                    <field name="ready4picking"/>
                     <field name="prio"/>
                     <field name="pure_cell"/>
-                    <field name="ready4picking"/>
+                    <field name="claim"/>
+                    <field name="creditcard"/>
                 </field>
             </field>
         </record>
