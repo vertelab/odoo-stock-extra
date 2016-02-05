@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="vpicktree" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <tree string="Picking list" position="replace">
+                    <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                        <field name="ready4picking"/>
+                        <field name="prio"/>
+                        <field name="pure_cell"/>
+                        <field name="claim"/>
+                        <field name="expected_delivery_date"/>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="address_id"/>
+                        <field name="weight"/>
+                        <field name="origin"/>
+                        <field name="invoice_type_id"/>
+                        <field name="date"/>
+                        <field name="backorder_id"/>
+<!--
+                        <field name="invoice_state"/>
+-->
+                        <field name="carrier_id"/>
+                        <field name="pickup_time"/>
+                        <field name="creditcard"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+                        <field name="date_done"/>
+                        <field name="min_date" invisible="1"/>
+                        <field name="group_id" invisible="1"/>
+                        <field name="priority" invisible="1"/>
+                        <field name="picking_type_id" invisible="1"/>
+                    </tree>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <filter name="backorder" position="after">
+                    <filter name="ready4picking" domain="[('ready4picking','=',1)]"/>
+                    <filter name="pure_cell" domain="[('pure_cell','=',1)]"/>
+                    <filter name="claim" domain="[('claim','=',1)]"/>
+                </filter>
+                <field name="group_id" position="after">
+                    <field name="user_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                </field>
+                <group string="Group By" position="inside">
+                    <filter string="Expected Delivery Date" domain="[]" context="{'group_by':'expected_delivery_date'}"/>
+                    <filter string="User Id" domain="[]" context="{'group_by':'user_id'}"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="view_picking_withcarrier_out_form" model="ir.ui.view">
+            <field name="name">delivery.stock.picking_withcarrier.form.view.inherit</field>
+            <field name="priority" eval="1"/>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+            <field name="arch" type="xml">
+                <field name="carrier_id" position="replace" />
+                <field name="weight" position="replace" />
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sale_journal_picking_order">
+            <field name="name">stock.picking.journal.view.form.inherit2</field>
+            <field name="priority" eval="1"/>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="sale_journal.sale_journal_picking_order" />
+            <field name="arch" type="xml">
+                <field name="invoice_type_id" position="replace"/>
+            </field>
+        </record>
+
+        <record id="view_picking_inherit_form2" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit2</field>
+            <field name="priority" eval="1"/>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock_account.view_picking_inherit_form2"/>
+            <field name="arch" type="xml">
+                <field name="invoice_state" position="replace" />
+            </field>
+        </record>
+
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="priority" eval="99"/>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <field name="backorder_id" position="after">
+                    <field name="user_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                    <field name="address_id"/>
+                    <field name="carrier_id"/>
+                    <field name="weight"/>
+                    <field name="invoice_type_id"/>
+                    <field name="invoice_state" groups="account.group_account_invoice" />
+                </field>
+                <field name="origin" position="after">
+                    <field name="ready4picking"/>
+                    <field name="prio"/>
+                    <field name="pure_cell"/>
+                    <field name="claim"/>
+                    <field name="creditcard"/>
+
+
+                </field>
+            </field>
+        </record>
+
+
+
+
+<!--
+        <record model="ir.ui.view" id="stock_picking_calendar">
+            <field name="name">stock.picking.calendar</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.stock_picking_calendar"/>
+            <field name="arch" type="xml">
+                <calendar string="Calendar View" position="after">
+                    <calendar string="Expected Delivery Date" date_start="expected_delivery_date" color="partner_id">
+                        <field name="origin"/>
+                        <field name="picking_type_id"/>
+                        <field name="partner_id"/>
+                    </calendar>
+                    <calendar string="Pickup Time" date_start="pickup_time" color="partner_id">
+                        <field name="origin"/>
+                        <field name="picking_type_id"/>
+                        <field name="partner_id"/>
+                    </calendar>
+                </calendar>
+            </field>
+        </record>
+-->
+
+<!--
+        <record model="ir.ui.view" id="stock_picking_calendar_expected">
+            <field name="name">stock.picking.calendar.expected</field>
+            <field name="model">stock.picking</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <calendar string="Expected Delivery Date" date_start="expected_delivery_date" color="expected_delivery_date">
+                    <field name="origin"/>
+                    <field name="picking_type_id"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="pickup_time"/>
+                    <field name="partner_id"/>
+                </calendar>
+                <calendar string="Pickup Time" date_start="pickup_time" color="partner_id">
+                    <field name="origin"/>
+                    <field name="picking_type_id"/>
+                    <field name="partner_id"/>
+                </calendar>
+            </field>
+        </record>
+-->
+
+
+<!--
+    stock.vpicktree
+    stock.view_picking_internal_search
+-->
+
+    </data>
+</openerp>
