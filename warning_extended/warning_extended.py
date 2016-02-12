@@ -116,7 +116,7 @@ class sale_order(models.Model):
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
     
-    warning_msg = fields.Text(related="partner_id.picking_warn_msg")
+    warning_msg = fields.Text(related="partner_id.parent_id.picking_warn_msg")
 
     @api.multi
     @api.onchange('state')
@@ -135,7 +135,9 @@ class stock_picking(models.Model):
 #    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
     def action_assign(self,picking, context=None):
         #raise Warning('%s | %s' % (ids,picking))
-        if self.partner_id.picking_warn == 'no-message':
+        if self.partner_id.parent_id and self.partner_id.parent_id.picking_warn == 'warning':
+            partner_id = self.partner_id.parent_id.id
+        else:
             return super(stock_picking, self).action_assign()
         compose_form = self.env.ref('warning_extended.view_stock_picking_form', False)
         return {
@@ -148,7 +150,7 @@ class stock_picking(models.Model):
             'view_id': compose_form.id,
             'target': 'new',
             'context': None,
-            'res_id': self[0].id,
+            'res_id': self.id,
         }
     
     @api.multi
