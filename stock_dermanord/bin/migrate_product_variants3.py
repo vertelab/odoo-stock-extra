@@ -28,7 +28,7 @@ import erppeek
 
 local_server = 'localhost'
 local_user = 'anders.wallenquist@vertel.se'
-local_passwd = 'odoo8dermanord'
+local_passwd = ''
 local_database = 'stable_migrated12okt15'
 local_port = 9069
 
