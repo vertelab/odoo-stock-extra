@@ -1,0 +1,23 @@
+<openerp>
+<data>
+
+<record id="view_stock_picking_form" model="ir.ui.view">
+    <field name="name">stock.picking.warning.form</field>
+    <field name="model">stock.picking</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+        <form string="Warning">
+            <sheet string="Warning">
+                <field name="warning_msg" readonly="1"/>
+                <footer>
+                    <button name="action_assign_super" type="object" string="Continue" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" special="cancel" class="oe_link" />
+                </footer>
+            </sheet>
+        </form>
+    </field>
+</record>
+        
+</data>
+</openerp>
