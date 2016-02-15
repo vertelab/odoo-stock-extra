@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -19,17 +19,25 @@
 #
 ##############################################################################
 {
-'name': 'Stock Dermanord',
+'name': 'Dermanord Depends',
 'version': '0.1',
 'summary': '',
-'category': 'stock',
-'description': """Extended stock with custom fields for Dermanord.
-
-
-Financed by Dermanord-Svensk Hudvård AB""",
+'category': '',
+'description': """Test for all installed modules for Dermanord""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['stock', 'delivery', 'sale_journal', 'sale_delivery_address'],
-'data': ['stock_view.xml'],
+'depends': [
+#odoo-stock-extra
+'stock_delivery_slip',
+'stock_dermanord',
+'stock_picking_reports',
+'warning_extended',
+#odoo-website-sale-extra
+'sale_customer_no',
+'sale_delivery_address',
+#odoo-account-extra
+'account_invoice_customer_no',
+],
+'data': [],
 'installable': True,
 }

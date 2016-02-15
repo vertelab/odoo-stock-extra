@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -19,17 +19,20 @@
 #
 ##############################################################################
 {
-'name': 'Stock Dermanord',
+'name': 'stock_delivery_slip',
 'version': '0.1',
 'summary': '',
 'category': 'stock',
-'description': """Extended stock with custom fields for Dermanord.
+'description': """Extended stock picking report with warehouse place.
+
+New field quant_source_location (reserved_quant_ids stock.quant) to be used
+in picking reports and views
 
 
-Financed by Dermanord-Svensk Hudvård AB""",
+Report financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['stock', 'delivery', 'sale_journal', 'sale_delivery_address'],
-'data': ['stock_view.xml'],
+'depends': ['stock'],
+'data': [ 'stock_delivery_slip_report.xml'],
 'installable': True,
 }

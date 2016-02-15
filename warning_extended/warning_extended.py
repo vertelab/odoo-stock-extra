@@ -115,6 +115,8 @@ class sale_order(models.Model):
 
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
+    
+    warning_msg = fields.Text(related="partner_id.parent_id.picking_warn_msg")
 
     @api.multi
     @api.onchange('state')
@@ -131,34 +133,29 @@ class stock_picking(models.Model):
     
     @api.multi
 #    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
-    def action_assign(self,picking,context=None):
+    def action_assign(self,picking, context=None):
         #raise Warning('%s | %s' % (ids,picking))
-        compose_form = self.env.ref('mail.email_compose_message_wizard_form', False)
+        if self.partner_id.parent_id and self.partner_id.parent_id.picking_warn == 'warning':
+            partner_id = self.partner_id.parent_id.id
+        else:
+            return super(stock_picking, self).action_assign()
+        compose_form = self.env.ref('warning_extended.view_stock_picking_form', False)
         return {
-            'name': _('Compose Email'),
+            'name': _('Warning'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'mail.compose.message',
+            'res_model': 'stock.picking',
             'views': [(compose_form.id, 'form')],
             'view_id': compose_form.id,
             'target': 'new',
             'context': None,
+            'res_id': self.id,
         }
-        
-        return {'value': {'partner_id': False}, 'warning': {'title': 'Hello', 'message': 'Hejsan'}}
-        for s in self:
-            if s.partner_id.picking_warn != 'no-message':
-                warning = {
-                        'title': _("Warning for %s") % s.partner_id.name,
-                        'message': s.partner_id.picking_warn_msg,
-                }
-                if s.partner_id.sale_warn == 'block':
-                    return {'value': {'partner_id': False}, 'warning': warning}    
-                return {'value': {'partner_id': False}, 'warning': warning}  
-        
-            return super(stock_picking,s).do_enter_transfer_details(picking)
-
+    
+    @api.multi
+    def action_assign_super(self):
+        return super(stock_picking, self[0]).action_assign()
 
 #~ class product_product(osv.osv):
     #~ _inherit = 'product.template'

@@ -33,7 +33,7 @@ picking and invoice. The message is triggered by the form's onchange event.
     """,
     'author': 'OpenERP SA',
     'depends': ['warning'],
-    'data': [], #'warning_view.xml'],
+    'data': ['stock_picking_view.xml'],
     'demo': [],
     'installable': True,
     'auto_install': False,
