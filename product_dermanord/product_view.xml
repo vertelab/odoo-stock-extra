@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record id="product_template_tree_view" model="ir.ui.view">
+      <field name="name">product.template.product.tree.inherit</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_tree_view" />
+      <field name="arch" type="xml">
+        <tree string="Product" position="replace">
+          <tree colors="red:virtual_available&lt;50;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')" string="Produkter">
+            <field name="default_code" />
+            <field name="name" />
+            <field invisible="1" name="categ_id" />
+            <field name="ustariff" />
+            <field name="variants" />
+            <field name="uom_id" string="Enhet" />
+            <field name="type" />
+<!-- Get this from stock.view_stock_product_template_tree
+            <field name="qty_available" />
+            <field name="virtual_available" />
+-->
+            <field name="lst_price" />
+            <field invisible="not context.get('pricelist',False)" name="price" />
+            <field name="iskit" />
+            <field name="sale_ok" />
+            <field name="purchase_ok" />
+<!--
+            <field name="orderpoint_ids" />
+-->
+<!--
+            <field name="orderpoints" />
+-->
+            <field name="taxes_view" />
+            <field name="supplier_taxes_view" />
+<!--
+            <field name="cost_price" />
+-->
+            <field name="standard_price" />
+            <field name="state" />
+            <field invisible="1" name="company_id" />
+          </tree>
+        </tree>
+      </field>
+    </record>
+    
+    
+<!--
+            <record id="view_stock_product_template_tree" model="ir.ui.view">
+            <field name="name">product.template.stock.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="colors" translation="off">red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')</attribute>
+                </tree>
+                <field name="uom_id" position="after">
+                    <field name="qty_available"/>
+                    <field name="virtual_available"/>
+                </field>
+            </field>
+        </record>
+-->
+    
+  </data>
+</openerp>
