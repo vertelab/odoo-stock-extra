@@ -36,7 +36,7 @@
 'sale_customer_no',
 'sale_delivery_address',
 #odoo-account-extra
-'account_invoice_customer_no',
+'account_customer_no',
 ],
 'data': [],
 'installable': True,
