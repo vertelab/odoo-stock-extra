@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2016 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,18 +18,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-'name': 'Account Dermanord',
-'version': '0.1',
-'summary': '',
-'category': 'accounting',
-'description': """Extended account with custom fields and views for Dermanord.
 
+from openerp import api, models, fields, _
+import logging
+_logger = logging.getLogger(__name__)
 
-Financed by Dermanord-Svensk Hudvård AB""",
-'author': 'Vertel AB',
-'website': 'http://www.vertel.se',
-'depends': ['account', ],
-'data': ['account_invoice.xml'],
-'installable': True,
-}
+class product_template(models.Model):
+    _inherit ='product.template'
+    
+    qty_available_store = fields.Float(related='qty_available', store=True, string='QoH stored')
+    virtual_available_store = fields.Float(related='virtual_available', store=True, string='QA stored')

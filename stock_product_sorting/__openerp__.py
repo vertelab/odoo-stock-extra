@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,13 +18,17 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from openerp import models, fields, api, _
-
-import logging
-_logger = logging.getLogger(__name__)
-
-class account_invoice(models.Model):
-    _inherit="account.invoice"
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+{
+'name': 'Stock Product Sorting',
+'version': '0.1',
+'summary': 'Sort products by quantity.',
+'category': 'Hidden',
+'description': """""",
+'author': 'Vertel AB',
+'website': 'http://www.vertel.se',
+'depends': ['sale'],
+'data': [
+'product_view.xml',
+],
+'installable': True,
+}
