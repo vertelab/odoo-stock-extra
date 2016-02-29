@@ -24,6 +24,13 @@
                                             <strong>Warehouse Address:</strong>
                                         </span>
                                     </div>
+                                    <div t-if="o.user_id">
+                                        <span>
+                                            <strong>Plockansvarig:</strong><br />
+                                            <span t-field="o.user_id"/>
+                                        </span>
+                                    </div>
+
                                     <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id">
                                         <span>
                                             <strong>Customer Address:</strong>
@@ -35,9 +42,9 @@
                                             VAT:
                                             <span t-field="o.partner_id.vat"/>
                                         </p>
-                                        <p t-if="o.partner_id.ref">
-                                            Ref:
-                                            <span t-field="o.partner_id.ref"/>
+                                        <p t-if="o.customer_no">
+                                            Kundnummer:
+                                            <span t-field="o.customer_no"/>
                                         </p>
                                     </div>
                                 </div>
