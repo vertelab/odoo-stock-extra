@@ -35,10 +35,24 @@
                                             VAT:
                                             <span t-field="o.partner_id.vat"/>
                                         </p>
+                                        <div>
+                                            <span>
+                                                <strong>Kundnummer: </strong>
+                                            </span>
+                                            <span t-field="o.partner_id.customer_no"/>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <strong>Plockansvarig: </strong>
+                                            </span>
+                                            <span t-field="o.user_id"/>
+                                        </div>
+                                        <!--
                                         <p t-if="o.partner_id.ref">
                                             Ref:
                                             <span t-field="o.partner_id.ref"/>
                                         </p>
+                                        -->
                                     </div>
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-1">
@@ -66,15 +80,13 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            <strong>Description</strong>
+                                            <strong>Beskrivning</strong>
                                         </th>
-<!--
                                         <th>
-                                            <strong>Quantity</strong>
+                                            <strong>Kvantitet</strong>
                                         </th>
--->
                                         <th>
-                                            <strong>Quantity</strong>
+                                            <strong>Vikt</strong>
                                         </th>
                                     </tr>
                                 </thead>
@@ -87,11 +99,9 @@
                                             <td>
                                                 <span t-field="ml.product_qty"/>
                                             </td>
-<!--
                                             <td>
-                                                <span t-field="ml.reserved_availability"/>
+                                                <span t-field="ml.weight"/>
                                             </td>
--->
                                         </t>
                                     </tr>
                                 </tbody>
