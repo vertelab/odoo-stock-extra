@@ -88,7 +88,7 @@ handled_products = []
 for id in odoo.env['product.template'].search([('name', 'like', ',')])[:20]:
     record = odoo.env['product.template'].read(id,['name'])
     i = record['name'].rfind(',')
-    name = record['name'][:i]
+    name = record['name'][:i]  # User split to get a list which is much easier to work with (youhave to deal with multiple attr)
     variant = record['name'][i + 2:]
     attr_lines = []
     if not name in handled_products and is_volume_variant(variant):
