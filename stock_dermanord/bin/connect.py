@@ -20,29 +20,34 @@
 #
 ##############################################################################
 
+# ~./odoorpc
+#[dermanord]
+#host = localhost
+#protocol = xmlrpc
+#user = admin
+#timeout = 120
+#database = <database>
+#passwd = <password>
+#type = ODOO
+#port = 8069
+
 #pip install odoorpc
 import odoorpc
-
-local_server = 'localhost'
-local_user = 'anders.wallenquist@vertel.se'
-local_passwd = ''
-local_database = 'dev_migrated12okt15'
-local_port = 8069
-
-
-
-
-# Prepare the connection to the server
-#odoo = odoorpc.ODOO(local_server, protocol='xmlrpc', port=local_port)
-odoo = odoorpc.ODOO(local_server, port=local_port)
-print odoo.config['admin_password']
+params = odoorpc.session.get('dermanord')
+odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 
 # Check available databases
-print(odoo.db.list())
+#print(odoo.db.list())
 
-exit()
 # Login (the object returned is a browsable record)
-odoo.login(local_database,local_user, local_passwd)
+#odoo.login(local_database,local_user, local_passwd)
+odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
+
+
+for p in odoo.env['res.partner'].read(odoo.env['res.partner'].search([('name','<>','PARTNER WITH NO NAME')]),['id','name']):
+    print p
+
+
 #user = odoo.env.user
 #print(user.name)            # name of the user connected
 #print(user.company_id.name) # the name of its company
