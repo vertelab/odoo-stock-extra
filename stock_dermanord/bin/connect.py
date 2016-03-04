@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-# ~./odoorpc
+# ~/.odoorpc
 #[dermanord]
 #host = localhost
 #protocol = xmlrpc
@@ -44,8 +44,8 @@ odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
 
-for p in odoo.env['res.partner'].read(odoo.env['res.partner'].search([('name','<>','PARTNER WITH NO NAME')]),['id','name']):
-    print p
+for p in odoo.env['res.partner'].read(odoo.env['res.partner'].search([('name','=','PARTNER WITH NO NAME')]),['id','name','type']):
+    odoo.env['res.partner'].write(p['id'],{'name': p.get('type','default')})
 
 
 #user = odoo.env.user
