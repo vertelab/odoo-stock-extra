@@ -27,7 +27,7 @@
                         <field name="carrier_id"/>
                         <field name="pickup_time"/>
                         <field name="creditcard"/>
-                        <field name="user_id"/>
+                        <field name="employee_id"/>
                         <field name="state"/>
                         <field name="date_done"/>
                         <field name="min_date" invisible="1"/>
@@ -50,7 +50,7 @@
                     <filter name="claim" domain="[('claim','=',1)]"/>
                 </filter>
                 <field name="group_id" position="after">
-                    <field name="user_id"/>
+                    <field name="employee_id"/>
                     <field name="expected_delivery_date"/>
                     <field name="pickup_time"/>
                 </field>
@@ -101,7 +101,7 @@
             <field name="arch" type="xml">
 
                 <field name="backorder_id" position="after">
-                    <field name="user_id"/>
+                    <field name="employee_id"/>
                     <field name="expected_delivery_date"/>
                     <field name="pickup_time"/>
                     <field name="address_id"/>

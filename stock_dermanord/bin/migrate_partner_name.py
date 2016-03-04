@@ -22,43 +22,12 @@
 
 #pip install odoorpc
 import odoorpc
+#~ params = odoorpc.session.get('test')
+params = odoorpc.session.get('dermanord')
+odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
+odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
-#~ local_server = 'localhost'
-#~ local_user = 'anders.wallenquist@vertel.se'
-#~ local_passwd = ''
-#~ local_database = 'dev_migrated12okt15'
-#~ local_port = 9070
-
-local_server = 'localhost'
-local_user = 'admin'
-local_passwd = 'admin'
-local_database = 'dermanord'
-local_port = 8069
-
-
-
-# Prepare the connection to the server
-#odoo = odoorpc.ODOO(local_server, protocol='xmlrpc', port=local_port)
-odoo = odoorpc.ODOO(local_server, port=local_port)
-
-# Check available databases
-print(odoo.db.list())
-
-# Login (the object returned is a browsable record)
-odoo.login(local_database,local_user, local_passwd)
-#user = odoo.env.user
-#print(user.name)            # name of the user connected
-#print(user.company_id.name) # the name of its company
-
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([('','','')])):
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([])):
-
-for p in odoo.env['res.partner'].search([]):
-    for c in p.child_ids.search([('name', 'like', 'PARTNER WITH NO NAME')]):
-        if(c.type == ''):
-            record = c.write({'name': 'default'})
-        else:
-            record = c.write({'name': c.type})
-
+for p in odoo.env['res.partner'].read(odoo.env['res.partner'].search([('name','=','PARTNER WITH NO NAME')]),['id','name','type']):
+    odoo.env['res.partner'].write(p['id'],{'name': p.get('type') or 'default'})
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
