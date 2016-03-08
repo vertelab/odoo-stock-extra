@@ -21,32 +21,30 @@
 ##############################################################################
 
 #pip install odoorpc
-import odoorpc
+# ~/.odoorpc
+#[dermanord]
+#host = localhost
+#protocol = xmlrpc
+#user = admin
+#timeout = 120
+#database = <database>
+#passwd = <password>
+#type = ODOO
+#port = 8069
+
+#pip install odoorpc
 import re
-
-local_server = 'localhost'
-local_user = 'anders.wallenquist@vertel.se'
-local_passwd = 'foobar'
-local_database = 'dermanord1'
-local_port = 8069
-
-
-
-# Prepare the connection to the server
-#odoo = odoorpc.ODOO(local_server, protocol='xmlrpc', port=local_port)
-odoo = odoorpc.ODOO(local_server, port=local_port)
+import odoorpc
+params = odoorpc.session.get('dermanord')
+odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 
 # Check available databases
-#~ print(odoo.db.list())
+#print(odoo.db.list())
 
 # Login (the object returned is a browsable record)
-odoo.login(local_database, local_user, local_passwd)
-#user = odoo.env.user
-#print(user.name)            # name of the user connected
-#print(user.company_id.name) # the name of its company
+#odoo.login(local_database,local_user, local_passwd)
+odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([('','','')])):
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([])):
 
 #Fetch id of Volume attribute. Create the attribute if it doesn't exist.
 volume_id = odoo.env['product.attribute'].search([('name', '=', 'Volume')])
@@ -69,62 +67,34 @@ def is_volume_variant(variant):
     pattern = re.compile('\\ *[0-9]+\\ *ml')
     return pattern.match(variant)
 
-#Fetch the id of a volume attribute value. Create a new record if none exists.
+# Get attr value, if missing create both product.attribute and product.attribute.value. Change product.attribute afterwards.
 def get_attr_value_id(name):
-    val_name = ''
-    for c in name:
-        if c.isdigit():
-            val_name += c
-    val_name += ' ml'
-    for attr_value in attr_values:
-        if attr_value['name'] == val_name:
-            return attr_value['id']
-    id = odoo.env['product.attribute.value'].create({'name': val_name, 'attribute_id': volume_id})
-    attr_values.append(odoo.env['product.attribute.value'].read(id, ['name']))
-    return id
+    value_id = odoo.env['product.attribute.value'].search([('name','=',name)])
+    if not value_id:
+        #attribute_id = odoo.env['product.attribute'].create({'name': name, })
+        #value_id = odoo.env['product.attribute.value'].create({'name': name, 'attribute_id': attribute_id})
+        print "Created new attribute %s" % name
+    return value_id
 
-handled_products = []
 
-for id in odoo.env['product.template'].search([('name', 'like', ',')])[:20]:
-    record = odoo.env['product.template'].read(id,['name'])
-    i = record['name'].rfind(',')
-    name = record['name'][:i]  # User split to get a list which is much easier to work with (youhave to deal with multiple attr)
-    variant = record['name'][i + 2:]
-    attr_lines = []
-    if not name in handled_products and is_volume_variant(variant):
-        for prod_id in odoo.env['product.product'].search([('name', 'like', name)]):
+handled_templates = []
+#for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')])[:20]:
+for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]):
+    record = odoo.env['product.template'].read(template_id,['name'])
+    attr_name = [x.strip() for x in record['name'].split(',')]
+    template_name = attr_name[0]  # Template name are the first sentence before coma
+  
+    if not template_name in handled_templates:
+        for prod_id in odoo.env['product.product'].search([('name', 'like', '%s%%' % template_name)]):
             r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids'])
-            v = r['name'][r['name'].rfind(',') + 2:]
-            if (is_volume_variant(v)):
-                v_id = get_attr_value_id(v)
-                attr_lines.append(v_id)
-                r['name'] = r['name'][:r['name'].rfind(',')]
-                r['product_tmpl_id'] = id
-                r['attribute_value_ids'].append(v_id)
-                odoo.env['product.product'].write(r['id'], r)
-                #TODO: Remove template
-        handled_products.append(name)
-        odoo.env['product.template'].write(id, {'name': name})
-        print name
+            for attr in [x.strip() for x in r['name'].split(',')]:
+                r['name'] = template_name
+                r['product_tmpl_id'] = template_id
+                r['attribute_value_ids'].append(get_attr_value_id(attr))
+                #odoo.env['product.product'].write(r['id'], r)
+        handled_templates.append(template_name)
+    #odoo.env['product.template'].write(template_id, {'name': template_name})
+    print "Template %s -> %s" % (record['name'],template_name)
             
-        
-        #product.attribute.line: attribute_id, value_ids, product_tmpl_id
-        #~ variants.append(record['name'])
-    #~ else:
-        #~ products[name] = [variant]
-#~ for key in products:
-    #~ print('Product name: |%s|\nVariants: |%s|\n' % (key, products[key]))
-    #products = [line.product_id.name for line in order.order_line]
-    #print(products)
-    
-#~ import codecs
-#~ import sys 
-#~ UTF8Writer = codecs.getwriter('utf8')
-#~ sys.stdout = UTF8Writer(sys.stdout)
-#~ for v in variants:
-    #~ print(v)
-# Update data through a browsable record
-#user.name = "Brian Jones"
-#oerp.write_record(user)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
