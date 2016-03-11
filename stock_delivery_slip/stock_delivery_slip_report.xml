@@ -42,11 +42,6 @@
                                             VAT:
                                             <span t-field="o.partner_id.vat"/>
                                         </p>
-<<<<<<< HEAD
-                                        <p t-if="o.customer_no">
-                                            Kundnummer:
-                                            <span t-field="o.customer_no"/>
-=======
                                         <div>
                                             <span>
                                                 <strong>Kundnummer: </strong>
@@ -63,7 +58,6 @@
                                         <p t-if="o.partner_id.ref">
                                             Ref:
                                             <span t-field="o.partner_id.ref"/>
->>>>>>> 43e3dd36fde5ddb9f016f1c1f217e398ebc24de8
                                         </p>
                                         -->
                                     </div>
