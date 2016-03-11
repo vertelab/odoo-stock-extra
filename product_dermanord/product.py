@@ -27,10 +27,20 @@ _logger = logging.getLogger(__name__)
 
 class product_template(models.Model):
     _inherit="product.template"
+
+    @api.one
+    def _tariff(self):
+        if(self.env.ref('base.us').id == self.partner_id.country_id.id):
+            self.tariff = self.ustariff
+        else:
+            self.tariff = self.intrastat_id
+
+
+    tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
-    
-    #orderpoint_ids 
+
+    #orderpoint_ids
     @api.one
     def _cost_price(self):
         self.cost_price = 0.38 * self.list_price
@@ -50,6 +60,20 @@ class product_template(models.Model):
     #~ def _stock(self):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
-    
- 
+
+
+class account_invoice_line(models.Model):
+    _inherit = 'account.invoice.line'
+
+    @api.one
+    def _tariff(self):
+        if self.product_id:
+            if self.env.ref('base.us').id == self.invoice_id.partner_shipping_id.country_id.id:
+                self.tariff = self.product_id.ustariff
+            else:
+                self.tariff = self.product_id.intrastat_id.name
+
+    tariff = fields.Char(string='Tariff', compute='_tariff')
+
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

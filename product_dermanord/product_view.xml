@@ -55,6 +55,17 @@
         </field>
     </record>
 
+    <!-- tariff in invoice line -->
+    <record id="tariff_view_invoice_line_tree" model="ir.ui.view">
+        <field name="name">account.invoice.line.tree</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="tariff"/>
+            </field>
+        </field>
+    </record>
 
 
 <!--
