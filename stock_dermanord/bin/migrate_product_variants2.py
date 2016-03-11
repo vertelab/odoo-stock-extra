@@ -73,7 +73,9 @@ def get_attr_value_id(name):
     if not value_id:
         #attribute_id = odoo.env['product.attribute'].create({'name': name, })
         #value_id = odoo.env['product.attribute.value'].create({'name': name, 'attribute_id': attribute_id})
-        print "Created new attribute %s" % name
+        print "\tCreated new attribute %s" % name
+    else:
+        print "\tFound existing attributte %s" % name
     return value_id
 
 
@@ -85,6 +87,7 @@ for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]
     template_name = attr_name[0]  # Template name are the first sentence before coma
   
     if not template_name in handled_templates:
+        print "\nTemplate %s -> %s" % (record['name'],template_name)
         for prod_id in odoo.env['product.product'].search([('name', 'like', '%s%%' % template_name)]):
             r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids'])
             for attr in [x.strip() for x in r['name'].split(',')]:
@@ -94,7 +97,4 @@ for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]
                 #odoo.env['product.product'].write(r['id'], r)
         handled_templates.append(template_name)
     #odoo.env['product.template'].write(template_id, {'name': template_name})
-    print "Template %s -> %s" % (record['name'],template_name)
-            
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
