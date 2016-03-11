@@ -118,19 +118,19 @@ class stock_picking(models.Model):
     
     warning_msg = fields.Text(related="partner_id.parent_id.picking_warn_msg")
 
-    @api.multi
-    @api.onchange('state')
-    def onchange_warning(self):
-        raise Warning('Hejsan')
-        for s in self:
-            if self.partner_id.picking_warn != 'no-message':
-                warning = {
-                        'title': _("Warning for %s") % self.partner_id.name,
-                        'message': self.partner_id.picking_warn_msg,
-                }
-                if self.partner_id.sale_warn == 'block':
-                    return {'value': {'partner_id': False}, 'warning': warning}
-    
+    #~ @api.multi
+    #~ @api.onchange('state')
+    #~ def onchange_warning(self):
+        #~ raise Warning('Hejsan')
+        #~ for s in self:
+            #~ if self.partner_id.picking_warn != 'no-message':
+                #~ warning = {
+                        #~ 'title': _("Warning for %s") % self.partner_id.name,
+                        #~ 'message': self.partner_id.picking_warn_msg,
+                #~ }
+                #~ if self.partner_id.sale_warn == 'block':
+                    #~ return {'value': {'partner_id': False}, 'warning': warning}
+    #~ 
     @api.multi
 #    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
     def action_assign(self,picking, context=None):
