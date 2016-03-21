@@ -37,6 +37,8 @@
 'sale_delivery_address',
 #odoo-account-extra
 'account_customer_no',
+#odoo-mrp
+'mrp_dermanord',
 ],
 'data': [],
 'installable': True,
