@@ -34,7 +34,12 @@
 
 #pip install odoorpc
 import re
-import odoorpc
+
+try:
+    import odoorpc
+except ImportError:
+    raise Warning('odoorpc library missing, pip install odoorpc')
+
 params = odoorpc.session.get('dermanord')
 odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 
@@ -84,16 +89,17 @@ handled_templates = []
 for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]):
     record = odoo.env['product.template'].read(template_id,['name'])
     attr_name = [x.strip() for x in record['name'].split(',')]
-    template_name = attr_name[0]  # Template name are the first sentence before coma
+    template_name = attr_name[0].encode('utf-8').strip()  # Template name are the first sentence before coma
   
     if not template_name in handled_templates:
-        print "\nTemplate %s -> %s" % (record['name'],template_name)
+        print "\nTemplate %s -> %s" % (record['name'].encode('utf-8').strip(),template_name)
         for prod_id in odoo.env['product.product'].search([('name', 'like', '%s%%' % template_name)]):
             r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids'])
             for attr in [x.strip() for x in r['name'].split(',')]:
                 r['name'] = template_name
                 r['product_tmpl_id'] = template_id
-                r['attribute_value_ids'].append(get_attr_value_id(attr))
+                if not attr.encode('utf-8').strip() == template_name: 
+                    r['attribute_value_ids'].append(get_attr_value_id(attr.encode('utf-8').strip()))
                 #odoo.env['product.product'].write(r['id'], r)
         handled_templates.append(template_name)
     #odoo.env['product.template'].write(template_id, {'name': template_name})
