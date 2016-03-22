@@ -30,7 +30,7 @@ _logger = logging.getLogger(__name__)
 
 class sale_order(models.Model):
     _inherit = 'sale.order'
-    
+
     @api.model
     @api.onchange('state')
     def onchange_warning(self):
@@ -101,7 +101,7 @@ class sale_order(models.Model):
                 #~ return {'value': {'partner_id': False}, 'warning': warning}
 
         #~ result =  super(account_invoice, self).onchange_partner_id(cr, uid, ids, type, partner_id,
-            #~ date_invoice=date_invoice, payment_term=payment_term, 
+            #~ date_invoice=date_invoice, payment_term=payment_term,
             #~ partner_bank_id=partner_bank_id, company_id=company_id, context=context)
 
         #~ if result.get('warning',False):
@@ -115,8 +115,25 @@ class sale_order(models.Model):
 
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
-    
-    warning_msg = fields.Text(related="partner_id.parent_id.picking_warn_msg")
+
+    @api.one
+    def _picking_warn_msg(self):
+        if not self.partner_id.parent_id:
+            self.picking_warn_msg = self.partner_id.picking_warn_msg
+        else:
+            self.picking_warn_msg = self.partner_id.parent_id.picking_warn_msg
+
+    @api.one
+    def _picking_warn(self):
+        if not self.partner_id.parent_id:
+            self.picking_warn = self.partner_id.picking_warn
+        else:
+            self.picking_warn = self.partner_id.parent_id.picking_warn
+
+    picking_warn_msg = fields.Text(compute='_picking_warn_msg')
+    picking_warn = fields.Char(compute='_picking_warn')
+
+
 
     #~ @api.multi
     #~ @api.onchange('state')
@@ -130,29 +147,42 @@ class stock_picking(models.Model):
                 #~ }
                 #~ if self.partner_id.sale_warn == 'block':
                     #~ return {'value': {'partner_id': False}, 'warning': warning}
-    #~ 
+    #~
+    @api.multi
+    @api.onchange('employee_id')
+    def onchange_employee_id(self):
+        warning = {'title': 'Warning for %s' % self.partner_id.name, 'message': self.picking_warn_msg}
+        if self.picking_warn == 'warning':
+            return {'value': {}, 'warning': warning}
+        if self.picking_warn == 'block':
+            return {'value': {'partner_id' : False}, 'warning': warning}
+
+
+
     @api.multi
 #    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
     def action_assign(self,picking, context=None):
         #raise Warning('%s | %s' % (ids,picking))
-        if self.partner_id.parent_id and self.partner_id.parent_id.picking_warn == 'warning':
-            partner_id = self.partner_id.parent_id.id
+        if self.picking_warn in ['warning', 'block']:
+            #~ partner_id = self.partner_id.parent_id.id
+            compose_form = self.env.ref('warning_extended.view_stock_picking_form', False)
+            #~ raise Warning('%s' % compose_form)
+            return {
+                'name': _('Warning'),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'stock.picking',
+                'views': [(compose_form.id, 'form')],
+                'view_id': compose_form.id,
+                'target': 'new',
+                'context': None,
+                'res_id': self.id,
+            }
         else:
             return super(stock_picking, self).action_assign()
-        compose_form = self.env.ref('warning_extended.view_stock_picking_form', False)
-        return {
-            'name': _('Warning'),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'stock.picking',
-            'views': [(compose_form.id, 'form')],
-            'view_id': compose_form.id,
-            'target': 'new',
-            'context': None,
-            'res_id': self.id,
-        }
-    
+
+
     @api.multi
     def action_assign_super(self):
         return super(stock_picking, self[0]).action_assign()

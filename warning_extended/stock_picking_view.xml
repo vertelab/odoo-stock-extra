@@ -8,16 +8,20 @@
     <field name="arch" type="xml">
         <form string="Warning">
             <sheet string="Warning">
-                <field name="warning_msg" readonly="1"/>
-                <footer>
+                <field name="picking_warn" invisible="1"/>
+                <field name="picking_warn_msg" readonly="1"/>
+                <footer attrs="{'invisible': [('picking_warn', '=', 'block')]}">
                     <button name="action_assign_super" type="object" string="Continue" class="oe_highlight"/>
                     or
+                    <button string="Cancel" special="cancel" class="oe_link" />
+                </footer>
+                <footer attrs="{'invisible': [('picking_warn', '=', 'warning')]}">
                     <button string="Cancel" special="cancel" class="oe_link" />
                 </footer>
             </sheet>
         </form>
     </field>
 </record>
-        
+
 </data>
 </openerp>
