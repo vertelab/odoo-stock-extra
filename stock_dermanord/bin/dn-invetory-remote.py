@@ -26,17 +26,16 @@
 
 import erppeek
 
-local_server = 'localhost'
-local_user = 'admin'
-local_passwd = 'sommar2016'
-local_database = 'stable_migrated06mar16'
-local_port = 9069
+db_new = erppeek.Client.from_config('eightzero')
+#db_old = erppeek.Client.from_config('sixone')
 
-client = erppeek.Client('http://%s:%s' % (local_server,local_port),local_database,local_user,local_passwd)
+name = db_new.model('product.product').read([('default_code', '=', '1002-00100')], 'name')[0]
+price = db_new.model('product.product').read([('default_code', '=', '1002-00100')], 'qty_available')[0]
 
-name = client.model('product.product').read([('default_code', '=', '1002-00100')], 'name')[0]
-price = client.model('product.product').read([('default_code', '=', '1002-00100')], 'qty_available')[0]
+
 
 print('%s\t\tPrice: %s' %(name, price))
+
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
