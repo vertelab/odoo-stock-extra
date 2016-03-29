@@ -20,38 +20,23 @@
 #
 ##############################################################################
 
-# sudo pip install erppeek
+# sudo pip install -U erppeek
 # http://wirtel.be/posts/2014/06/13/using_erppeek_to_discuss_with_openerp/
-#  http://erppeek.readthedocs.org/
+# http://erppeek.readthedocs.org/
 
 import erppeek
 
 local_server = 'localhost'
-local_user = 'anders.wallenquist@vertel.se'
-local_passwd = ''
-local_database = 'stable_migrated12okt15'
+local_user = 'admin'
+local_passwd = 'sommar2016'
+local_database = 'stable_migrated06mar16'
 local_port = 9069
 
-
-
 client = erppeek.Client('http://%s:%s' % (local_server,local_port),local_database,local_user,local_passwd)
-print(client.db.list())
-print client.context
 
-#~ user = client.env.user
-#~ print(user.name)            # name of the user connected
-#~ print(user.company_id.name) # the name of its company
+name = client.model('product.product').read([('default_code', '=', '1002-00100')], 'name')[0]
+price = client.model('product.product').read([('default_code', '=', '1002-00100')], 'qty_available')[0]
 
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([('','','')])):
-#for template in oerp.get('product.template').browse(oerp.get('product.template').search([])):
-for template in client.model('product.template').search([])[:50]:
-    print(template)
-    record = client.model('product.template').read(template,['name'])
-    #products = [line.product_id.name for line in order.order_line]
-    #print(products)
-
-# Update data through a browsable record
-#user.name = "Brian Jones"
-#oerp.write_record(user)
+print('%s\t\tPrice: %s' %(name, price))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
