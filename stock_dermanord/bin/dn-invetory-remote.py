@@ -26,15 +26,20 @@
 
 import erppeek
 
+#db_new = erppeek.Client.from_config('local')
 db_new = erppeek.Client.from_config('eightzero')
-#db_old = erppeek.Client.from_config('sixone')
+db_old = erppeek.Client.from_config('sixone')
 
-name = db_new.model('product.product').read([('default_code', '=', '1002-00100')], 'name')[0]
-price = db_new.model('product.product').read([('default_code', '=', '1002-00100')], 'qty_available')[0]
-
-
-
-print('%s\t\tPrice: %s' %(name, price))
+for prod_o in db_old.model('product.product').browse(db_old.model('product.product').search([])):
+    prod_n = db_new.model('product.product').browse(db_old.model('product.product').search([('default_code','=',prod_o.default_code)]))[0]
+    if not prod_o.qty_available == prod_o.qty_available:
+        stock = db_new.model('stock.change.product.qty').create({
+                'product_id' : product.id,
+                'new_quantity': 40,
+                #'lot_id': fields.many2one('stock.production.lot', 'Serial Number', domain="[('product_id','=',product_id)]"),
+                #'location_id': ,
+        })
+        stock.change_product_qty()
 
 
 
