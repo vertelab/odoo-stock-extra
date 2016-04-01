@@ -32,11 +32,13 @@ db_old = erppeek.Client.from_config('sixone')
 
 for prod_o in db_old.model('product.product').browse(db_old.model('product.product').search([])):
     prod_n = db_new.model('product.product').browse(db_old.model('product.product').search([('default_code','=',prod_o.default_code)]))[0]
-    if not prod_o.qty_available == prod_o.qty_available:
-        print prod_o.name
+    #print "to check %s" % prod_o.default_code
+    if not prod_o.qty_available == prod_n.qty_available:
+        print prod_o.name,prod_o.qty_available,prod_n.qty_available
         stock = db_new.model('stock.change.product.qty').create({
-                'product_id' : product.id,
-                'new_quantity': 40,
+                'product_id' : prod_o.id,
+                'new_quantity': prod_o.qty_available,
+
                 #'lot_id': fields.many2one('stock.production.lot', 'Serial Number', domain="[('product_id','=',product_id)]"),
                 #'location_id': ,
         })
