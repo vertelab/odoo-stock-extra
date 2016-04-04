@@ -36,6 +36,8 @@ class stock_picking(models.Model):
     picking_user = fields.Char('Old picking user',oldname='x_pickin_user')
     #~ user_id = fields.Many2one(string='Picking user', comodel_name='res.users')
     employee_id = fields.Many2one(string='Picking employee', comodel_name='hr.employee')
+    qc_id = fields.Many2one(string='Controlled by', comodel_name='hr.employee')
+    qc_user = fields.Char(string='Old controlled by', oldname='x_qc')
     pickup_time = fields.Datetime('Pickup time',oldname='x_pickup_time')
     prio = fields.Boolean('Prio',oldname='x_prio')
     pure_cell = fields.Boolean('Cell',oldname='x_pure_cell')
