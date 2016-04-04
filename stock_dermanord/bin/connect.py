@@ -75,9 +75,9 @@ for p in odoo.env['res.partner'].read(odoo.env['res.partner'].search([('name','=
     #~ print('Product name: |%s|\nVariants: |%s|\n' % (key, products[key]))
     #products = [line.product_id.name for line in order.order_line]
     #print(products)
-    
+
 #~ import codecs
-#~ import sys 
+#~ import sys
 #~ UTF8Writer = codecs.getwriter('utf8')
 #~ sys.stdout = UTF8Writer(sys.stdout)
 #~ for v in variants:
