@@ -32,13 +32,17 @@
 'stock_dermanord',
 'stock_picking_reports',
 'warning_extended',
+'product_dermanord',
 #odoo-website-sale-extra
 'sale_customer_no',
 'sale_delivery_address',
 #odoo-account-extra
 'account_customer_no',
+'account_dermanord',
 #odoo-mrp
 'mrp_dermanord',
+#odoo-website-sale-extra
+'product_ean_sequence',
 ],
 'data': [],
 'installable': True,
