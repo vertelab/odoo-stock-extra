@@ -35,26 +35,34 @@ db_old = erppeek.Client.from_config('sixone')
 for prod_o in db_old.model('product.product').browse(db_old.model('product.product').search([])):
     prod_n = db_new.model('product.product').browse(db_old.model('product.product').search([('default_code','=',prod_o.default_code)]))[0]
     #print "to check %s" % prod_o.default_code
-    if not prod_o.qty_available == prod_n.qty_available:
-        print prod_o.name,prod_o.qty_available,prod_n.qty_available
-        stock = db_new.model('stock.change.product.qty').create({
-                'product_id' : prod_n.id,
-                'new_quantity': 0.0,
-        })
-        stock.change_product_qty()
+    print 'Null qty',prod_o.name
+    stock = db_new.model('stock.change.product.qty').create({
+            'product_id' : prod_n.id,
+            'new_quantity': 0.0,
+    })
+    stock.change_product_qty()
 
 # Create stock.quant  in new database
 for prod_o in db_old.model('product.product').browse(db_old.model('product.product').search([])):
     prod_n = db_new.model('product.product').browse(db_old.model('product.product').search([('default_code','=',prod_o.default_code)]))[0]
     #print "to check %s" % prod_o.default_code
-    if not prod_o.qty_available == prod_n.qty_available:
-        print prod_o.name,prod_o.qty_available,prod_n.qty_available
 
-        parent_id = db_new.model('stock.location').search([('name','=',prod_o.location_id.location_id.name))[0]
-        stock = db_new.model('stock.quant').create(
-                'product_id' : prod_n.id,
-                'qty': prod_o.qty_available,
-                'location_id': db_new.model('stock.location').search(['&',('name','=',prod_o.location_id.name),('location_id','=',parent_id)])[0]
-        })
+    move = db_old.model('stock.move').browse([db_old.model('stock.move').search([('product_id','=',prod_o.id)],order='date desc')[0]])[0]
+    #print move.name,move.location_id.name,move.location_id.location_id.name,move.location_id.location_id.id
+    parent_id = db_new.model('stock.location').search([('name','=',move.location_id.location_id.name)])[0]
+    #print 'parent',parent_id
+    location_id = db_new.model('stock.location').search(['&',('name','=',move.location_id.name),('location_id','=',parent_id)])[0]
+    print 'New qty',prod_o.name,prod_o.qty_available,location_id
+    stock = db_new.model('stock.quant').create({
+            'product_id' : prod_n.id,
+            'qty': prod_o.qty_available,
+            'location_id': location_id,
+    })
+# Check 
+for prod_o in db_old.model('product.product').browse(db_old.model('product.product').search([])):
+    prod_n = db_new.model('product.product').browse(db_old.model('product.product').search([('default_code','=',prod_o.default_code)]))[0]
+    #print "to check %s" % prod_o.default_code
+    if not prod_o.qty_available == prod_n.qty_available:
+        print 'Check error',prod_o.name,prod_o.qty_available,prod_n.qty_available
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
