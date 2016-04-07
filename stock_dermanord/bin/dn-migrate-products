@@ -20,138 +20,69 @@
 #
 ##############################################################################
 
-#pip install odoorpc
-# ~/.odoorpc
-#[dermanord]
-#host = localhost
-#protocol = xmlrpc
-#user = admin
-#timeout = 120
-#database = <database>
-#passwd = <password>
-#type = ODOO
-#port = 8069
+# sudo pip install -U erppeek
+# http://wirtel.be/posts/2014/06/13/using_erppeek_to_discuss_with_openerp/
+# http://erppeek.readthedocs.org/
 
-#pip install odoorpc
-import re
+import erppeek
 
-try:
-    import odoorpc
-except ImportError:
-    raise Warning('odoorpc library missing, pip install odoorpc')
+def print_utf8(input):
+    print input.encode('utf-8')
+#db_new = erppeek.Client.from_config('local')
+#db_new = erppeek.Client.from_config('test')
+db_new = erppeek.Client.from_config('eightzero')
+db_old = erppeek.Client.from_config('sixone')
+print_utf8(u"Start ♠")
+#Find all internal locations, except for scrap
+internal_location_ids = db_new.model('stock.location').search() #[('usage', '=', 'internal'), ('location_id', '!=', 3)])
 
-params = odoorpc.session.get('dermanord')
-odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
-
-# Check available databases
-#print(odoo.db.list())
-
-# Login (the object returned is a browsable record)
-#odoo.login(local_database,local_user, local_passwd)
-odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
-
-#Convert sizes to be readable as other attributes.
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(XS)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-4] + ", XS"
-    odoo.env['product.template'].write(template_id, record)
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(S)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-3] + ", S"
-    odoo.env['product.template'].write(template_id, record)
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(M)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-3] + ", M"
-    odoo.env['product.template'].write(template_id, record)
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(L)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-3] + ", L"
-    odoo.env['product.template'].write(template_id, record)
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(XL)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-4] + ", XL"
-    odoo.env['product.template'].write(template_id, record)
-for template_id in odoo.env['product.template'].search([('name', 'like', '%(XXL)')]):
-    record = odoo.env['product.template'].read(template_id,['name'])
-    record['name'] = record['name'][:-5] + ", XXL"
-    odoo.env['product.template'].write(template_id, record)
-
-#Fetch id of Volume attribute. Create the attribute if it doesn't exist.
-volume_id = odoo.env['product.attribute'].search([('name', '=', 'Volume')])
-if len(volume_id) < 1:
-    volume_id = odoo.env['product.attribute'].create({'name': 'Volume'})
-else:
-    volume_id = volume_id[0]
-
-print 'Volume attribute id: %s' % volume_id
-
-#Fetch all Volume attribute values
-attr_values = []
-for id in odoo.env['product.attribute.value'].search([('attribute_id', '=', volume_id)]):
-    attr_values.append(odoo.env['product.attribute.value'].read(id, ['name']))
-
-print 'Volume attribute values: %s' % attr_values
-
-#Check if the string describes a volume attribute value
-def is_volume_variant(variant):
-    pattern = re.compile('\\ *[0-9]+\\ *ml')
-    return pattern.match(variant)
-
-# Get attr value, if missing create both product.attribute and product.attribute.value. Change product.attribute afterwards.
-def get_attr_value_id(name):
-    value_id = odoo.env['product.attribute.value'].search([('name','=',name)])
-    print "get_attr_value_id %s" % value_id
-    if not value_id:
-        attribute_id = odoo.env['product.attribute'].create({'name': name, })
-        value_id = [odoo.env['product.attribute.value'].create({'name': name, 'attribute_id': attribute_id})]
-        print "\tCreated new attribute %s" % name
+# Null qty in new database
+for prod_o in db_old.model('product.product').read(db_old.model('product.product').search(), ['default_code', 'name', 'qty_available']):
+    prod_ids = db_old.model('product.product').search([('default_code','=',prod_o['default_code'])])
+    if not prod_ids:
+        print_utf8("ERROR: Product not found! name: %s , default_code: %s" % (prod_o['name'], prod_o['default_code']))
     else:
-        print "\tFound existing attributte %s" % name
-    return value_id[0]
-
-
-handled_templates = []
-#for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')])[:20]:
-for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]):
-    print "processing template id %s" % template_id
-    record = odoo.env['product.template'].read(template_id,['name'])
-    attr_name = [x.strip() for x in record['name'].split(',')]
-    template_name = attr_name[0].encode('utf-8').strip()  # Template name are the first sentence before coma
-  
-    if not template_name in handled_templates:
-        print "\nTemplate %s -> %s" % (record['name'].encode('utf-8').strip(),template_name)
-        for prod_id in odoo.env['product.product'].search([('name', 'like', '%s,%%' % template_name)]):
-            r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids'])
-            product_tmpl_id = r['product_tmpl_id'][0]
-            print "attribute_value_ids %s" % r['attribute_value_ids']
-            attr_ids = []
-            #Generate list of attribute ids
-            for attr in [x.strip() for x in r['name'].split(',')]:
-                if not attr.encode('utf-8').strip() == template_name: 
-                    attr_ids.append(get_attr_value_id(attr.encode('utf-8').strip()))
-            #Create write statement for attribute ids
-            if attr_ids:
-                r['attribute_value_ids'].append((6, 0, attr_ids))
-            r['name'] = template_name
-            r['product_tmpl_id'] = template_id
-            print "attribute_value_ids %s" % r['attribute_value_ids']
-            odoo.env['product.product'].write(r['id'], r)
-            #~ #Delete template if it's not the initiating template
-            #~ print "template_id %s" % template_id
-            #~ if product_tmpl_id != template_id:
-                #~ print "unlinking template %s" % product_tmpl_id
-                #~ odoo.env['product.template'].unlink([product_tmpl_id])
-        handled_templates.append(template_name)
-    #odoo.env['product.template'].write(template_id, {'name': template_name})
-#Delete templates without variants
-failed_ids = []
-for template_id in odoo.env['product.template'].search([('product_variant_ids','=?', None)]):
-    try:
-        odoo.env['product.template'].unlink([template_id])
-    except:
-        failed_ids.append(template_id)
-if failed_ids:
-    print "Cleanup failed. Unable to remove product.template with ids %s" % failed_ids
-else:
-    print "Cleanup successul. All redundant product.template deleted."
+        prod_n = db_new.model('product.product').read(prod_ids, ['id', 'name'])[0]
+        #print "to check %s" % prod_o.default_code
+        print_utf8('Processing %s' % prod_n['name'])
+        s = set()
+        ids = db_new.model('stock.quant').search([('product_id', '=', prod_n['id']), ('location_id', 'in', internal_location_ids)])
+        if ids:
+            for q in db_new.model('stock.quant').read(ids, ['location_id']):
+                s.add(q['location_id'][0])
+        for location_id in s:
+            try:
+                #print db_new.model('stock.location').browse(location_id).complete_name
+                stock = db_new.model('stock.change.product.qty').create({
+                    'product_id' : prod_n['id'],
+                    'new_quantity': 0,
+                    'location_id' : location_id,
+                })
+                stock.change_product_qty()
+            except:
+                print_utf8("ERROR: unable to zero %s at %s" % (prod_n['name'], location_id))
+        print db_new.model('product.product').read(prod_ids, ['id', 'name', 'qty_available'])[0]['qty_available']
+        #    db_new.model('stock.quant').unlink(db_new.model('stock.quant').search([('product_id','=',prod_n.id)]))
+        # Create stock.quant  in new database
+        move = None
+        try:
+            move = db_old.model('stock.move').browse([db_old.model('stock.move').search([('product_id','=',prod_o['id'])],order='date desc')[0]])[0]
+            #print move.name,move.location_id.name,move.location_id.location_id.name,move.location_id.location_id.id
+            parent_id = db_new.model('stock.location').search([('name','=',move.location_id.location_id.name)])[0]
+            #print 'parent',parent_id
+            location_id = db_new.model('stock.location').search(['&',('name','=',move.location_id.name),('location_id','=',parent_id)])[0]
+            stock = db_new.model('stock.quant').create({
+                    'product_id' : prod_n['id'],
+                    'qty': prod_o['qty_available'],
+                    'location_id': location_id,
+            })
+        except:
+            print_utf8('ERROR: unable to find old location')
+        # Check 
+        prod_n = db_new.model('product.product').read(prod_ids, ['id', 'name', 'qty_available'])[0]
+        if not prod_o['qty_available'] == prod_n['qty_available']:
+            print_utf8('Check error %s | old count: %s | new count: %s' % (prod_o['name'], prod_o['qty_available'], prod_n['qty_available']))
+        else:
+            print_utf8('Check passed %s | old count: %s | new count: %s' % (prod_o['name'], prod_o['qty_available'], prod_n['qty_available']))
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
