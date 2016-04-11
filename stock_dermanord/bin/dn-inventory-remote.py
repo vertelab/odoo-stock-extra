@@ -26,12 +26,15 @@
 
 import erppeek
 
+
 def print_utf8(input):
     print input.encode('utf-8')
+
 #db_new = erppeek.Client.from_config('local')
 #db_new = erppeek.Client.from_config('test')
 db_new = erppeek.Client.from_config('eightzero')
-db_old = erppeek.Client.from_config('sixone')
+#~ db_old = erppeek.Client.from_config('sixone')
+db_old_tunnel = erppeek.Client.from_config('sixonetunnel')
 print_utf8(u"Start ♠")
 #Find all internal locations, except for scrap
 #internal_location_ids = db_new.model('stock.location').search() #[('usage', '=', 'internal'), ('location_id', '!=', 3)])
@@ -43,6 +46,26 @@ print_utf8(u"Start ♠")
 # Null qty in new database
 # radera alla stock.quant  testa unlink först |db_new.execute('delete from stock.quant')
 
+wh_id = db_new.model('stock.location').search([('name', '=', 'WH')])[0]
+plocklager_id = db_new.model('stock.location').search(['&', ('location_id', '=', wh_id), ('name', '=', 'Plocklager')])[0]
+kallager_id = db_new.model('stock.location').search(['&', ('location_id', '=', plocklager_id), ('name', '=', 'Kallager')])[0]
+print 'WH_id: %s\nPlocklager_id: %s\nKallager_id: %s' %(wh_id, plocklager_id, kallager_id)
+
+if len(db_new.model('stock.location').search(['&', ('location_id', '=', plocklager_id), ('name', '=', 'allm')])) == 0:
+    plocklager_allm = db_new.model('stock.location').create({'name': 'allm', 'location_id': plocklager_id,})
+    print plocklager_allm
+
+else:
+    plocklager_allm = db_new.model('stock.location').search(['&', ('location_id', '=', plocklager_id), ('name', '=', 'allm')])
+
+if len(db_new.model('stock.location').search(['&', ('location_id', '=', kallager_id), ('name', '=', 'allm')])) == 0:
+    kallager_allm = db_new.model('stock.location').create({'name': 'allm', 'location_id': kallager_id,})
+    print kallager_allm
+
+else:
+    kallager_allm = db_new.model('stock.location').search(['&', ('location_id', '=', kallager_id), ('name', '=', 'allm')])
+
+exit()
 
 # Uppdatera lagersaldo och lagerplats
 for prod_o in db_old.model('product.product').read(db_old.model('product.product').search(), ['default_code', 'name', 'qty_available']):
@@ -77,7 +100,7 @@ for prod_o in db_old.model('product.product').read(db_old.model('product.product
             stock.change_product_qty()
         except:
             print_utf8('ERROR: unable to find old location')
-        # Check 
+        # Check
         prod_n = db_new.model('product.product').read(prod_ids, ['id', 'name', 'qty_available'])[0]
         if not prod_o['qty_available'] == prod_n['qty_available']:
             print_utf8('Check error %s | old count: %s | new count: %s' % (prod_o['name'], prod_o['qty_available'], prod_n['qty_available']))
