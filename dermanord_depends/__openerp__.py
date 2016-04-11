@@ -43,6 +43,7 @@
 'mrp_dermanord',
 #odoo-website-sale-extra
 'product_ean_sequence',
+'serveraction_temporary',
 ],
 'data': [],
 'installable': True,
