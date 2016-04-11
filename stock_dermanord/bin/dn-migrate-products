@@ -110,39 +110,39 @@ def get_attr_value_id(name):
     return value_id[0]
 
 
-handled_templates = []
 #for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')])[:20]:
-for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')]):
+for template_id in odoo.env['product.template'].search([('name', 'like', '%,%')], order="lst_price asc"):
+    #Only process products that match the pattern
+    pattern = re.compile('^[0-9]{4}\-[0-9]+$')
     print "processing template id %s" % template_id
-    record = odoo.env['product.template'].read(template_id,['name'])
+    record = odoo.env['product.template'].read(template_id,['name', 'default_code', 'product_variant_ids'])
     attr_name = [x.strip() for x in record['name'].split(',')]
     template_name = attr_name[0].encode('utf-8').strip()  # Template name are the first sentence before coma
-  
-    if not template_name in handled_templates:
+    if record['product_variant_ids'] and record['default_code'] and pattern.match(record['default_code']):
         print "\nTemplate %s -> %s" % (record['name'].encode('utf-8').strip(),template_name)
-        for prod_id in odoo.env['product.product'].search([('name', 'like', '%s,%%' % template_name)]):
-            r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids'])
-            product_tmpl_id = r['product_tmpl_id'][0]
-            print "attribute_value_ids %s" % r['attribute_value_ids']
-            attr_ids = []
-            #Generate list of attribute ids
-            for attr in [x.strip() for x in r['name'].split(',')]:
-                if not attr.encode('utf-8').strip() == template_name: 
-                    attr_ids.append(get_attr_value_id(attr.encode('utf-8').strip()))
-            #Create write statement for attribute ids
-            if attr_ids:
-                r['attribute_value_ids'].append((6, 0, attr_ids))
-            r['name'] = template_name
-            r['product_tmpl_id'] = template_id
-            print "attribute_value_ids %s" % r['attribute_value_ids']
-            odoo.env['product.product'].write(r['id'], r)
-            #~ #Delete template if it's not the initiating template
-            #~ print "template_id %s" % template_id
-            #~ if product_tmpl_id != template_id:
-                #~ print "unlinking template %s" % product_tmpl_id
-                #~ odoo.env['product.template'].unlink([product_tmpl_id])
-        handled_templates.append(template_name)
-    #odoo.env['product.template'].write(template_id, {'name': template_name})
+        lprice = None
+        for prod_id in odoo.env['product.product'].search([('default_code', 'like', '%s%%' % record['default_code'][:5])]):
+            r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids', 'default_code', 'lst_price'])
+            if r['default_code'] and pattern.match(r['default_code']):
+                if lprice != None and lprice < r['lst_price']:
+                    r['lst_price'] = lprice
+                else:
+                    lprice = r['list_price']
+                template = odoo.env.read(, ['lst_price'])
+                print "attribute_value_ids %s" % r['attribute_value_ids']
+                attr_ids = []
+                #Generate list of attribute ids
+                for attr in [x.strip() for x in r['name'].split(',')]:
+                    if not attr.encode('utf-8').strip() == template_name: 
+                        attr_ids.append(get_attr_value_id(attr.encode('utf-8').strip()))
+                #Create write statement for attribute ids
+                if attr_ids:
+                    r['attribute_value_ids'].append((6, 0, attr_ids))
+                r['name'] = template_name
+                r['product_tmpl_id'] = template_id
+                print "attribute_value_ids %s" % r['attribute_value_ids']
+                odoo.env['product.product'].write(r['id'], r)
+    #odoo.env['product.template'].write(template_id, {'name': template_name}) 4838 2040 
 #Delete templates without variants
 failed_ids = []
 for template_id in odoo.env['product.template'].search([('product_variant_ids','=?', None)]):
