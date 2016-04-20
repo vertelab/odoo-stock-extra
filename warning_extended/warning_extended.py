@@ -32,15 +32,18 @@ class sale_order(models.Model):
     _inherit = 'sale.order'
 
     @api.model
-    @api.onchange('state')
-    def onchange_warning(self):
+    @api.onchange('user_id')
+    def onchange_warning_extended(self):
+        #raise Warning(self)
         if self.partner_id.sale_warn != 'no-message':
             warning = {
                     'title': _("Warning for %s") % self.partner_id.name,
                     'message': self.partner_id.sale_warn_msg,
             }
+            if self.partner_id.sale_warn == 'warning':
+                return {'value': {}, 'warning': warning}
             if self.partner_id.sale_warn == 'block':
-                return {'value': {'partner_id': False}, 'warning': warning}
+                return {'value': {'partner_id': False,'user_id': False,}, 'warning': warning} # Does not block really
 
 #~ class purchase_order(osv.osv):
     #~ _inherit = 'purchase.order'
