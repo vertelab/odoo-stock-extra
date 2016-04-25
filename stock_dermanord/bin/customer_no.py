@@ -30,12 +30,12 @@ odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
 #Find all top level customers without customer numbers
-ids = odoo.env['res.partner'].search([('customer_no', '=', False), ('parent_id', '=', False)])
+ids = odoo.env['res.partner'].search([('customer_no', '=', False), ('parent_id', '=', False), ('ref', '!=', False)])
 print "Found %s partners" % len(ids)
 for id in ids:
     print "Updating res.partner with id %s" % id
     partner = odoo.env['res.partner'].read(id, ['ref'])
-    odoo.env['res.partner'].write(id, partner)
+    odoo.env['res.partner'].write(id, {'customer_no': partner['ref']})
     
 ids = odoo.env['res.partner'].search([('customer_no', '=', False)])
 if not ids:
