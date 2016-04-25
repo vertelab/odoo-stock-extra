@@ -85,5 +85,44 @@
         </record>
 -->
 
+<!--
+        <record id="product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field eval="7" name="priority"/>
+            <field name="arch" type="xml">
+
+                <tree string="Product Variants">
+                    <field name="default_code"/>
+                    <field name="name"/>
+                    <field name="attribute_value_ids" widget="many2many_tags"/>
+                    <field name="lst_price"/>
+                    <field name="price" invisible="not context.get('pricelist',False)"/>
+                    <field name="uom_id"/>
+                    <field name="ean13"/>
+                    <field name="state" invisible="1"/>
+                    <field name="product_tmpl_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+-->
+
+
+                
+        <record id="variants_template_tree_view" model="ir.ui.view">
+            <field name="name">variants.template.tree.price</field>
+            <field name="model">product.attribute.value</field>
+            <field name="inherit_id" ref="product.variants_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="price_extra" position="after">
+                    <button name="%(product_dermanord.get_remote_price)d"
+                       string="Get price" type="action"
+                       icon="terp-stock_format-default" 
+                       groups="product.group_sale_pricelist"
+                       />
+                </field>
+            </field>
+        </record>
+
   </data>
 </openerp>
