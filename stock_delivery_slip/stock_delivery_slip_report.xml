@@ -24,10 +24,10 @@
                                             <strong>Warehouse Address:</strong>
                                         </span>
                                     </div>
-                                    <div t-if="o.user_id">
+                                    <div t-if="o.picking_user">
                                         <span>
                                             <strong>Plockansvarig:</strong><br />
-                                            <span t-field="o.user_id"/>
+                                            <span t-field="o.picking_user"/>
                                         </span>
                                     </div>
 
@@ -52,7 +52,7 @@
                                             <span>
                                                 <strong>Plockansvarig: </strong>
                                             </span>
-                                            <span t-field="o.user_id"/>
+                                            <span t-field="o.picking_user"/>
                                         </div>
                                         <!--
                                         <p t-if="o.partner_id.ref">
