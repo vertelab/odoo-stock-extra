@@ -115,8 +115,8 @@
             <field name="inherit_id" ref="product.variants_template_tree_view"/>
             <field name="arch" type="xml">
                 <field name="price_extra" position="after">
-                    <button name="%(product_dermanord.get_remote_price)d"
-                       string="Get price" type="action"
+                    <button name="get_remote_price"
+                       string="Get price" type="object"
                        icon="terp-stock_format-default" 
                        groups="product.group_sale_pricelist"
                        />

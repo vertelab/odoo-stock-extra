@@ -78,36 +78,31 @@ class product_attribute_value(models.Model):
             
     @api.one
     def get_remote_price(self):
-        tmpl_id = self.env._context.get('active_id')
+        tmpl_id = self.env.context.get('active_id')
         if not tmpl_id:
             return None
         tmpl = self.env['product.template'].browse(tmpl_id)
-        base_variant = tmpl.product_variant_ids.sort(lambda v: v.name)[0]
-        this_variant = self.env['product.product'].search([('product_tmpl_id','=',tmpl_id),('id','in',self.product_ids)])[0]
-        
+        base_variant = tmpl.product_variant_ids.sorted(lambda v: v.name)[0]
+        this_variant = self.env['product.product'].search([('product_tmpl_id','=',tmpl_id),('id','in',[p.id for p in self.product_ids])])[0]
+
         client = erppeek.Client(self.get_param('host6','')+':'+'8069',self.get_param('host6db',''), 'admin',self.get_param('host6pw',''))
         if not client:
             raise Warning(_('Create parameter for host6/host6db/host6pw'))
-            
-        price_remote = client.model('product.product').search([('default_code','=',this_variant.default_code)])[0]
-        price = self.env['product.attribute.price'].search(['&',('produc_tmpl_id','=',tmpl_id),('value_id','=',self.id)])
+        
+        price_remote_ids = client.model('product.product').search([('default_code','=',this_variant.default_code)])
+        if len(price_remote_ids) == 0:
+            raise Warning(_('Missing remote product %s (%s)') % (this_variant.default_code,this_variant))
+        price_remote = client.model('product.product').browse(price_remote_ids[0])
+        _logger.info('Get remote price (remote=%s tmpl=%s)' % (price_remote.list_price,tmpl.lst_price))
+        price = self.env['product.attribute.price'].search(['&',('product_tmpl_id','=',tmpl_id),('value_id','=',self.id)])
         if not price:
             self.env['product.attribute.price'].create({
                 'product_tmpl_id': tmpl_id,
                 'value_id': self.id,
                 'price_extra': price_remote.list_price - tmpl.lst_price,
-                    }
+                    })
         else:
             price.write({'price_extra':price_remote.list_price - tmpl.lst_price })
-            
-class product_attribute_price(osv.osv):
-    _name = "product.attribute.price"
-    _columns = {
-        'product_tmpl_id': fields.many2one('product.template', 'Product Template', required=True, ondelete='cascade'),
-        'value_id': fields.many2one('product.attribute.value', 'Product Attribute Value', required=True, ondelete='cascade'),
-        'price_extra': fields.float('Price Extra', digits_compute=dp.get_precision('Product Price')),
-    }
-
 
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice.line'
