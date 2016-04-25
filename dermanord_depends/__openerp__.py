@@ -37,8 +37,8 @@
 'sale_customer_no',
 'sale_delivery_address',
 #odoo-account-extra
-'account_customer_no',
-'account_dermanord',
+#'account_customer_no',
+#'account_dermanord',
 #odoo-mrp
 'mrp_dermanord',
 #odoo-website-sale-extra
