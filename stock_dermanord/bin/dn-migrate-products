@@ -132,59 +132,61 @@ for template_id in odoo.env['product.template'].search([('name', 'like', '%,%'),
         variant_prices = []
         autoprice = True
         #print "tmpl_name: %s code: %s" % (template_name, record['default_code'][:5])
-        for prod_id in odoo.env['product.product'].search([('name', 'like', '%s,%%' % template_name), ('default_code', 'like', '%s%%' % record['default_code'][:5]), ('sale_ok','=',1)]):
-            r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids', 'default_code', 'lst_price'])
-            #~ print r['name']
-            #~ print r['id']
-            if r['default_code'] and pattern.match(r['default_code']):
-                #~ print "matched"
-                #print "attribute_value_ids %s" % r['attribute_value_ids']
-                attr_ids = []
-                #Check if this is the variant tied to the template
-                if r['default_code'] == record['default_code']:
-                    attr_ids = o_attr_ids
-                    r['lst_price'] = record['list_price']
-                else:
-                    #Generate list of attribute ids
-                    for attr in [x.strip() for x in r['name'].split(',')]:
-                        #print "attribute: %s" % attr.encode('utf-8').strip()
-                        if not attr.encode('utf-8').strip() == template_name: 
-                            attr_ids.append(get_attr_value_id(attr.encode('utf-8').strip()))
-                #Create variant pricing data if possible
-                if len(attr_ids) == 1:
-                    variant_prices.append((attr_ids[0], r['lst_price']))
-                else:
-                    autoprice = False
-                #Create write statement for attribute ids
-                if attr_ids:
-                    r['attribute_value_ids'].append((6, 0, attr_ids))
-                r['name'] = template_name
-                r['product_tmpl_id'] = template_id
-                #print "attribute_value_ids %s" % r['attribute_value_ids']
-                #Set price to lowest variant price
-                if lprice != None and lprice < r['lst_price']:
-                    r['lst_price'] = lprice
-                else:
-                    lprice = r['lst_price']
-                #print "writing"
-                odoo.env['product.product'].write(r['id'], r)
-                #Move BOMs to new template
-                for bom_id in odoo.env['mrp.bom'].search([('product_id', '=', r['id'])]) + odoo.env['mrp.bom'].search([('product_id', '=', r['id']), ('active', '=', False]):
-                    bom = odoo.env['mrp.bom'].read(bom_id, ['product_tmpl_id'])
-                    bom['product_tmpl_id'] = record['id']
-                    odoo.env['mrp.bom'].write(bom_id, bom)
-        #Write variant prices if possible
-        if autoprice:
-            for t in variant_prices:
-                odoo.env['product.attribute.price'].create({
-                    'product_tmpl_id': template_id,
-                    'value_id': t[0],
-                    'price_extra': t[1] - lprice,
-                })
-            print "Automaticly set prices for the %s variants belonging to product.template %s with id %s" % (len(variant_prices), template_name, template_id)
-        else:
-            print "Manual price fix required for product.template %s with id %s" % (template_name, template_id)
-    odoo.env['product.template'].write(template_id, {'name': template_name}) #4838 2040 
+        product_ids = odoo.env['product.product'].search([('name', 'like', '%s,%%' % template_name), ('default_code', 'like', '%s%%' % record['default_code'][:5]), ('sale_ok','=',1)])
+        if len(product_ids) > 1:
+            for prod_id in product_ids:
+                r = odoo.env['product.product'].read(prod_id,['name', 'product_tmpl_id', 'attribute_value_ids', 'default_code', 'lst_price'])
+                #~ print r['name']
+                #~ print r['id']
+                if r['default_code'] and pattern.match(r['default_code']):
+                    #~ print "matched"
+                    #print "attribute_value_ids %s" % r['attribute_value_ids']
+                    attr_ids = []
+                    #Check if this is the variant tied to the template
+                    if r['default_code'] == record['default_code']:
+                        attr_ids = o_attr_ids
+                        r['lst_price'] = record['list_price']
+                    else:
+                        #Generate list of attribute ids
+                        for attr in [x.strip() for x in r['name'].split(',')]:
+                            #print "attribute: %s" % attr.encode('utf-8').strip()
+                            if not attr.encode('utf-8').strip() == template_name: 
+                                attr_ids.append(get_attr_value_id(attr.encode('utf-8').strip()))
+                    #Create variant pricing data if possible
+                    if len(attr_ids) == 1:
+                        variant_prices.append((attr_ids[0], r['lst_price']))
+                    else:
+                        autoprice = False
+                    #Create write statement for attribute ids
+                    if attr_ids:
+                        r['attribute_value_ids'].append((6, 0, attr_ids))
+                    r['name'] = template_name
+                    r['product_tmpl_id'] = template_id
+                    #print "attribute_value_ids %s" % r['attribute_value_ids']
+                    #Set price to lowest variant price
+                    if lprice != None and lprice < r['lst_price']:
+                        r['lst_price'] = lprice
+                    else:
+                        lprice = r['lst_price']
+                    #print "writing"
+                    odoo.env['product.product'].write(r['id'], r)
+                    #Move BOMs to new template
+                    for bom_id in odoo.env['mrp.bom'].search([('product_id', '=', r['id'])]) + odoo.env['mrp.bom'].search([('product_id', '=', r['id']), ('active', '=', False]):
+                        bom = odoo.env['mrp.bom'].read(bom_id, ['product_tmpl_id'])
+                        bom['product_tmpl_id'] = record['id']
+                        odoo.env['mrp.bom'].write(bom_id, bom)
+            #Write variant prices if possible
+            if autoprice:
+                for t in variant_prices:
+                    odoo.env['product.attribute.price'].create({
+                        'product_tmpl_id': template_id,
+                        'value_id': t[0],
+                        'price_extra': t[1] - lprice,
+                    })
+                print "Automaticly set prices for the %s variants belonging to product.template %s with id %s" % (len(variant_prices), template_name, template_id)
+            else:
+                print "Manual price fix required for product.template %s with id %s" % (template_name, template_id)
+            odoo.env['product.template'].write(template_id, {'name': template_name}) #4838 2040 
 #Delete templates without variants
 failed_ids = []
 for template_id in odoo.env['product.template'].search([('product_variant_ids','=?', None)]):

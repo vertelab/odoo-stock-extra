@@ -91,10 +91,13 @@ for prod_o in db_old.model('product.product').read(db_old.model('product.product
                 parent_name = move.location_dest_id.location_id.name
             print_utf8("\tOld location: %s" % location_name)
             #print move.name,move.location_id.name,move.location_id.location_id.name,move.location_id.location_id.id
-            parent_id = db_new.model('stock.location').search([('name','=', parent_name)])[0]
+            parent_id = db_new.model('stock.location').search([('name','=', parent_name)])
             #print 'parent',parent_id
-            location_id = db_new.model('stock.location').search(['&', ('name', '=', location_name) ,('location_id','=',parent_id)])[0]
-
+            if parent_id:
+                parent_id = parent_id[0]
+                location_id = db_new.model('stock.location').search(['&', ('name', '=', location_name) ,('location_id','=',parent_id)])[0]
+            else:
+                location_id = db_new.model('stock.location').search([('name', '=', location_name)])[0]
             # om location_id == plocklager / kallager -> allm
             if location_id == plocklager_id:
                 location_id = plocklager_allm
