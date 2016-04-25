@@ -169,7 +169,7 @@ for template_id in odoo.env['product.template'].search([('name', 'like', '%,%'),
                 #print "writing"
                 odoo.env['product.product'].write(r['id'], r)
                 #Move BOMs to new template
-                for bom_id in odoo.env['mrp.bom'].search([('product_id', '=', r['id'])]):
+                for bom_id in odoo.env['mrp.bom'].search([('product_id', '=', r['id'])]) + odoo.env['mrp.bom'].search([('product_id', '=', r['id']), ('active', '=', False]):
                     bom = odoo.env['mrp.bom'].read(bom_id, ['product_tmpl_id'])
                     bom['product_tmpl_id'] = record['id']
                     odoo.env['mrp.bom'].write(bom_id, bom)
