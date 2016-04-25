@@ -39,8 +39,8 @@
 'product_ean_sequence',
 'serveraction_temporary',
 #odoo-account-extra
-#'account_customer_no',
-#'account_dermanord',
+'account_customer_no',
+'account_dermanord',
 #odoo-mrp
 'mrp_dermanord',
 ],
