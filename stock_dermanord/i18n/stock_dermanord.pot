@@ -18,81 +18,81 @@ msgstr ""
 #. module: stock_dermanord
 #: field:stock.picking,pure_cell:0
 msgid "Cell"
-msgstr "Cell"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,claim:0
 msgid "Claim"
-msgstr "Kräva"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,qc_id:0
 msgid "Controlled by"
-msgstr "Styrs av"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,creditcard:0
 msgid "Credit card"
-msgstr "Kreditkort"
+msgstr ""
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.view_picking_internal_search
 #: field:stock.picking,expected_delivery_date:0
 msgid "Expected Delivery Date"
-msgstr "Förväntat leveransdatum"
+msgstr ""
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.view_picking_internal_search
 msgid "Group By"
-msgstr "Gruppera av"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,qc_user:0
 msgid "Old controlled by"
-msgstr "Tidigare styrs av"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,picking_user:0
 msgid "Old picking user"
-msgstr "Tidigare plockare"
+msgstr ""
 
 #. module: stock_dermanord
 #: model:ir.model,name:stock_dermanord.model_stock_picking
 msgid "Picking List"
-msgstr "Plocklist"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,employee_id:0
 msgid "Picking employee"
-msgstr "Plockansvarig"
+msgstr ""
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.vpicktree
 msgid "Picking list"
-msgstr "Plocklist"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,pickup_time:0
 msgid "Pickup time"
-msgstr "Upphämtningstid"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,prio:0
 msgid "Prio"
-msgstr "Prio"
+msgstr ""
 
 #. module: stock_dermanord
 #: field:stock.picking,ready4picking:0
 msgid "Ready for picking"
-msgstr "Redo för att plocka"
+msgstr ""
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.view_picking_internal_search
 msgid "User Id"
-msgstr "Användare ID"
+msgstr ""
 
 #. module: stock_dermanord
 #: model:ir.model,name:stock_dermanord.model_res_users
 msgid "Users"
-msgstr "Användare"
+msgstr ""
 

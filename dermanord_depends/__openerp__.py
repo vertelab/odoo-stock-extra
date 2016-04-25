@@ -36,14 +36,13 @@
 #odoo-website-sale-extra
 'sale_customer_no',
 'sale_delivery_address',
+'product_ean_sequence',
+'serveraction_temporary',
 #odoo-account-extra
 'account_customer_no',
 'account_dermanord',
 #odoo-mrp
 'mrp_dermanord',
-#odoo-website-sale-extra
-'product_ean_sequence',
-'serveraction_temporary',
 ],
 'data': [],
 'installable': True,
