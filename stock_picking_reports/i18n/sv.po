@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* stock_picking_reports
+#   * stock_picking_reports
 #
 msgid ""
 msgstr ""
@@ -117,4 +117,9 @@ msgstr "VAT:"
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Warehouse Address:"
 msgstr "Lageradress:"
+
+#. module: stock_picking_reports
+#: view:website:stock_picking_reports.picking_operations_document
+msgid "Document:"
+msgstr "Dokument:"
 
