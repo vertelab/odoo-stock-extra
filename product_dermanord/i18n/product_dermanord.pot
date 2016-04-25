@@ -18,35 +18,35 @@ msgstr ""
 #. module: product_dermanord
 #: view:product.template:product_dermanord.product_template_tree_view
 msgid "Enhet"
-msgstr "Enhet"
+msgstr ""
 
 #. module: product_dermanord
 #: model:ir.model,name:product_dermanord.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "fakturarad"
+msgstr ""
 
 #. module: product_dermanord
 #: field:product.template,iskit:0
 msgid "Is Kit"
-msgstr "Kit"
+msgstr ""
 
 #. module: product_dermanord
 #: view:product.template:product_dermanord.product_template_tree_view
 msgid "Product"
-msgstr "Produkt"
+msgstr ""
 
 #. module: product_dermanord
 #: model:ir.model,name:product_dermanord.model_product_template
 msgid "Product Template"
-msgstr "Produkt"
+msgstr ""
 
 #. module: product_dermanord
 #: view:product.template:product_dermanord.product_template_tree_view
 msgid "Produkter"
-msgstr "Produkter"
+msgstr ""
 
 #. module: product_dermanord
 #: field:product.template,ustariff:0
 msgid "US Tariff"
-msgstr "US tariff"
+msgstr ""
 
