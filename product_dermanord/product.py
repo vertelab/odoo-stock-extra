@@ -21,6 +21,8 @@
 
 import openerp.exceptions
 from openerp import models, fields, api, _
+import erppeek
+
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -61,6 +63,46 @@ class product_template(models.Model):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
 
+    
+
+class product_attribute_value(models.Model):
+    _inherit = "product.attribute.value"
+
+    
+    def get_param(self,param,value):
+        if not self.env['ir.config_parameter'].get_param(param):
+            self.env['ir.config_parameter'].set_param(param,value)
+            return value
+        else:
+            return self.env['ir.config_parameter'].get_param(param)
+            
+    @api.one
+    def get_remote_price(self):
+        tmpl_id = self.env.context.get('active_id')
+        if not tmpl_id:
+            return None
+        tmpl = self.env['product.template'].browse(tmpl_id)
+        base_variant = tmpl.product_variant_ids.sorted(lambda v: v.name)[0]
+        this_variant = self.env['product.product'].search([('product_tmpl_id','=',tmpl_id),('id','in',[p.id for p in self.product_ids])])[0]
+
+        client = erppeek.Client(self.get_param('host6','')+':'+'8069',self.get_param('host6db',''), 'admin',self.get_param('host6pw',''))
+        if not client:
+            raise Warning(_('Create parameter for host6/host6db/host6pw'))
+        
+        price_remote_ids = client.model('product.product').search([('default_code','=',this_variant.default_code)])
+        if len(price_remote_ids) == 0:
+            raise Warning(_('Missing remote product %s (%s)') % (this_variant.default_code,this_variant))
+        price_remote = client.model('product.product').browse(price_remote_ids[0])
+        _logger.info('Get remote price (remote=%s tmpl=%s)' % (price_remote.list_price,tmpl.lst_price))
+        price = self.env['product.attribute.price'].search(['&',('product_tmpl_id','=',tmpl_id),('value_id','=',self.id)])
+        if not price:
+            self.env['product.attribute.price'].create({
+                'product_tmpl_id': tmpl_id,
+                'value_id': self.id,
+                'price_extra': price_remote.list_price - tmpl.lst_price,
+                    })
+        else:
+            price.write({'price_extra':price_remote.list_price - tmpl.lst_price })
 
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice.line'

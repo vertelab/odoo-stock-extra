@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* stock_picking_reports
+#   * stock_picking_reports
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20151103\n"
+"Project-Id-Version: Odoo Server 8.0-20160410\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-19 07:59+0000\n"
-"PO-Revision-Date: 2016-01-19 07:59+0000\n"
+"POT-Creation-Date: 2016-04-25 07:36+0000\n"
+"PO-Revision-Date: 2016-04-25 07:36+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,101 +19,107 @@ msgstr ""
 #: code:addons/stock_picking_reports/stock.py:46
 #, python-format
 msgid " (not reserved)"
-msgstr ""
+msgstr " (inte reserverat)"
 
 #. module: stock_picking_reports
 #: code:addons/stock_picking_reports/stock.py:44
 #, python-format
 msgid "(transfered)"
-msgstr ""
+msgstr "(överförd)"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Barcode"
-msgstr ""
+msgstr "Streckkod"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Commitment Date"
-msgstr ""
+msgstr "Planerat datum"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Customer Address:"
-msgstr ""
+msgstr "Kundadress:"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Delivery Address:"
-msgstr ""
+msgstr "Leveransadress:"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Destination"
-msgstr ""
+msgstr "Destination"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Order (Origin)"
-msgstr ""
-
-#. module: stock_picking_reports
-#: model:ir.model,name:stock_picking_reports.model_stock_picking
-msgid "Picking List"
-msgstr ""
+msgstr "Order (Origin)"
 
 #. module: stock_picking_reports
 #: model:ir.actions.report.xml,name:stock_picking_reports.picking_operations_report
 msgid "Picking with location"
-msgstr ""
+msgstr "Plocka med plats"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Quantity"
-msgstr ""
+msgstr "Kvantitet"
+
+#. module: stock_picking_reports
+#: view:website:stock.report_picking
+#: view:website:stock_picking_reports.picking_operations_document
+msgid "Ref"
+msgstr "Ref"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Ref:"
-msgstr ""
+msgstr "Ref:"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Planerad datum"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Source"
-msgstr ""
+msgstr "Källa"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "State"
-msgstr ""
+msgstr "Skapad datum"
 
 #. module: stock_picking_reports
 #: model:ir.model,name:stock_picking_reports.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Stock flyttning"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Supplier Address:"
-msgstr ""
+msgstr "Leverantöradress:"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "VAT:"
-msgstr ""
+msgstr "VAT:"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Warehouse Address:"
-msgstr ""
+msgstr "Lageradress:"
+
+#. module: stock_picking_reports
+#: view:website:stock_picking_reports.picking_operations_document
+msgid "Document:"
+msgstr "Dokument:"
 
