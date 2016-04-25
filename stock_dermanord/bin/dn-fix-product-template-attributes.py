@@ -50,7 +50,7 @@ for t_id in template_ids:
     else:
         odoo.env['product.template'].write(t_id, {
             'attribute_line_ids': [(0, 0, {
-                'attribute_id' id,
+                'attribute_id': id,
                 'value_ids': [(6, 0, attributes[id])]
             }) for id in attributes]
         })
