@@ -21,8 +21,8 @@
 ##############################################################################
 
 import erppeek
-db_new = erppeek.Client.from_config('baldertest')
-db_old = erppeek.Client.from_config('sixonetunnel')
+db_new = erppeek.Client.from_config('eightzero')
+db_old = erppeek.Client.from_config('sixone')
 
 for p in db_old.model('product.product').read(db_old.model('product.product').search(['&', ('sale_ok', '=', True), ('default_code', '!=', '')]), ['default_code', 'volume', 'weight', 'weight_net']):
     product = db_new.model('product.product').search([('default_code', '=', p['default_code'])])
