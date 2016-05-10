@@ -5,7 +5,7 @@ all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-part
 erppeek.tmp:
 	@sudo pip install erppeek
 	@cp erppeek.ini ~
-	@echo erppeek.ini copied to ~ (run your commands from your home directory)
+	@echo 'erppeek.ini copied to ~ (run your commands from your home directory)'
 	@touch erppeek.tmp
 
 odoorpc.tmp:
