@@ -1,14 +1,14 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp
 	@echo Complete
-	
-erppeek.tmp: 
+
+erppeek.tmp:
 	@sudo pip install erppeek
 	@cp erppeek.ini ~
 	@echo erppeek.ini copied to ~ (run your commands from your home directory)
 	@touch erppeek.tmp
 
-odoorpc.tmp: 
+odoorpc.tmp:
 	@sudo pip install odoorpc
 	@touch odoorpc.tmp
 
@@ -42,8 +42,13 @@ dn-customer_no.tmp: dn-customer_no.py
 	@sudo chmod a+x /usr/bin/dn-customer_no
 	@touch dn-customer_no.tmp
 
+dn-weight.tmp: dn-weight.py
+	@python -m py_compile dn-weight.py
+	@sudo cp dn-weight.pyc /usr/bin/dn-weight
+	@sudo chmod a+x /usr/bin/dn-weight
+	@touch dn-weight.tmp
 
 clean:
 	@rm -f *pyc
 	@echo "Cleaned up"
-	
+
