@@ -11,8 +11,11 @@ from collections import defaultdict
 from openerp.tools import config
 start = time.time()
 
+#Load config file
+config.parse_config(['-c', '/etc/odoo/openerp-server.conf'])
+
 username = config.get('weborder_user', False)     #the user
-pwd = config.get'weborder_pwd', False)           #the password
+pwd = config.get('weborder_pwd', False)           #the password
 dbname = config.get('weborder_db', False)         #the database
 
 cnx = MySQLdb.connect(
