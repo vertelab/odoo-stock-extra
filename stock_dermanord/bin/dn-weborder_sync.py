@@ -11,16 +11,16 @@ from collections import defaultdict
 from openerp.tools import config
 start = time.time()
 
-username = config.get(weborder_user, False)     #the user
-pwd = config.get(weborder_pwd, False)           #the password
-dbname = config.get(weborder_db, False)         #the database
+username = config.get('weborder_user', False)     #the user
+pwd = config.get'weborder_pwd', False)           #the password
+dbname = config.get('weborder_db', False)         #the database
 
 cnx = MySQLdb.connect(
-    user = config.get(joomla_user, False),
-    passwd = config.get(joomla_pwd, False),
-    host = config.get(joomla_host, False),
-    port = config.get(joomla_port, False),
-    db = config.get(joomla_db, False),
+    user = config.get('joomla_user', False),
+    passwd = config.get('joomla_pwd', False),
+    host = config.get('joomla_host', False),
+    port = config.get('joomla_port', False),
+    db = config.get('joomla_db', False),
     )
 
 cursor = cnx.cursor()
