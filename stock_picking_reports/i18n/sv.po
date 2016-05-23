@@ -35,7 +35,7 @@ msgstr "Streckkod"
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
 msgid "Commitment Date"
-msgstr "Planerat datum"
+msgstr "Förväntat leveransdatum"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document

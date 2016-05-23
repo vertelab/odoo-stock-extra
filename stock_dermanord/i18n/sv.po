@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* stock_dermanord
+#   * stock_dermanord
 #
 msgid ""
 msgstr ""
@@ -23,12 +23,12 @@ msgstr "Cell"
 #. module: stock_dermanord
 #: field:stock.picking,claim:0
 msgid "Claim"
-msgstr "Kräva"
+msgstr "Claim"
 
 #. module: stock_dermanord
 #: field:stock.picking,qc_id:0
 msgid "Controlled by"
-msgstr "Styrs av"
+msgstr "Kontrollerad av"
 
 #. module: stock_dermanord
 #: field:stock.picking,creditcard:0
@@ -67,6 +67,11 @@ msgid "Picking employee"
 msgstr "Plockansvarig"
 
 #. module: stock_dermanord
+#: field:stock.picking,address_id:0
+msgid "Shipping address "
+msgstr "Leveransadress"
+
+#. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.vpicktree
 msgid "Picking list"
 msgstr "Plocklist"
@@ -84,7 +89,7 @@ msgstr "Prio"
 #. module: stock_dermanord
 #: field:stock.picking,ready4picking:0
 msgid "Ready for picking"
-msgstr "Redo för att plocka"
+msgstr "Plockbar"
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.view_picking_internal_search

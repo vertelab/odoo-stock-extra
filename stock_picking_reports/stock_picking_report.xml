@@ -79,6 +79,12 @@
                                         <th name="td_sched_date_h">
                                             <strong>Scheduled Date</strong>
                                         </th>
+                                        <th>
+                                            <strong>Faktura typ</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Leveransmetod</strong>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,6 +104,12 @@
                                         <td name="td_sched_date">
                                             <span t-field="o.min_date" />
                                         </td>
+                                        <td>
+                                            <span t-field="o.invoice_type_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="o.move_type" />
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -107,10 +119,14 @@
                             <table class="table table-condensed" t-if="not o.pack_operation_ids">
                               <thead>
                                 <tr>
+                                    <th><strong>Source</strong></th>
+                                    <th><strong>Quantity</strong></th>
                                     <th><strong>Product</strong></th>
-                                    <th class="text-right"><strong>Quantity</strong></th>
+
+<!--
                                     <t t-if="o.picking_type_id.code != 'incoming'"><th><strong>Source</strong></th></t>
                                     <th><strong>Barcode</strong></th>
+-->
                                     <t t-if="o.picking_type_id.code != 'outgoing'"><th><strong>Destination</strong></th></t>
                                 </tr>
                               </thead>
@@ -120,8 +136,8 @@
 -->
                                 <tr t-foreach="o.move_lines.sorted(key=lambda r: r.quant_source_location)" t-as="move">
                                     <t t-if="(o.state != 'partially_available') or (move.reserved_availability &gt; 0)">
-                                        <td><span t-field="move.product_id"/></td>
-                                        <td class="text-right">
+                                        <td><span t-field="move.quant_source_location"/></td>
+                                        <td>
                                             <t t-if="o.state == 'partially_available'">
                                                 <span t-field="move.reserved_availability"/> <span t-field="move.product_id.uom_id" groups="product.group_uom"/>
                                             </t>
@@ -129,21 +145,24 @@
                                                 <span t-field="move.product_uom_qty"/> <span t-field="move.product_uom" groups="product.group_uom"/>
                                             </t>
                                         </td>
-
+                                        <td><span t-field="move.product_id"/></td>
+<!--
                                         <t t-if="o.picking_type_id.code != 'incoming'">
                                             <td>
                                                 <span t-field="move.quant_source_location" />
-<!--
+
                                                 <span t-if="move.package_id">:</span><span t-field="move.package_id" />
                                                 <span t-if="move.lot_id">:</span><span t-field="move.lot_id" />
--->
+
                                             </td>
                                         </t>
+
                                         <td>
                                             <span t-if="move.product_id and move.product_id.ean13">
                                                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', move.product_id.ean13, 600, 100)" style="width:300px;height:50px"/>
                                             </span>
                                         </td>
+-->
                                         <t t-if="o.picking_type_id.code != 'outgoing'"><td><span t-field="move.location_dest_id"/></td></t>
                                     </t>
                                 </tr>
@@ -215,6 +234,10 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div>
+                                <strong>Meddelande:</strong>
+                                <p t-field="o.note"/>
+                            </div>
                         </div>
                     </t>
                 </t>

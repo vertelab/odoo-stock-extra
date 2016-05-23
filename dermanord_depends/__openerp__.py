@@ -34,7 +34,7 @@
 'warning_extended',
 'product_dermanord',
 #odoo-website-sale-extra
-'sale_customer_no',
+#'sale_customer_no',
 'sale_delivery_address',
 'product_ean_sequence',
 'serveraction_temporary',

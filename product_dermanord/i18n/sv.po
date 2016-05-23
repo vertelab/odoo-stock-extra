@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* product_dermanord
+#   * product_dermanord
 #
 msgid ""
 msgstr ""
@@ -39,6 +39,11 @@ msgstr "Produkt"
 #: model:ir.model,name:product_dermanord.model_product_template
 msgid "Product Template"
 msgstr "Produkt"
+
+#. module: product_dermanord
+#: model:ir.model,name:product_dermanord.product.template
+msgid "Salesperson"
+msgstr "Säljare"
 
 #. module: product_dermanord
 #: view:product.template:product_dermanord.product_template_tree_view
