@@ -47,6 +47,12 @@ dn-weborder_sync.tmp: dn-weborder_sync.py
 	@sudo chmod a+x /usr/bin/dn-weborder_sync
 	@touch dn-weborder_sync.tmp
 
+dn-product_name.tmp: dn-product_name.py
+	@sudo cp dn-product_name.py /usr/bin/dn-product_name
+	@sudo chmod a+x /usr/bin/dn-product_name
+	@touch dn-product_name.tmp
+
+
 clean:
 	@rm -f *tmp
 	@echo "Cleaned up"
