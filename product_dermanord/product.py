@@ -30,15 +30,15 @@ _logger = logging.getLogger(__name__)
 class product_template(models.Model):
     _inherit="product.template"
 
-    @api.one
-    def _tariff(self):
-        if(self.env.ref('base.us').id == self.partner_id.country_id.id):
-            self.tariff = self.ustariff
-        else:
-            self.tariff = self.intrastat_id
+    #~ @api.one
+    #~ def _tariff(self):
+        #~ if(self.env.ref('base.us').id == self.partner_id.country_id.id):
+            #~ self.tariff = self.ustariff
+        #~ else:
+            #~ self.tariff = self.intrastat_id
 
 
-    tariff = fields.Char(string='Tariff', compute='_tariff')
+    #~ tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
 
@@ -63,19 +63,19 @@ class product_template(models.Model):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
 
-    
+
 
 class product_attribute_value(models.Model):
     _inherit = "product.attribute.value"
 
-    
+
     def get_param(self,param,value):
         if not self.env['ir.config_parameter'].get_param(param):
             self.env['ir.config_parameter'].set_param(param,value)
             return value
         else:
             return self.env['ir.config_parameter'].get_param(param)
-            
+
     @api.one
     def get_remote_price(self):
         tmpl_id = self.env.context.get('active_id')
@@ -88,7 +88,7 @@ class product_attribute_value(models.Model):
         client = erppeek.Client(self.get_param('host6','')+':'+'8069',self.get_param('host6db',''), 'admin',self.get_param('host6pw',''))
         if not client:
             raise Warning(_('Create parameter for host6/host6db/host6pw'))
-        
+
         price_remote_ids = client.model('product.product').search([('default_code','=',this_variant.default_code)])
         if len(price_remote_ids) == 0:
             raise Warning(_('Missing remote product %s (%s)') % (this_variant.default_code,this_variant))
