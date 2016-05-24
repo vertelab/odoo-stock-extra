@@ -29,9 +29,13 @@ odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
 
 # Correct product.template (name has comma-form and are translated without comma)
-for t in odoo.env['ir.translation'].read(odoo.env['ir.translation'].search(['&','&',('name','=','product.template,name'),('lang','=','sv_SE'),('source','like','%,%')]),['id','source','value']):
-    product = odoo.env['product.template'].search([('name','=',t['source'])])[0]
-    odoo.env['product.template'].write(product,{'name': t['value']})
+for t in odoo.env['ir.translation'].read(odoo.env['ir.translation'].search(['&','&',('name','=','product.template,name'),('lang','=','sv_SE'),('src','like','%%,%%')]),['id','src','value']):
+    if ',' not in t['value']:
+        product = odoo.env['product.template'].search([('name', '=', t['src'])])
+        if len(product) > 0:
+            product_id = product[0]
+            odoo.env['product.template'].write(product,{'name': t['value']})
+            print 'product id: %s changed name: %s -> %s' %(product_id, t['src'], t['value'])
 
 # Correct ir.translation
 odoo.env['ir.translation'].unlink(odoo.env['ir.translation'].search([('name','=','product.template,name')]))
