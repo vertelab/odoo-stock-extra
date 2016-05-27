@@ -120,6 +120,7 @@ for row in rows:
             'note' : 'Weborder %08d\n%s' % (row[0], notes),
             'origin' : '%08d' % row[0],
             'partner_id' : partner_id[0],
+	    'section_id': 35,
           #  'partner_invoice_id' : invoice_id,  # address
           #  'partner_order_id' : order_id,    # address
           #  'partner_shipping_id' : shipping_id, # address
@@ -153,6 +154,7 @@ for row in rows:
                   #  'purchase_price' : product['cost_price'],
                     'name' : product_description,
                     'product_uom_qty' : row2[2],
+		    'delay': 1,
                   #  'tax_id' : [(6, 0, [2])],
                 }
                 #print order_line
