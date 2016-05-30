@@ -65,25 +65,27 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            <th><strong>Ref</strong></th>
+                                            <strong>Ref</strong>
                                         </th>
                                         <th>
                                             <strong>Order (Origin)</strong>
                                         </th>
                                         <th>
-                                            <strong>State</strong>
-                                        </th>
-                                        <th>
-                                            <strong>Commitment Date</strong>
-                                        </th>
-                                        <th name="td_sched_date_h">
-                                            <strong>Scheduled Date</strong>
+                                            <strong>Created on</strong>
                                         </th>
                                         <th>
                                             <strong>Faktura typ</strong>
                                         </th>
+<!--
+                                        <th name="td_sched_date_h">
+                                            <strong>Scheduled Date</strong>
+                                        </th>
+-->
                                         <th>
-                                            <strong>Leveransmetod</strong>
+                                            <strong>Carrier</strong>
+                                        </th>
+                                        <th>
+                                            <strong>weight</strong>
                                         </th>
                                     </tr>
                                 </thead>
@@ -96,19 +98,21 @@
                                             <span t-field="o.origin" />
                                         </td>
                                         <td>
-                                            <span t-field="o.state" />
-                                        </td>
-                                        <td>
-                                            <span t-field="o.date" />
-                                        </td>
-                                        <td name="td_sched_date">
-                                            <span t-field="o.min_date" />
+                                            <span t-field="o.create_date" />
                                         </td>
                                         <td>
                                             <span t-field="o.invoice_type_id" />
                                         </td>
+<!--
+                                        <td name="td_sched_date">
+                                            <span t-field="o.min_date" />
+                                        </td>
+-->
                                         <td>
-                                            <span t-field="o.move_type" />
+                                            <span t-field="o.carrier_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="o.weight" />
                                         </td>
                                     </tr>
                                 </tbody>

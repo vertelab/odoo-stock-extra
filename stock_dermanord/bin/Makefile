@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -46,6 +46,12 @@ dn-weborder_sync.tmp: dn-weborder_sync.py
 	@sudo cp dn-weborder_sync.py /usr/bin/dn-weborder_sync
 	@sudo chmod a+x /usr/bin/dn-weborder_sync
 	@touch dn-weborder_sync.tmp
+
+dn-product_name.tmp: dn-product_name.py
+	@sudo cp dn-product_name.py /usr/bin/dn-product_name
+	@sudo chmod a+x /usr/bin/dn-product_name
+	@touch dn-product_name.tmp
+
 
 clean:
 	@rm -f *tmp
