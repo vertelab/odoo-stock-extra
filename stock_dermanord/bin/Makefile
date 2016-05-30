@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -52,6 +52,10 @@ dn-product_name.tmp: dn-product_name.py
 	@sudo chmod a+x /usr/bin/dn-product_name
 	@touch dn-product_name.tmp
 
+dn-get_product_category.tmp: dn-get_product_category.py
+	@sudo cp dn-get_product_category.py /usr/bin/dn-get_product_category
+	@sudo chmod a+x /usr/bin/dn-get_product_category
+	@touch dn-get_product_category.tmp
 
 clean:
 	@rm -f *tmp
