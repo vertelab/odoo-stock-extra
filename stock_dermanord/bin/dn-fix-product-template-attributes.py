@@ -30,27 +30,22 @@ except ImportError:
 params = odoorpc.session.get('dermanord')
 odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
-
+line_id = 0
+for line in odoo.env['product.attribute.line'].read(odoo.env['product.attribute.line'].search([]), []):
+    if line['id'] > line_id:
+        line_id = line['id']
 template_ids = odoo.env['product.template'].search([('product_variant_count', '>', 1)])
-for t_id in template_ids:
-    template = odoo.env['product.template'].read(t_id, ['name', 'product_variant_ids'])
-    attributes = {}
+for tmpl_id in template_ids:
+    line_id += 1
+    template = odoo.env['product.template'].read(tmpl_id, ['name', 'product_variant_ids'])
     products = odoo.env['product.product'].browse(template['product_variant_ids'])
-    ok = True
+    attr_ids = set()
+    value_ids = set()
     for product in products:
         for value in product.attribute_value_ids:
-            l = attributes.get(value.attribute_id.id, [])
-            l.append(value.id)
-            attributes[value.attribute_id.id] = l
-    for product in products:
-        if set(attributes.keys()) - set([v.attribute_id.id for v in product.attribute_value_ids]) != set():
-            ok = False
-    if not ok:
-        print "Problem with attributes for product.template %s, %s" % (template['id'], template['name'])
-    else:
-        odoo.env['product.template'].write(t_id, {
-            'attribute_line_ids': [(0, 0, {
-                'attribute_id': id,
-                'value_ids': [(6, 0, attributes[id])]
-            }) for id in attributes]
-        })
+            attr_ids.add(value.attribute_id.id)
+            value_ids.add(value.id)
+    for attr_id in attr_ids:
+        print "INSERT INTO product_attribute_line (product_tmpl_id, attribute_id) VALUES (%s, %s);" % (tmpl_id,attr_id)
+    for value_id in value_ids:
+        print "INSERT INTO product_attribute_line_product_attribute_value_rel (line_id, val_id) VALUES (%s, %s);" % (line_id, value_id)

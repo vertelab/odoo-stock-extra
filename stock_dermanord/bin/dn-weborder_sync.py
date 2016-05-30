@@ -22,7 +22,7 @@ cnx = MySQLdb.connect(
     user = config.get('joomla_user', False),
     passwd = config.get('joomla_pwd', False),
     host = config.get('joomla_host', False),
-    port = config.get('joomla_port', False),
+    port = int(config.get('joomla_port', False)),
     db = config.get('joomla_db', False),
     )
 
