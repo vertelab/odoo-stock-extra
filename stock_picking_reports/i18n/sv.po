@@ -90,12 +90,22 @@ msgstr "Planerad datum"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
+msgid "Carrier"
+msgstr "Speditör"
+
+#. module: stock_picking_reports
+#: view:website:stock_picking_reports.picking_operations_document
 msgid "Source"
 msgstr "Källa"
 
 #. module: stock_picking_reports
 #: view:website:stock_picking_reports.picking_operations_document
-msgid "State"
+msgid "weight"
+msgstr "Vikt"
+
+#. module: stock_picking_reports
+#: view:website:stock_picking_reports.picking_operations_document
+msgid "Created on"
 msgstr "Skapad datum"
 
 #. module: stock_picking_reports
