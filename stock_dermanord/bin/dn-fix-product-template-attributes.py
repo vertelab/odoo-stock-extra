@@ -31,9 +31,11 @@ params = odoorpc.session.get('dermanord')
 odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 line_id = 0
-for line in odoo.env['product.attribute.line'].read(odoo.env['product.attribute.line'].search([]), []):
-    if line['id'] > line_id:
-        line_id = line['id']
+#~ for line in odoo.env['product.attribute.line'].read(odoo.env['product.attribute.line'].search([]), []):
+    #~ if line['id'] > line_id:
+        #~ line_id = line['id']
+print "DELETE FROM product_attribute_line;"
+print "ALTER SEQUENCE product_attribute_line_id_seq RESTART;"
 template_ids = odoo.env['product.template'].search([('product_variant_count', '>', 1)])
 for tmpl_id in template_ids:
     template = odoo.env['product.template'].read(tmpl_id, ['name', 'product_variant_ids'])
