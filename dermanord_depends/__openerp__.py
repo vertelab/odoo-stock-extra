@@ -38,11 +38,14 @@
 'sale_delivery_address',
 'product_ean_sequence',
 'serveraction_temporary',
+'product_variant_quantities',
 #odoo-account-extra
 #'account_customer_no',
 #'account_dermanord',
 #odoo-mrp
 'mrp_dermanord',
+#odoo-crm
+'crm_claim_addons',
 ],
 'data': [],
 'installable': True,
