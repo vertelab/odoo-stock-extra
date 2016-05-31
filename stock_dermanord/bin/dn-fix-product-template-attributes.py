@@ -36,16 +36,22 @@ for line in odoo.env['product.attribute.line'].read(odoo.env['product.attribute.
         line_id = line['id']
 template_ids = odoo.env['product.template'].search([('product_variant_count', '>', 1)])
 for tmpl_id in template_ids:
-    line_id += 1
     template = odoo.env['product.template'].read(tmpl_id, ['name', 'product_variant_ids'])
-    products = odoo.env['product.product'].browse(template['product_variant_ids'])
+    #print template['product_variant_ids']
+    products = odoo.env['product.product'].read(template['product_variant_ids'], ['attribute_value_ids'])
     attr_ids = set()
-    value_ids = set()
+    value_ids = {}
+    #print products
     for product in products:
-        for value in product.attribute_value_ids:
-            attr_ids.add(value.attribute_id.id)
-            value_ids.add(value.id)
+        for value in odoo.env['product.attribute.value'].read(product['attribute_value_ids'], ['attribute_id']):
+            #print value
+            attr_id = value['attribute_id'][0]
+            attr_ids.add(attr_id)
+            if not value_ids.get(attr_id):
+                value_ids[attr_id] = set()
+            value_ids[attr_id].add(value['id'])
     for attr_id in attr_ids:
+        line_id += 1
         print "INSERT INTO product_attribute_line (product_tmpl_id, attribute_id) VALUES (%s, %s);" % (tmpl_id,attr_id)
-    for value_id in value_ids:
-        print "INSERT INTO product_attribute_line_product_attribute_value_rel (line_id, val_id) VALUES (%s, %s);" % (line_id, value_id)
+        for value_id in value_ids[attr_id]:
+            print "INSERT INTO product_attribute_line_product_attribute_value_rel (line_id, val_id) VALUES (%s, %s);" % (line_id, value_id)
