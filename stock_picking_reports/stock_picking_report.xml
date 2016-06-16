@@ -197,7 +197,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <t t-set="total_quantity" t-value="0"/>
                                     <tr t-foreach="o.pack_operation_ids" t-as="pack_operation">
+                                        <t t-set="total_quantity" t-value="total_quantity + pack_operation.product_qty"/>
                                         <td>
                                             <span t-field="pack_operation.product_id" />
                                             <t t-if="not pack_operation.product_id and pack_operation.package_id">
@@ -236,6 +238,16 @@
                                             </td>
                                         </t>
                                     </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="int(total_quantity)"/>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div>
@@ -254,6 +266,24 @@
             </xpath>
             <xpath expr="//span[@t-field='o.origin']" position="before">
                 <span t-field="o.partner_id.customer_no"/>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='o.pack_operation_ids']" position="before">
+                <t t-set="total_quantity" t-value="0"/>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='o.pack_operation_ids']" position="inside">
+                <t t-set="total_quantity" t-value="total_quantity + pack_operation.product_qty"/>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='o.pack_operation_ids']" position="after">
+                <tr>
+                    <td class="text-right">
+                        <strong>Total</strong>
+                    </td>
+                    <td class="text-right">
+                        <span t-esc="int(total_quantity)"/>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </xpath>
         </template>
 
