@@ -123,6 +123,14 @@
                 </field>
             </field>
         </record>
+        
+        <template id="report_pricelist" inherit_id="product.report_pricelist">
+            <xpath expr="//tbody//tr[2]/td" position="replace">
+                <td>
+                    <span t-esc="request.env['product.product'].browse(p['id']).name_get()[0][1]"/>
+                </td>
+            </xpath>
+        </template>
 
   </data>
 </openerp>
