@@ -32,13 +32,13 @@ odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 #Find all vouchers without customer numbers
 ids = odoo.env['account.voucher'].search([('customer_no', '=', False)])
 print "Found %s vouchers" % len(ids)
-partners = []
+partners = set()
 for id in ids:
     print "Updating voucher with id %s" % id
     voucher = odoo.env['account.voucher'].read(id, ['partner_id'])
     partner = odoo.env['res.partner'].read(voucher['partner_id'][0], ['customer_no'])
     if not partner['customer_no']:
-        partners.append(voucher['partner_id'])
+        partners.add(voucher['partner_id'])
     else:
         odoo.env['account.voucher'].write(id, {'customer_no': partner['customer_no']})
 
