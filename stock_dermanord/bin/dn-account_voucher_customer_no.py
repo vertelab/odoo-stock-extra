@@ -29,6 +29,9 @@ params = odoorpc.session.get('dermanord')
 odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
+def print_utf8(input):
+    print input.encode('utf-8')
+
 #Find all vouchers without customer numbers
 ids = odoo.env['account.voucher'].search([('customer_no', '=', False)])
 print "Found %s vouchers" % len(ids)
@@ -45,4 +48,4 @@ for id in ids:
 if len(partners) > 0:
     print 'Found %s partners without customer number' % len(partners)
     for partner in partners:
-        print '%s\t%s' % (partner[0], partner[1])
+        print_utf8('%s\t%s' % (partner[0], partner[1]))
