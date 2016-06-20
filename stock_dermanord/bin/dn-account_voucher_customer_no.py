@@ -45,4 +45,4 @@ for id in ids:
 if len(partners) > 0:
     print 'Found %s partners without customer number' % len(partners)
     for partner in partners:
-        print '%s\t%s' & (partner[0], partner[1])
+        print '%s\t%s' % (partner[0], partner[1])
