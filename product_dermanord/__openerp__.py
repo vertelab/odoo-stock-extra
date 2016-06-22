@@ -24,7 +24,7 @@
 'summary': '',
 'category': 'stock',
 'description': """Extended product with custom fields and views for Dermanord.
-
+some changes
 
 Financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
