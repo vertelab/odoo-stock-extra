@@ -56,8 +56,8 @@
     </record>
 
     <!-- tariff in invoice line -->
-    <record id="tariff_view_invoice_line_tree" model="ir.ui.view">
-        <field name="name">account.invoice.line.tree</field>
+    <record id="tariff_view_invoice_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.line.tree.inherit</field>
         <field name="model">account.invoice.line</field>
         <field name="inherit_id" ref="account.view_invoice_line_tree"/>
         <field name="arch" type="xml">
@@ -66,6 +66,19 @@
             </field>
         </field>
     </record>
+
+<!--
+    <record id="invoice_form_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.form.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree[@string='Invoice Lines']/field[@name='name']" position="after">
+                <field name="tariff"/>
+            </xpath>
+        </field>
+    </record>
+-->
 
 
 <!--
@@ -108,7 +121,7 @@
 -->
 
 
-                
+
         <record id="variants_template_tree_view" model="ir.ui.view">
             <field name="name">variants.template.tree.price</field>
             <field name="model">product.attribute.value</field>
@@ -117,13 +130,13 @@
                 <field name="price_extra" position="after">
                     <button name="get_remote_price"
                        string="Get price" type="object"
-                       icon="terp-stock_format-default" 
+                       icon="terp-stock_format-default"
                        groups="product.group_sale_pricelist"
                        />
                 </field>
             </field>
         </record>
-        
+
         <template id="report_pricelist" inherit_id="product.report_pricelist">
             <xpath expr="//tbody//tr[2]/td" position="replace">
                 <td>

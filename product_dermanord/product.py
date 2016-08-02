@@ -110,7 +110,7 @@ class account_invoice_line(models.Model):
     @api.one
     def _tariff(self):
         if self.product_id:
-            if self.env.ref('base.us').id == self.invoice_id.partner_shipping_id.country_id.id:
+            if self.invoice_id.partner_shipping_id.country_id.id == self.env.ref('base.us').id:
                 self.tariff = self.product_id.ustariff
             else:
                 self.tariff = self.product_id.intrastat_id.name
