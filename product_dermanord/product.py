@@ -42,6 +42,14 @@ class product_template(models.Model):
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
 
+    #combine products
+    @api.one
+    def combine_products(self, tmp=None):
+        for v in self.product_variant_ids:
+            v.write({
+                'product_tmpl_id': tmp.id,
+            })
+
     #orderpoint_ids
     @api.one
     def _cost_price(self):
