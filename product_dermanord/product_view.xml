@@ -75,10 +75,11 @@
         <field name="code">
 obj = object.browse(context.get('active_ids', []))
 tmp = obj[0]
-values = []
-for o in obj:
+values = [v_id.id for v_id in tmp.attribute_line_ids[0].value_ids]
+for o in obj[1:]:
     o.combine_products(tmp)
     values += [v_id.id for v_id in o.attribute_line_ids[0].value_ids]
+    o.unlink()
 tmp.attribute_line_ids[0].write({'value_ids': [(6, 0, values)],})
 </field>
     </record>
