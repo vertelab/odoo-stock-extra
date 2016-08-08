@@ -30,6 +30,6 @@ Financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
 'depends': ['product','stock_dermanord', 'report_intrastat', 'account'],
-'data': ['product_view.xml'],
+'data': ['product_view.xml', 'product_report.xml'],
 'installable': True,
 }
