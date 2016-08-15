@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -16,6 +16,12 @@ dn-migrate-products.tmp: dn-migrate-products.py
 	@sudo cp dn-migrate-products.py /usr/bin/dn-migrate-products
 	@sudo chmod a+x /usr/bin/dn-migrate-products
 	@touch dn-migrate-products.tmp
+
+dn-account_voucher_customer_no.tmp: dn-account_voucher_customer_no.py
+	@sudo cp dn-account_voucher_customer_no.py /usr/bin/dn-account_voucher_customer_no 
+	@sudo chmod a+x /usr/bin/dn-account_voucher_customer_no
+	@echo "dn-account_voucher_customer_no copied to /usr/bin"
+	@touch dn-account_voucher_customer_no.tmp
 
 dn-inventory-remote.tmp: dn-inventory-remote.py
 	@sudo cp dn-inventory-remote.py /usr/bin/dn-inventory-remote
