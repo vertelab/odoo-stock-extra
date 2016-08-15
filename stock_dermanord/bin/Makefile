@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-iskit.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -36,6 +36,11 @@ dn-customer_no.tmp: dn-customer_no.py
 	@sudo cp dn-customer_no.py /usr/bin/dn-customer_no
 	@sudo chmod a+x /usr/bin/dn-customer_no
 	@touch dn-customer_no.tmp
+
+dn-iskit.tmp: dn-iskit.py
+	@sudo cp dn-iskit.py /usr/bin/dn-iskit
+	@sudo chmod a+x /usr/bin/dn-iskit
+	@touch dn-iskit.tmp
 
 dn-weight.tmp: dn-weight.py
 	@sudo cp dn-weight.py /usr/bin/dn-weight
