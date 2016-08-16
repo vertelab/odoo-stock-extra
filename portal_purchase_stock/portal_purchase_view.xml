@@ -10,6 +10,12 @@
         <button id="bid_confirm" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
+        <button name="purchase_confirm" states="draft" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+        <button name="purchase_confirm" states="bid" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
         <button name="wkf_send_rfq" states="draft" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
@@ -19,7 +25,6 @@
         <button name="wkf_send_rfq" states="approved" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
-
         <button name="view_picking" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
@@ -31,8 +36,6 @@
         </button>
       </field>
     </record>
-    
-
     <record id="purchase_order" model="ir.actions.act_window">
       <field name="name">Purchase Orders</field>
       <field name="type">ir.actions.act_window</field>
@@ -42,7 +45,7 @@
       <field name="view_mode">tree,form,graph,calendar</field>
       <field name="search_view_id" ref="purchase.view_purchase_order_filter" />
       <field name="help" type="html">
-        <p class="oe_view_nocontent_create">Click to create a request for quotation.</p>
+        <p class="oe_view_nocontent_create">Click to create a Purchase Order.</p>
         <p>You can track your Purchase Orders here.</p>
         <p>
           Most propositions of purchase orders are created automatically
@@ -51,9 +54,7 @@
       </field>
     </record>
     <menuitem action="purchase_order" id="menu_purchase_order" parent="portal_purchase" sequence="0" />
-    
-<!-- Stock operations -->
-
+    <!-- Stock operations -->
     <record id="view_picking_form" model="ir.ui.view">
       <field name="name">stock.picking.inherit</field>
       <field name="model">stock.picking</field>
@@ -62,7 +63,6 @@
         <button name="do_enter_transfer_details" position="attributes">
           <attribute name="groups">base.group_portal,stock.group_stock_user</attribute>
         </button>
-        
       </field>
     </record>
     <record id="portal_delivery_action" model="ir.actions.act_window">
@@ -76,13 +76,8 @@
       <field name="help" type="html">
         <p class="oe_view_nocontent_create">Click to create a request for quotation.</p>
         <p>You can track your deliveries here.</p>
-
       </field>
     </record>
     <menuitem action="portal_delivery_action" id="menu_delivery_form_action" parent="portal_purchase" sequence="10" />
-
-    
-    
-    
   </data>
 </openerp>

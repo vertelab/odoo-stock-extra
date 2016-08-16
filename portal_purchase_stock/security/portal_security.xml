@@ -1,26 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        <record id="portal_purchase_rule" model="ir.rule">
-            <field name="name">Portal Personal Purchase</field>
-            <field ref="purchase.model_purchase_order" name="model_id"/>
-            <field name="domain_force">['|', ('message_follower_ids','in', [user.partner_id.id]), ('partner_id','=', user.partner_id.id)]</field>
-            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
-            <field eval="0" name="perm_unlink"/>
-            <field eval="1" name="perm_write"/>
-            <field eval="1" name="perm_read"/>
-            <field eval="1" name="perm_create"/>
-        </record>
-        <record id="portal_stock_rule" model="ir.rule">
-            <field name="name">Portal Personal Deliveries</field>
-            <field ref="stock.model_stock_picking" name="model_id"/>
-            <field name="domain_force">[('partner_id','=', user.partner_id.id)]</field>
-            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
-            <field eval="0" name="perm_unlink"/>
-            <field eval="1" name="perm_write"/>
-            <field eval="1" name="perm_read"/>
-            <field eval="1" name="perm_create"/>
-        </record>
-        
-    </data>
+  <data>
+    <record id="portal_purchase_rule" model="ir.rule">
+      <field name="name">Portal Personal Purchase</field>
+      <field ref="purchase.model_purchase_order" name="model_id" />
+      <field name="domain_force">['&amp;', ('partner_id','=', user.partner_id.id),('state','!=','sent')]</field>
+      <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+      <field eval="0" name="perm_unlink" />
+      <field eval="0" name="perm_write" />
+      <field eval="1" name="perm_read" />
+      <field eval="0" name="perm_create" />
+    </record>
+    <record id="portal_purchase_rule_draft" model="ir.rule">
+      <field name="name">Portal Personal Purchase Draft</field>
+      <field ref="purchase.model_purchase_order" name="model_id" />
+      <field name="domain_force">['&amp;', ('partner_id','=', user.partner_id.id),('state','=','sent')]</field>
+      <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+      <field eval="0" name="perm_unlink" />
+      <field eval="1" name="perm_write" />
+      <field eval="1" name="perm_read" />
+      <field eval="0" name="perm_create" />
+    </record>
+    
+<!--
+        <record id="portal_purchase_rule_draft" model="ir.rule">
+      <field name="name">Portal Personal Purchase Line</field>
+      <field ref="purchase.model_purchase_order_line" name="model_id" />
+      <field name="domain_force">['&amp;', ('partner_id','=', user.partner_id.id),('state','!=','draft')]</field>
+      <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+      <field eval="0" name="perm_unlink" />
+      <field eval="0" name="perm_write" />
+      <field eval="1" name="perm_read" />
+      <field eval="0" name="perm_create" />
+    </record>
+    
+    <record id="portal_purchase_rule_draft" model="ir.rule">
+      <field name="name">Portal Personal Purchase Line Draft</field>
+      <field ref="purchase.model_purchase_order_line" name="model_id" />
+      <field name="domain_force">['&amp;', ('partner_id','=', user.partner_id.id),('state','=','draft')]</field>
+      <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+      <field eval="0" name="perm_unlink" />
+      <field eval="1" name="perm_write" />
+      <field eval="1" name="perm_read" />
+      <field eval="0" name="perm_create" />
+    </record>
+-->
+    <record id="portal_stock_rule" model="ir.rule">
+      <field name="name">Portal Personal Deliveries</field>
+      <field ref="stock.model_stock_picking" name="model_id" />
+      <field name="domain_force">[('partner_id','=', user.partner_id.id)]</field>
+      <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+      <field eval="0" name="perm_unlink" />
+      <field eval="1" name="perm_write" />
+      <field eval="1" name="perm_read" />
+      <field eval="0" name="perm_create" />
+    </record>
+  </data>
 </openerp>

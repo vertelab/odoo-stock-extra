@@ -25,19 +25,25 @@
     'version': '0.1',
     'category': 'Tools',
     'complexity': 'easy',
+    'summary': 'Purchase menu and rights for suppliers',
     'description': """
-This module adds purchase menu and features to your portal if purchase,stock and portal are installed.
-======================================================================================================
+This module adds purchase menu for suppliers
+============================================
 
-add "Manage Lots / Serial Numbers" for suppliers that do picking with lots / serial numbers
+This module installs automatically when you install portal, purchase and 
+stock. For suppliers that you have invited using for example Send RFQ or
+a self made template (see URL-examples furher) have a menu consisting
+of Purchase order and Delivery. (Other modules can add more menus, for 
+example mail and sale).
 
-URL for signup for a new supplier who gets a Purchase Order for the first time:
+* URL for signup for a new supplier who gets a Purchase Order for the first time:
 http://localhost:8069/web/signup?redirect=%2Fweb%23action%3Dmail.action_mail_redirect%26model%3Dpurchase.order%26id%3D<purchase id>&token=<token>&db=<database>
 
-URL for existing user, arbitary model and resource id:
+* URL for existing user, arbitary model and resource id:
 http://localhost:8069/web?db=<database>#action=mail.action_mail_redirect&login=<user%40domain.com>&res_id=<id>&model=<model>
 
-
+* add "Manage Lots / Serial Numbers" for suppliers that do picking with lots / serial numbers, 
+you can add this in your "Template User" before you invite your supplier.
 
     """,
     'author': 'Vertel AB',
