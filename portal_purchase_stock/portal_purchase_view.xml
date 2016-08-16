@@ -2,43 +2,6 @@
 <openerp>
   <data>
     <menuitem name="Purchases" id="portal_purchase" parent="portal.portal_menu" sequence="50" />
-    <record id="purchase_rfq" model="ir.actions.act_window">
-      <field name="name">Requests for Quotation</field>
-      <field name="type">ir.actions.act_window</field>
-      <field name="res_model">purchase.order</field>
-      <field name="context">{}</field>
-      <field name="domain">[('state','in',('draft','sent','bid','cancel', 'confirmed'))]</field>
-      <field name="view_mode">tree,form,graph,calendar</field>
-      <field name="search_view_id" ref="purchase.view_purchase_order_filter" />
-      <field name="help" type="html">
-        <p class="oe_view_nocontent_create">Click to create a request for quotation.</p>
-        <p>You can track your quitations here.</p>
-        <p>
-          Most propositions of purchase orders are created automatically
-          by Odoo based on inventory needs.
-        </p>
-      </field>
-    </record>
-    <menuitem action="purchase_rfq" id="menu_purchase_rfq" parent="portal_purchase" sequence="0" />
-    <record id="purchase_form_action" model="ir.actions.act_window">
-      <field name="name">Purchase Orders</field>
-      <field name="type">ir.actions.act_window</field>
-      <field name="res_model">purchase.order</field>
-      <field name="view_mode">tree,form,graph,calendar</field>
-      <field name="context">{}</field>
-      <field name="domain">[('state','not in',('draft','sent','bid', 'confirmed'))]</field>
-      <field name="search_view_id" ref="purchase.view_purchase_order_filter" />
-      <field name="help" type="html">
-        <p class="oe_view_nocontent_create">Click to create a quotation that will be converted into a purchase order.</p>
-        <p>
-          Use this menu to search within your purchase orders by
-          references, supplier, products, etc. For each purchase order,
-          you can track the related discussion with the supplier, control
-          the products received and control the supplier invoices.
-        </p>
-      </field>
-    </record>
-    <menuitem action="purchase_form_action" id="menu_purchase_form_action" parent="portal_purchase" sequence="6" />
     <record id="purchase_order_form" model="ir.ui.view">
       <field name="name">purchase.order.form.inherit</field>
       <field name="model">purchase.order</field>
@@ -47,8 +10,50 @@
         <button id="bid_confirm" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
+        <button name="wkf_send_rfq" states="draft" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+        <button name="wkf_send_rfq" states="sent" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+        <button name="wkf_send_rfq" states="approved" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+
+        <button name="view_picking" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+        <button name="view_invoice" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
+        <button name="action_cancel" position="attributes">
+          <attribute name="groups">base.group_user</attribute>
+        </button>
       </field>
     </record>
+    
+
+    <record id="purchase_order" model="ir.actions.act_window">
+      <field name="name">Purchase Orders</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">purchase.order</field>
+      <field name="context">{}</field>
+      <field name="domain">[('state','in',('draft','sent','bid','cancel', 'confirmed','approved'))]</field>
+      <field name="view_mode">tree,form,graph,calendar</field>
+      <field name="search_view_id" ref="purchase.view_purchase_order_filter" />
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Click to create a request for quotation.</p>
+        <p>You can track your Purchase Orders here.</p>
+        <p>
+          Most propositions of purchase orders are created automatically
+          by Odoo based on inventory needs.
+        </p>
+      </field>
+    </record>
+    <menuitem action="purchase_order" id="menu_purchase_order" parent="portal_purchase" sequence="0" />
+    
+<!-- Stock operations -->
+
     <record id="view_picking_form" model="ir.ui.view">
       <field name="name">stock.picking.inherit</field>
       <field name="model">stock.picking</field>
@@ -57,7 +62,27 @@
         <button name="do_enter_transfer_details" position="attributes">
           <attribute name="groups">base.group_portal,stock.group_stock_user</attribute>
         </button>
+        
       </field>
     </record>
+    <record id="portal_delivery_action" model="ir.actions.act_window">
+      <field name="name">Deliveries</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">stock.picking</field>
+      <field name="context">{}</field>
+      <field name="domain">[('state','=','assigned')]</field>
+      <field name="view_mode">tree,form,graph,calendar</field>
+      <field name="search_view_id" ref="stock.view_picking_internal_search" />
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Click to create a request for quotation.</p>
+        <p>You can track your deliveries here.</p>
+
+      </field>
+    </record>
+    <menuitem action="portal_delivery_action" id="menu_delivery_form_action" parent="portal_purchase" sequence="10" />
+
+    
+    
+    
   </data>
 </openerp>

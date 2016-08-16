@@ -31,6 +31,14 @@ This module adds purchase menu and features to your portal if purchase,stock and
 
 add "Manage Lots / Serial Numbers" for suppliers that do picking with lots / serial numbers
 
+URL for signup for a new supplier who gets a Purchase Order for the first time:
+http://localhost:8069/web/signup?redirect=%2Fweb%23action%3Dmail.action_mail_redirect%26model%3Dpurchase.order%26id%3D<purchase id>&token=<token>&db=<database>
+
+URL for existing user, arbitary model and resource id:
+http://localhost:8069/web?db=<database>#action=mail.action_mail_redirect&login=<user%40domain.com>&res_id=<id>&model=<model>
+
+
+
     """,
     'author': 'Vertel AB',
     'depends': ['purchase','stock','portal'],

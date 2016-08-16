@@ -22,5 +22,3 @@ access_account_sequence_fiscalyear,account.sequence.fiscalyear,account.model_acc
 access_stock_move,stock.move,stock.model_stock_move,base.group_portal,1,1,1,0
 access_procurement_group,procurement.group,procurement.model_procurement_group,base.group_portal,1,1,1,0
 access_procurement_order,procurement.order,procurement.model_procurement_order,base.group_portal,1,1,1,0
-access_account_invoice_line,account.invoice.line,account.model_account_invoice_line,base.group_portal,1,1,1,0
-access_account_invoice,account.invoice,account.model_account_invoice,base.group_portal,1,1,1,0
