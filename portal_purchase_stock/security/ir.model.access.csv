@@ -25,3 +25,5 @@ access_account_sequence_fiscalyear,account.sequence.fiscalyear,account.model_acc
 access_stock_move,stock.move,stock.model_stock_move,base.group_portal,1,1,1,0
 access_procurement_group,procurement.group,procurement.model_procurement_group,base.group_portal,1,1,1,0
 access_procurement_order,procurement.order,procurement.model_procurement_order,base.group_portal,1,1,1,0
+access_sale_order,sale.order,sale.model_sale_order,base.group_portal,1,1,0,0
+access_sale_order_line,sale.order.line,sale.model_sale_order_line,base.group_portal,1,1,0,0
