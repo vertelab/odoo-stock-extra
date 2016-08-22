@@ -33,6 +33,7 @@ odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 ids = odoo.env['product.product'].search([('x_iskit','=',True)])
 print "Found %s products" % len(ids)
 for id in ids:
-    print "Updating product.template %s " % id
     # sök template via tmpl-fältet
-    odoo.env['product.template'].write(id, {'iskit': True})
+    product = odoo.env['product.product'].read(id,['product_templ_id'])
+    print "Updating product.template %s " % product['product_templ_id']
+    odoo.env['product.template'].write(product['product_templ_id']}, {'iskit': True})
