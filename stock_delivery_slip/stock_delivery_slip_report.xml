@@ -66,8 +66,8 @@
                                     <span>
                                         <strong>Delivery Address:</strong>
                                     </span>
-                                    <!-- if there is delivery address and not using company address -->
-                                    <div t-if="o.address_id and not o.partner_id.use_parent_address">
+                                    <!-- if there is delivery address -->
+                                    <div t-if="o.address_id">
                                         <div t-field="o.address_id"/>
                                     </div>
                                     <!-- if there is not delivery address and partner has parent -->
@@ -75,19 +75,19 @@
                                         <!-- find this partner that has same parent as delivery partner, type is default, and not using company address -->
                                         <t t-set="default_address" t-value="request.env['res.partner'].search([('parent_id', '=', o.partner_id.parent_id), ('type', '=', 'default'), ('use_parent_address', '=', False)])"/>
                                         <t t-if="default_address">
-                                            <div t-esc="default_address"/>
+                                            <div t-esc="default_address" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;fax&quot;], &quot;no_marker&quot;: true}"/>
                                         </t>
                                         <t t-if="not default_address">
                                             <!-- find this partner that has same parent as delivery partner, type is not delivery nor default, and not using company address -->
                                             <t t-set="company_address" t-value="request.env['res.partner'].search([('parent_id', '=', o.partner_id.parent_id), ('use_parent_address', '=', False)])"/>
                                             <t t-if="company_address">
-                                                <div t-esc="company_address"/>
+                                                <div t-esc="company_address" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;fax&quot;], &quot;no_marker&quot;: true}"/>
                                             </t>
                                             <!-- find this partner that has same parent as delivery partner, and using company address -->
                                             <t t-if="not company_address">
                                                 <t t-set="use_company_address" t-value="request.env['res.partner'].search([('parent_id', '=', o.partner_id.parent_id), ('use_parent_address', '=', True)])"/>
                                                 <t t-if="use_company_address">
-                                                    <div t-esc="use_company_address"/>
+                                                    <div t-esc="o.partner_id" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;fax&quot;], &quot;no_marker&quot;: true}"/>
                                                 </t>
                                             </t>
                                         </t>
