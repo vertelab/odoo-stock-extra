@@ -44,7 +44,7 @@ class stock_picking(models.Model):
     ready4picking = fields.Boolean('Ready for picking',oldname='x_ready4picking')
     #~ invoice_type = fields.Selection(string='Invoice Type', [('invoice_in_package','Invoice in package'),('invoice_in_letter','Invoice in letter')])
     #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
-    address_id = fields.Char(related='sale_id.shipping_address')
+    address_id = fields.Many2one(comodel_name='res.partner', related='sale_id.partner_shipping_id')
 
 class res_users(models.Model):
    _inherit="res.users"
