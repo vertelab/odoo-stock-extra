@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -67,6 +67,11 @@ dn-get_product_category.tmp: dn-get_product_category.py
 	@sudo cp dn-get_product_category.py /usr/bin/dn-get_product_category
 	@sudo chmod a+x /usr/bin/dn-get_product_category
 	@touch dn-get_product_category.tmp
+
+dn-latest-activity.tmp: dn-latest-activity.py
+	@sudo cp dn-latest-activity.py /usr/bin/dn-latest-activity
+	@sudo chmod a+x /usr/bin/dn-latest-activity
+	@touch dn-latest-activity.tmp
 
 clean:
 	@rm -f *tmp
