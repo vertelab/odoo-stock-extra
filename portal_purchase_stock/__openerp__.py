@@ -47,14 +47,14 @@ you can add this in your "Template User" before you invite your supplier.
 
     """,
     'author': 'Vertel AB',
-    'depends': ['purchase','stock','portal'],
+    'depends': ['sale','purchase','stock','portal','procurement'],
     'data': [
         'portal_purchase_view.xml',
         'security/ir.model.access.csv',
         'security/portal_security.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': False,
     'category': 'Hidden',
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

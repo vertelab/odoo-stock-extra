@@ -264,8 +264,8 @@
             <xpath expr="//th" position="before">
                 <th><strong>Ref</strong></th>
             </xpath>
-            <xpath expr="//span[@t-field='o.origin']" position="before">
-                <span t-field="o.partner_id.customer_no"/>
+            <xpath expr="//td" position="before">
+                <td><span t-field="o.partner_id.customer_no"/></td>
             </xpath>
             <xpath expr="//tr[@t-foreach='o.pack_operation_ids']" position="before">
                 <t t-set="total_quantity" t-value="0"/>
