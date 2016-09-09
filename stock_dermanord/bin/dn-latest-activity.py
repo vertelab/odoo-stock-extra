@@ -32,4 +32,4 @@ odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 ids = odoo.env['res.partner'].search([])
 for id in ids:
     print "id %s" % id
-    product = odoo.env['res.partner'].set_latest_activity()
+    product = odoo.env['res.partner'].set_latest_activity([id])
