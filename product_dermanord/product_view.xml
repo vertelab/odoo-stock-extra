@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
+    <!-- product template -->
     <record id="product_template_tree_view" model="ir.ui.view">
       <field name="name">product.template.product.tree.inherit</field>
       <field name="model">product.template</field>
@@ -41,6 +42,68 @@
           </tree>
         </tree>
       </field>
+    </record>
+
+    <!-- product product -->
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <page string="Information" position="after">
+                <page string="Produkt information">
+                    <group>
+                        <group colspan="8">
+                            <field name="ingredients" placeholder="Ingredients..." nolabel="1"/>
+                        </group>
+                        <group colspan="4">
+                            <group><field name="ingredients_changed_by"/></group>
+                            <group><field name="ingredients_last_changed"/></group>
+                        </group>
+                    </group>
+                    <hr/>
+                    <group>
+                        <group colspan="8">
+                            <field name="public_desc" placeholder="Public description..." nolabel="1"/>
+                        </group>
+                        <group colspan="4">
+                            <group><field name="public_desc_changed_by"/></group>
+                            <group><field name="public_desc_last_changed"/></group>
+                        </group>
+                    </group>
+                    <hr/>
+                    <group>
+                        <group colspan="8">
+                            <field name="reseller_desc" placeholder="Reseller description..." nolabel="1"/>
+                        </group>
+                        <group colspan="4">
+                            <group><field name="reseller_desc_changed_by"/></group>
+                            <group><field name="reseller_desc_last_changed"/></group>
+                        </group>
+                    </group>
+                    <hr/>
+                    <group>
+                        <group colspan="8">
+                            <field name="shelf_label_desc" placeholder="Shelf label description..." nolabel="1"/>
+                        </group>
+                        <group colspan="4">
+                            <group><field name="shelf_label_desc_changed_by"/></group>
+                            <group><field name="shelf_label_desc_last_changed"/></group>
+                        </group>
+                    </group>
+                    <hr/>
+                    <group>
+                        <group colspan="8">
+                            <field name="use_desc" placeholder="Use description..." nolabel="1"/>
+                        </group>
+                        <group colspan="4">
+                            <group><field name="use_desc_changed_by"/></group>
+                            <group><field name="use_desc_last_changed"/></group>
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
     </record>
 
     <!-- ustariff -->
