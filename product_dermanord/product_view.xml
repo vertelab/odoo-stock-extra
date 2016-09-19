@@ -58,7 +58,7 @@
                             <field name="public_desc_last_changed" />
                         </group>
                         <group>
-                            <field name="public_desc_changed_by" />
+                            <field name="public_desc_changed_by_uid" />
                         </group>
                     </group>
                     <hr />
@@ -69,7 +69,7 @@
                             <field name="reseller_desc_last_changed" />
                         </group>
                         <group>
-                            <field name="reseller_desc_changed_by" />
+                            <field name="reseller_desc_changed_by_uid" />
                         </group>
                     </group>
                     <hr />
@@ -80,7 +80,7 @@
                             <field name="use_desc_last_changed" />
                         </group>
                         <group>
-                            <field name="use_desc_changed_by" />
+                            <field name="use_desc_changed_by_uid" />
                         </group>
                     </group>
                     <hr />
@@ -91,7 +91,7 @@
                             <field name="shelf_label_desc_last_changed" />
                         </group>
                         <group>
-                            <field name="shelf_label_desc_changed_by" />
+                            <field name="shelf_label_desc_changed_by_uid" />
                         </group>
                     </group>
                     <hr />
@@ -102,7 +102,7 @@
                             <field name="ingredients_last_changed" />
                         </group>
                         <group>
-                            <field name="ingredients_changed_by" />
+                            <field name="ingredients_changed_by_uid" />
                         </group>
                     </group>
                 </field>

@@ -75,22 +75,27 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit="product.product"
 
-    ingredients = fields.Text(String='Ingredients', oldname='x_ingredients')
+    ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
-    public_desc = fields.Text(String='Public Description', oldname='x_public_desc')
+    public_desc = fields.Text(String='Public Description', translate=True, oldname='x_public_desc')
     public_desc_changed_by = fields.Char(String='Public Description Changed By', oldname='x_public_desc_changed_by')
     public_desc_last_changed = fields.Date(String='Public Description Last Changed', oldname='x_public_desc_last_changed')
-    reseller_desc = fields.Text(String='Reseller Description', oldname='x_reseller_desc')
+    reseller_desc = fields.Text(String='Reseller Description', translate=True, oldname='x_reseller_desc')
     reseller_desc_changed_by = fields.Char(String='Reseller Description Changed By', oldname='x_reseller_desc_changed_by')
     reseller_desc_last_changed = fields.Date(String='Reseller Description Last Changed', oldname='x_reseller_desc_last_changed')
-    shelf_label_desc = fields.Text(String='Shelf Label Description', oldname='x_shelf_label_desc')
+    shelf_label_desc = fields.Text(String='Shelf Label Description', translate=True, oldname='x_shelf_label_desc')
     shelf_label_desc_changed_by = fields.Char(String='Shelf Label Description Changed By', oldname='x_shelf_label_desc_changed_by')
     shelf_label_desc_last_changed = fields.Date(String='Shelf Label Description Last Changed', oldname='x_shelf_label_desc_last_changed')
-    use_desc = fields.Text(String='Use Description', oldname='x_use_desc')
+    use_desc = fields.Text(String='Use Description', translate=True, oldname='x_use_desc')
     use_desc_changed_by = fields.Char(String='Use Description Changed By', oldname='x_use_desc_changed_by')
     use_desc_last_changed = fields.Date(String='Use Description Last Changed', oldname='x_use_desc_last_changed')
-
+    #new fileds
+    ingredients_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Ingredients Changed By')
+    public_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Public Description Changed By')
+    reseller_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Reseller Description Changed By')
+    shelf_label_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Shelf Label Description Changed By')
+    use_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Use Description Changed By')
 
 class product_attribute_value(models.Model):
     _inherit = "product.attribute.value"
