@@ -181,6 +181,9 @@
                                         <th class="text-right">
                                             <strong>Quantity</strong>
                                         </th>
+                                            <th class="text-right">
+                                            <strong>Weight</strong>
+                                        </th>
                                         <t t-if="o.picking_type_id.code != 'incoming'">
                                             <th>
                                                 <strong>Source</strong>
@@ -198,8 +201,12 @@
                                 </thead>
                                 <tbody>
                                     <t t-set="total_quantity" t-value="0"/>
+                                    <t t-set="total_weight" t-value="0.0"/>
+
                                     <tr t-foreach="o.pack_operation_ids" t-as="pack_operation">
                                         <t t-set="total_quantity" t-value="total_quantity + pack_operation.product_qty"/>
+                                        <t t-set="line_weight" t-value="pack_operation.product_id.weight * pack_operation.product_qty"/>
+                                        <t t-set="total_weight" t-value="total_weight + line_weight"/>
                                         <td>
                                             <span t-field="pack_operation.product_id" />
                                             <t t-if="not pack_operation.product_id and pack_operation.package_id">
@@ -209,6 +216,9 @@
                                         <td class="text-right">
                                             <span t-field="pack_operation.product_qty" />
                                             <span t-field="pack_operation.product_uom_id" groups="product.group_uom" />
+                                        </td>
+                                          <td class="text-right">
+                                            <span t-esc="line_weight" />
                                         </td>
                                         <t t-if="o.picking_type_id.code != 'incoming'">
                                             <td>
@@ -245,7 +255,7 @@
                                         <td class="text-right">
                                             <span t-esc="int(total_quantity)"/>
                                         </td>
-                                        <td></td>
+                                        <td><span t-esc="total_weight"/></td>
                                         <td></td>
                                     </tr>
                                 </tbody>
