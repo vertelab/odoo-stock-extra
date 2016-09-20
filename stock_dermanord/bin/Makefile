@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-product_info.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-update-product_info.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -73,10 +73,10 @@ dn-latest-activity.tmp: dn-latest-activity.py
 	@sudo chmod a+x /usr/bin/dn-latest-activity
 	@touch dn-latest-activity.tmp
 
-dn-product_info.tmp: dn-product_info.py
-	@sudo cp dn-product_info.py /usr/bin/dn-product_info
-	@sudo chmod a+x /usr/bin/dn-product_info
-	@touch dn-product_info.tmp
+dn-update-product_info.tmp: dn-update-product_info.py
+	@sudo cp dn-update-product_info.py /usr/bin/dn-update-product_info
+	@sudo chmod a+x /usr/bin/dn-update-product_info
+	@touch dn-update-product_info.tmp
 
 clean:
 	@rm -f *tmp

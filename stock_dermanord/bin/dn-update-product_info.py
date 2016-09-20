@@ -22,7 +22,7 @@
 
 #pip install odoorpc
 import odoorpc
-params = odoorpc.session.get('dermanord_oden')
+params = odoorpc.session.get('dermanord')
 odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
