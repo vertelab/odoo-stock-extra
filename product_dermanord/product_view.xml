@@ -1,175 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
-    <record id="product_template_tree_view" model="ir.ui.view">
-      <field name="name">product.template.product.tree.inherit</field>
-      <field name="model">product.template</field>
-      <field name="inherit_id" ref="product.product_template_tree_view" />
-      <field name="arch" type="xml">
-        <tree string="Product" position="replace">
-          <tree colors="red:virtual_available&lt;50;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')" string="Produkter">
-            <field name="default_code" />
-            <field name="name" />
-            <field invisible="1" name="categ_id" />
-            <field name="ustariff" />
-            <field name="variants" />
-            <field name="uom_id" string="Enhet" />
-            <field name="type" />
-<!-- Get this from stock.view_stock_product_template_tree
-            <field name="qty_available" />
-            <field name="virtual_available" />
--->
-            <field name="lst_price" />
-            <field invisible="not context.get('pricelist',False)" name="price" />
-            <field name="iskit" />
-            <field name="sale_ok" />
-            <field name="purchase_ok" />
-<!--
-            <field name="orderpoint_ids" />
--->
-<!--
-            <field name="orderpoints" />
--->
-            <field name="taxes_view" />
-            <field name="supplier_taxes_view" />
-<!--
-            <field name="cost_price" />
--->
-            <field name="standard_price" />
-            <field name="state" />
-            <field invisible="1" name="company_id" />
-          </tree>
-        </tree>
-      </field>
-    </record>
-
-    <!-- ustariff -->
-    <record id="ustariff_product_template_form_view" model="ir.ui.view">
-        <field name="name">product.template.form</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
-        <field name="arch" type="xml">
-            <field name="product_manager" position="after">
-                <field name="ustariff"/>
-                <field name="iskit"/>
-            </field>
-        </field>
-    </record>
-
-    <!-- tariff in invoice line -->
-    <record id="tariff_view_invoice_line_tree_inherit" model="ir.ui.view">
-        <field name="name">account.invoice.line.tree.inherit</field>
-        <field name="model">account.invoice.line</field>
-        <field name="inherit_id" ref="account.view_invoice_line_tree"/>
-        <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="tariff"/>
-            </field>
-        </field>
-    </record>
-
-    <record model="ir.actions.server" id="action_combine_product">
-        <field name="name">Combine Products</field>
-        <field name="state">code</field>
-        <field name="condition" eval="True"/>
-        <field name="model_id" ref="product.model_product_template"/>
-        <field name="code">
-obj = object.browse(context.get('active_ids', []))
-tmp = obj[0]
-values = [v_id.id for v_id in tmp.attribute_line_ids[0].value_ids]
-for o in obj[1:]:
-    o.combine_products(tmp)
-    values += [v_id.id for v_id in o.attribute_line_ids[0].value_ids]
-    o.unlink()
-tmp.attribute_line_ids[0].write({'value_ids': [(6, 0, values)],})
-</field>
-    </record>
-
-    <record model="ir.values" id="combine_product_action_menu">
-        <field name="name" >Combine Products</field>
-        <field name="model">product.template</field>
-        <field name="model_id" ref="product.model_product_template"/>
-        <field name="key2">client_action_multi</field>
-        <field name="value" eval="'ir.actions.server,%d' % action_combine_product"/>
-    </record>
-
-<!--
-    <record id="invoice_form_inherit" model="ir.ui.view">
-        <field name="name">account.invoice.form.inherit</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree[@string='Invoice Lines']/field[@name='name']" position="after">
-                <field name="tariff"/>
-            </xpath>
-        </field>
-    </record>
--->
-
-
-<!--
-            <record id="view_stock_product_template_tree" model="ir.ui.view">
-            <field name="name">product.template.stock.tree.inherit</field>
+    <data>
+        <!-- product template -->
+        <record id="product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree.inherit</field>
             <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="inherit_id" ref="product.product_template_tree_view" />
             <field name="arch" type="xml">
-                <tree position="attributes">
-                    <attribute name="colors" translation="off">red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')</attribute>
+                <tree string="Product" position="replace">
+                    <tree colors="red:virtual_available&lt;50;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')" string="Produkter">
+                        <field name="default_code" />
+                        <field name="name" />
+                        <field invisible="1" name="categ_id" />
+                        <field name="ustariff" />
+                        <field name="variants" />
+                        <field name="uom_id" string="Enhet" />
+                        <field name="type" />
+                        <!-- Get this from stock.view_stock_product_template_tree
+                             <field name="qty_available" />
+                             <field name="virtual_available" />
+                        -->
+                        <field name="lst_price" />
+                        <field invisible="not context.get('pricelist',False)" name="price" />
+                        <field name="iskit" />
+                        <field name="sale_ok" />
+                        <field name="purchase_ok" />
+                        <!--
+                             <field name="orderpoint_ids" />
+                        -->
+                        <!--
+                             <field name="orderpoints" />
+                        -->
+                        <field name="taxes_view" />
+                        <field name="supplier_taxes_view" />
+                        <!--
+                             <field name="cost_price" />
+                        -->
+                        <field name="standard_price" />
+                        <field name="state" />
+                        <field invisible="1" name="company_id" />
+                    </tree>
                 </tree>
-                <field name="uom_id" position="after">
-                    <field name="qty_available"/>
-                    <field name="virtual_available"/>
+            </field>
+        </record>
+        <!-- product product -->
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <field name="description" position="after">
+                    <hr />
+                    <label for="public_desc">Public Description</label>
+                    <field name="public_desc" placeholder="Public description..." nolabel="1" />
+                    <group colspan="4">
+                        <group>
+                            <field name="public_desc_last_changed" />
+                        </group>
+                        <group>
+                            <field name="public_desc_changed_by_uid" />
+                        </group>
+                    </group>
+                    <hr />
+                    <label for="reseller_desc">Reseller Description</label>
+                    <field name="reseller_desc" placeholder="Reseller description..." nolabel="1" />
+                    <group colspan="4">
+                        <group>
+                            <field name="reseller_desc_last_changed" />
+                        </group>
+                        <group>
+                            <field name="reseller_desc_changed_by_uid" />
+                        </group>
+                    </group>
+                    <hr />
+                    <label for="use_desc">Use Description</label>
+                    <field name="use_desc" placeholder="Use description..." nolabel="1" />
+                    <group colspan="4">
+                        <group>
+                            <field name="use_desc_last_changed" />
+                        </group>
+                        <group>
+                            <field name="use_desc_changed_by_uid" />
+                        </group>
+                    </group>
+                    <hr />
+                    <label for="shelf_label_desc">Shelf Label Description</label>
+                    <field name="shelf_label_desc" placeholder="Shelf label description..." nolabel="1" />
+                    <group colspan="4">
+                        <group>
+                            <field name="shelf_label_desc_last_changed" />
+                        </group>
+                        <group>
+                            <field name="shelf_label_desc_changed_by_uid" />
+                        </group>
+                    </group>
+                    <hr />
+                    <label for="ingredients">Ingredients</label>
+                    <field name="ingredients" placeholder="Ingredients..." nolabel="1" />
+                    <group colspan="4">
+                        <group>
+                            <field name="ingredients_last_changed" />
+                        </group>
+                        <group>
+                            <field name="ingredients_changed_by_uid" />
+                        </group>
+                    </group>
                 </field>
             </field>
         </record>
--->
-
-<!--
-        <record id="product_product_tree_view" model="ir.ui.view">
-            <field name="name">product.product.tree</field>
-            <field name="model">product.product</field>
-            <field eval="7" name="priority"/>
+        <!-- ustariff -->
+        <record id="ustariff_product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
             <field name="arch" type="xml">
-
-                <tree string="Product Variants">
-                    <field name="default_code"/>
-                    <field name="name"/>
-                    <field name="attribute_value_ids" widget="many2many_tags"/>
-                    <field name="lst_price"/>
-                    <field name="price" invisible="not context.get('pricelist',False)"/>
-                    <field name="uom_id"/>
-                    <field name="ean13"/>
-                    <field name="state" invisible="1"/>
-                    <field name="product_tmpl_id" invisible="1"/>
-                </tree>
+                <field name="product_manager" position="after">
+                    <field name="ustariff" />
+                    <field name="iskit" />
+                </field>
             </field>
         </record>
--->
+        <!-- tariff in invoice line -->
+        <record id="tariff_view_invoice_line_tree_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.line.tree.inherit</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree" />
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="tariff" />
+                </field>
+            </field>
+        </record>
+        <record model="ir.actions.server" id="action_combine_product">
+            <field name="name">Combine Products</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True" />
+            <field name="model_id" ref="product.model_product_template" />
+            <field name="code">
+                obj = object.browse(context.get('active_ids', []))
+                tmp = obj[0]
+                values = [v_id.id for v_id in tmp.attribute_line_ids[0].value_ids]
+                for o in obj[1:]:
+                o.combine_products(tmp)
+                values += [v_id.id for v_id in o.attribute_line_ids[0].value_ids]
+                o.unlink()
+                tmp.attribute_line_ids[0].write({'value_ids': [(6, 0, values)],})
+            </field>
+        </record>
+        <record model="ir.values" id="combine_product_action_menu">
+            <field name="name">Combine Products</field>
+            <field name="model">product.template</field>
+            <field name="model_id" ref="product.model_product_template" />
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,%d' % action_combine_product" />
+        </record>
+        <!--
+             <record id="invoice_form_inherit" model="ir.ui.view">
+             <field name="name">account.invoice.form.inherit</field>
+             <field name="model">account.invoice</field>
+             <field name="inherit_id" ref="account.invoice_form"/>
+             <field name="arch" type="xml">
+             <xpath expr="//tree[@string='Invoice Lines']/field[@name='name']" position="after">
+             <field name="tariff"/>
+             </xpath>
+             </field>
+             </record>
+        -->
+        <!--
+             <record id="view_stock_product_template_tree" model="ir.ui.view">
+             <field name="name">product.template.stock.tree.inherit</field>
+             <field name="model">product.template</field>
+             <field name="inherit_id" ref="product.product_template_tree_view"/>
+             <field name="arch" type="xml">
+             <tree position="attributes">
+             <attribute name="colors" translation="off">red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')</attribute>
+             </tree>
+             <field name="uom_id" position="after">
+             <field name="qty_available"/>
+             <field name="virtual_available"/>
+             </field>
+             </field>
+             </record>
+        -->
+        <!--
+             <record id="product_product_tree_view" model="ir.ui.view">
+             <field name="name">product.product.tree</field>
+             <field name="model">product.product</field>
+             <field eval="7" name="priority"/>
+             <field name="arch" type="xml">
 
-
-
+             <tree string="Product Variants">
+             <field name="default_code"/>
+             <field name="name"/>
+             <field name="attribute_value_ids" widget="many2many_tags"/>
+             <field name="lst_price"/>
+             <field name="price" invisible="not context.get('pricelist',False)"/>
+             <field name="uom_id"/>
+             <field name="ean13"/>
+             <field name="state" invisible="1"/>
+             <field name="product_tmpl_id" invisible="1"/>
+             </tree>
+             </field>
+             </record>
+        -->
         <record id="variants_template_tree_view" model="ir.ui.view">
             <field name="name">variants.template.tree.price</field>
             <field name="model">product.attribute.value</field>
-            <field name="inherit_id" ref="product.variants_template_tree_view"/>
+            <field name="inherit_id" ref="product.variants_template_tree_view" />
             <field name="arch" type="xml">
                 <field name="price_extra" position="after">
-                    <button name="get_remote_price"
-                       string="Get price" type="object"
-                       icon="terp-stock_format-default"
-                       groups="product.group_sale_pricelist"
-                       />
+                    <button name="get_remote_price" string="Get price" type="object" icon="terp-stock_format-default" groups="product.group_sale_pricelist" />
                 </field>
             </field>
         </record>
-
         <template id="report_pricelist" inherit_id="product.report_pricelist">
             <xpath expr="//tbody//tr[2]/td" position="replace">
                 <td>
-                    <span t-esc="request.env['product.product'].browse(p['id']).name_get()[0][1]"/>
+                    <span t-esc="request.env['product.product'].browse(p['id']).name_get()[0][1]" />
                 </td>
             </xpath>
         </template>
-
-  </data>
+    </data>
 </openerp>
