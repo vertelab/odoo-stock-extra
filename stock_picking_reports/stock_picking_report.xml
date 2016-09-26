@@ -128,7 +128,7 @@
                     <th class="text-right">
                       <strong>Quantity</strong>
                     </th>
-                    <th class="text-center">
+                    <th class="text-right">
                       <strong>Weight</strong>
                     </th>
                     <th>
@@ -169,7 +169,7 @@
                           <span t-field="move.product_uom" groups="product.group_uom" />
                         </t>
                       </td>
-                      <td class="text-center">
+                      <td class="text-right">
                         <span t-field="move.weight" />
                       </td>
                       <td>
@@ -206,7 +206,7 @@
                     <td class="text-right">
                       <span t-esc="total_quantity" />
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                       <span t-esc="total_weight" />
                     </td>
                     <td />
@@ -223,7 +223,7 @@
                     <th class="text-right">
                       <strong>Quantity</strong>
                     </th>
-                    <th class="text-center">
+                    <th class="text-right">
                       <strong>Weight</strong>
                     </th>
                     <t t-if="o.picking_type_id.code != 'incoming'">
@@ -258,7 +258,7 @@
                       <span t-field="pack_operation.product_qty" />
                       <span t-field="pack_operation.product_uom_id" groups="product.group_uom" />
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                       <span t-esc="line_weight" />
                     </td>
                     <t t-if="o.picking_type_id.code != 'incoming'">
@@ -296,7 +296,7 @@
                     <td class="text-right">
                       <span t-esc="total_quantity" />
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                       <span t-esc="total_weight" />
                     </td>
                     <td />
@@ -340,7 +340,7 @@
           <td class="text-right">
             <span t-esc="total_quantity" />
           </td>
-          <td class="text-center">
+          <td class="text-right">
             <span t-esc="total_weight" />
           </td>
           <td />
@@ -348,10 +348,10 @@
         </tr>
       </xpath>
       <xpath expr="//table[@t-if='o.pack_operation_ids']/thead/tr/th[@class='text-right']" position="after">
-        <th class="text-center"><strong>Weight</strong></th>
+        <th class="text-right"><strong>Weight</strong></th>
       </xpath>
       <xpath expr="//table[@t-if='o.pack_operation_ids']/tbody/tr/td[@class='text-right']" position="after">
-        <td class="text-center"><span t-field="pack_operation.product_id.weight"/></td>
+        <td class="text-right"><span t-field="pack_operation.product_id.weight"/></td>
       </xpath>
 
       <xpath expr="//tr[@t-foreach='o.move_lines']" position="before">
@@ -370,7 +370,7 @@
           <td class="text-right">
             <span t-esc="total_quantity" />
           </td>
-          <td class="text-center">
+          <td class="text-right">
             <span t-esc="total_weight" />
           </td>
           <td />
@@ -378,10 +378,10 @@
         </tr>
       </xpath>
       <xpath expr="//table[@t-if='not o.pack_operation_ids']/thead/tr/th[@class='text-right']" position="after">
-        <th class="text-center"><strong>Weight</strong></th>
+        <th class="text-right"><strong>Weight</strong></th>
       </xpath>
       <xpath expr="//table[@t-if='not o.pack_operation_ids']/tbody/tr/t/td[@class='text-right']" position="after">
-        <td class="text-center"><span t-field="move.weight"/></td>
+        <td class="text-right"><span t-field="move.weight"/></td>
       </xpath>
 
     </template>
