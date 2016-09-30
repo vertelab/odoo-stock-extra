@@ -131,29 +131,6 @@
                 </field>
             </field>
         </record>
-        <record model="ir.actions.server" id="action_combine_product">
-            <field name="name">Combine Products</field>
-            <field name="state">code</field>
-            <field name="condition" eval="True" />
-            <field name="model_id" ref="product.model_product_template" />
-            <field name="code">
-                obj = object.browse(context.get('active_ids', []))
-                tmp = obj[0]
-                values = [v_id.id for v_id in tmp.attribute_line_ids[0].value_ids]
-                for o in obj[1:]:
-                o.combine_products(tmp)
-                values += [v_id.id for v_id in o.attribute_line_ids[0].value_ids]
-                o.unlink()
-                tmp.attribute_line_ids[0].write({'value_ids': [(6, 0, values)],})
-            </field>
-        </record>
-        <record model="ir.values" id="combine_product_action_menu">
-            <field name="name">Combine Products</field>
-            <field name="model">product.template</field>
-            <field name="model_id" ref="product.model_product_template" />
-            <field name="key2">client_action_multi</field>
-            <field name="value" eval="'ir.actions.server,%d' % action_combine_product" />
-        </record>
         <!--
              <record id="invoice_form_inherit" model="ir.ui.view">
              <field name="name">account.invoice.form.inherit</field>
