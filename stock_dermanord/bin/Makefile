@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-update-product_info.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-update-product_info.tmp dn-remove_old_translation.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -77,6 +77,11 @@ dn-update-product_info.tmp: dn-update-product_info.py
 	@sudo cp dn-update-product_info.py /usr/bin/dn-update-product_info
 	@sudo chmod a+x /usr/bin/dn-update-product_info
 	@touch dn-update-product_info.tmp
+
+dn-remove_old_translation.tmp: dn-remove_old_translation.py
+	@sudo cp dn-remove_old_translation.py /usr/bin/dn-remove_old_translation
+	@sudo chmod a+x /usr/bin/dn-remove_old_translation
+	@touch dn-remove_old_translation.tmp
 
 clean:
 	@rm -f *tmp
