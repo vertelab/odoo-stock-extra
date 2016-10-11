@@ -53,7 +53,6 @@ class stock_history(models.Model):
 
             for line in res:
                 if line.get('__domain'):
-                    _logger.warn('\n %s \n' %line)
                     line['product_inventory_value'] = 0.0
                     for r in group_lines[str(line['__domain'])]:
                         line['product_inventory_value'] += r['product_inventory_value']
