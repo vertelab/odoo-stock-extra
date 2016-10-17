@@ -75,21 +75,37 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit="product.product"
 
-    ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
-    ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
-    ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
-    public_desc = fields.Text(String='Public Description', translate=True, oldname='x_public_desc')
-    public_desc_changed_by = fields.Char(String='Public Description Changed By', oldname='x_public_desc_changed_by')
-    public_desc_last_changed = fields.Date(String='Public Description Last Changed', oldname='x_public_desc_last_changed')
-    reseller_desc = fields.Text(String='Reseller Description', translate=True, oldname='x_reseller_desc')
-    reseller_desc_changed_by = fields.Char(String='Reseller Description Changed By', oldname='x_reseller_desc_changed_by')
-    reseller_desc_last_changed = fields.Date(String='Reseller Description Last Changed', oldname='x_reseller_desc_last_changed')
-    shelf_label_desc = fields.Text(String='Shelf Label Description', translate=True, oldname='x_shelf_label_desc')
-    shelf_label_desc_changed_by = fields.Char(String='Shelf Label Description Changed By', oldname='x_shelf_label_desc_changed_by')
-    shelf_label_desc_last_changed = fields.Date(String='Shelf Label Description Last Changed', oldname='x_shelf_label_desc_last_changed')
-    use_desc = fields.Text(String='Use Description', translate=True, oldname='x_use_desc')
-    use_desc_changed_by = fields.Char(String='Use Description Changed By', oldname='x_use_desc_changed_by')
-    use_desc_last_changed = fields.Date(String='Use Description Last Changed', oldname='x_use_desc_last_changed')
+    ingredients = fields.Text(String='Ingredients', translate=True,)
+    ingredients_changed_by = fields.Char(String='Ingredients Changed By', )
+    ingredients_last_changed = fields.Date(String='Ingredients Last Changed', )
+    public_desc = fields.Text(String='Public Description', translate=True, )
+    public_desc_changed_by = fields.Char(String='Public Description Changed By', )
+    public_desc_last_changed = fields.Date(String='Public Description Last Changed', )
+    reseller_desc = fields.Text(String='Reseller Description', translate=True, )
+    reseller_desc_changed_by = fields.Char(String='Reseller Description Changed By', )
+    reseller_desc_last_changed = fields.Date(String='Reseller Description Last Changed', )
+    shelf_label_desc = fields.Text(String='Shelf Label Description', translate=True, )
+    shelf_label_desc_changed_by = fields.Char(String='Shelf Label Description Changed By', )
+    shelf_label_desc_last_changed = fields.Date(String='Shelf Label Description Last Changed', )
+    use_desc = fields.Text(String='Use Description', translate=True, )
+    use_desc_changed_by = fields.Char(String='Use Description Changed By', )
+    use_desc_last_changed = fields.Date(String='Use Description Last Changed', )
+
+    #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
+    #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
+    #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
+    #~ public_desc = fields.Text(String='Public Description', translate=True, oldname='x_public_desc')
+    #~ public_desc_changed_by = fields.Char(String='Public Description Changed By', oldname='x_public_desc_changed_by')
+    #~ public_desc_last_changed = fields.Date(String='Public Description Last Changed', oldname='x_public_desc_last_changed')
+    #~ reseller_desc = fields.Text(String='Reseller Description', translate=True, oldname='x_reseller_desc')
+    #~ reseller_desc_changed_by = fields.Char(String='Reseller Description Changed By', oldname='x_reseller_desc_changed_by')
+    #~ reseller_desc_last_changed = fields.Date(String='Reseller Description Last Changed', oldname='x_reseller_desc_last_changed')
+    #~ shelf_label_desc = fields.Text(String='Shelf Label Description', translate=True, oldname='x_shelf_label_desc')
+    #~ shelf_label_desc_changed_by = fields.Char(String='Shelf Label Description Changed By', oldname='x_shelf_label_desc_changed_by')
+    #~ shelf_label_desc_last_changed = fields.Date(String='Shelf Label Description Last Changed', oldname='x_shelf_label_desc_last_changed')
+    #~ use_desc = fields.Text(String='Use Description', translate=True, oldname='x_use_desc')
+    #~ use_desc_changed_by = fields.Char(String='Use Description Changed By', oldname='x_use_desc_changed_by')
+    #~ use_desc_last_changed = fields.Date(String='Use Description Last Changed', oldname='x_use_desc_last_changed')
     #new fileds
     ingredients_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Ingredients Changed By')
     public_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Public Description Changed By')
@@ -136,6 +152,58 @@ class product_attribute_value(models.Model):
         else:
             price.write({'price_extra':price_remote.list_price - tmpl.lst_price })
 
+
+    # account.analytic.line för produkten på line, knyt till external id produkt-konto
+    # om produkten på line är is_kit -> slå upp produkter på bom (säljbara produkter)
+    # för varje produkt på bom skapa account.analytic.line
+    # antal hänsynt till antal på line samt antal på bom
+    # belopp hänsyn till andel av bom-kostnad omräknad till belopp på line säljpris lst_price
+
+    #~ @api.model
+    #~ def bom_account_create(self,line):        
+        #~ account = self.env['account.analytic.default'].account_get(line.product_id.id if line.product_id else None, line.invoice_id.partner_id.id, line.invoice_id.user_id.id, time.strftime('%Y-%m-%d'))
+        #~ _logger.warn(account)
+        #~ if account and account.bom_id:
+            #~ move_line = line.invoice_id.move_id.line_id.filtered(lambda l: len(l.analytic_lines) > 0)
+            #~ if move_line:
+                #~ move_line = move_line[0]
+            #~ for b in account.bom_id.bom_line_ids:
+                #~ account_standard = self.env['account.analytic.default'].account_get(b.product_id.id if b.product_id else None, line.invoice_id.partner_id.id, line.invoice_id.user_id.id, time.strftime('%Y-%m-%d'))
+                #~ _logger.warn('account_standard',account_standard)
+                #~ if account_standard:
+                    #~ if account_standard.analytics_id and account_standard.analytics_id.account_ids:
+                        #~ for account in account_standard.analytics_id.account_ids:
+                            #~ currency = line.invoice_id.currency_id.with_context(date=line.invoice_id.date_invoice)
+                            #~ self.env['account.analytic.line'].create({
+                                #~ 'move_id': move_line.id if move_line else None,
+                                #~ 'name': line.name,
+                                #~ 'date': line.invoice_id.date_invoice,
+                                #~ 'account_id': account.analytic_account_id.id,
+                                #~ 'unit_amount': line.quantity * b.product_uos_qty,  
+                                #~ 'amount': currency.compute(line.price_subtotal, line.invoice_id.company_id.currency_id) * 1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1 * account.rate / 100.0,
+                                #~ 'product_id': b.product_id.id,
+                                #~ 'product_uom_id': b.product_uos.id,
+                                #~ 'general_account_id': line.account_id.id,
+                                #~ 'journal_id': line.invoice_id.journal_id.analytic_journal_id.id,
+                                #~ 'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
+                            #~ })
+                    #~ else:
+                        #~ currency = line.invoice_id.currency_id.with_context(date=line.invoice_id.date_invoice)
+                        #~ self.env['account.analytic.line'].create({
+                            #~ 'move_id': move_line.id if move_line else None,
+                            #~ 'name': line.name,
+                            #~ 'date': line.invoice_id.date_invoice,
+                            #~ 'account_id': line.account_analytic_id.id,
+                            #~ 'unit_amount': line.quantity * b.product_uos_qty,  
+                            #~ 'amount': currency.compute(line.price_subtotal, line.invoice_id.company_id.currency_id) * 1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1,
+                            #~ 'product_id': b.product_id.id,
+                            #~ 'product_uom_id': b.product_uos.id,
+                            #~ 'general_account_id': line.account_id.id,
+                            #~ 'journal_id': line.invoice_id.journal_id.analytic_journal_id.id,
+                            #~ 'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
+                        #~ })
+
+
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice.line'
 
@@ -149,5 +217,12 @@ class account_invoice_line(models.Model):
 
     tariff = fields.Char(string='Tariff', compute='_tariff')
 
+    #~ @api.one
+    #~ def action_move_create(self):
+        #~ res = super(account_invoice_line, self).action_move_create()
+        #~ _logger.warn('invoice',self,'lines',self.invoice_line)
+        #~ #raise Warning('kalle')
+        #~ for l in self.invoice_line:
+            #~ self.env['account.analytic.default'].bom_account_create(l)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
