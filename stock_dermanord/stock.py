@@ -20,6 +20,7 @@
 ##############################################################################
 
 import openerp.exceptions
+from openerp.exceptions import except_orm, Warning, RedirectWarning,MissingError
 from openerp import models, fields, api, _
 
 import logging
@@ -45,6 +46,35 @@ class stock_picking(models.Model):
     #~ invoice_type = fields.Selection(string='Invoice Type', [('invoice_in_package','Invoice in package'),('invoice_in_letter','Invoice in letter')])
     #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
     address_id = fields.Many2one(comodel_name='res.partner', related='sale_id.partner_shipping_id')
+
+    #~ @api.multi
+    #~ def write(self, vals):
+        #~ raise Warning(vals, self[0].write_date)
+        #~ org_rec = self[0]
+        #~ if org_rec.employee_id and vals.get('employee_id'):
+            #~ action = self.env.ref('stock.do_view_pickings')
+            #~ action = action.with_context({'active_id': self[0].id})
+            #~ action.domain = [('group_id', '=', self[0].id)]
+            #~ raise RedirectWarning('Hejsan hopsan %s' %action.domain, action.id, 'go on')
+        #~ _logger.warn('%s, %s' %(org_rec.employee_id.id, vals.get('employee_id')))
+        #~ res = super(stock_picking, self[0]).write(vals)
+        #~ return res
+
+    #~ @api.v7
+    #~ def read(self, cr, user, ids, fields=None, context=None, load='_classic_read'):
+        #~ context['record_date'] = 'Haojun7'
+        #~ _logger.warn('v7')
+        #~ return super(stock_picking, self).read(cr, user, ids, fields, context, load)
+
+    #~ @api.v8
+    #~ def read(self, fields=None, load='_classic_read'):
+        #~ context = dict(self.env.context)
+        #~ context['record_date'] = 'Haojun'
+        #~ self.env.context = context
+        #~ result = super(stock_picking, self).read(fields, load)
+        #~ _logger.warn('v8')
+        #~ _logger.warn(result)
+        #~ return result
 
 class res_users(models.Model):
    _inherit="res.users"

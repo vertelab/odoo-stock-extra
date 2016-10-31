@@ -101,3 +101,23 @@ msgstr "Användare ID"
 msgid "Users"
 msgstr "Användare"
 
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.picking_type_id
+msgid "Picking Type"
+msgstr "Plocktyp"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.get_first_available_picking
+msgid "No available pickings"
+msgstr "Inga tillgängliga åtgärder"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.get
+msgid "Get"
+msgstr "Hämta"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.get
+msgid "Get"
+msgstr "Hämta"
+

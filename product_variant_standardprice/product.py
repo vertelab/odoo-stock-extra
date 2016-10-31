@@ -58,4 +58,5 @@ class stock_history(models.Model):
                         line['product_inventory_value'] += r['product_inventory_value']
         return res
 
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
