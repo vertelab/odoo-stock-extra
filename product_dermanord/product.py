@@ -140,14 +140,12 @@ class product_product(models.Model):
                 'journal_id': line.invoice_id.journal_id.analytic_journal_id.id,
                 'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
             })
-            _logger.warn('\n\nmjau\n\n')
             if product.iskit and product.bom_ids:
                 account = self.env.ref('product_dermanord.account_kit_products')
                 total = 0
                 for bom_line in product.bom_ids[0].bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         total += bom_line.product_id.lst_price * bom_line.product_qty
-                _logger.warn('\n\ntotal: %s\n\n' % total)
                 for bom_line in product.bom_ids[0].bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         amount = line.price_subtotal * bom_line.product_id.lst_price * bom_line.product_qty / total
