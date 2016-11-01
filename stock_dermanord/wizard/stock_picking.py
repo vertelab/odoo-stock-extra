@@ -42,7 +42,7 @@ class stock_picking_wizard(models.TransientModel):
         return picking_id
     employee_id = fields.Many2one(comodel_name='hr.employee', string='Picking Employee', default=_default_employee_id, required=True)
     picking_id = fields.Many2one('stock.picking', 'Stock Picking', default=_default_picking_id, required=True)
-    force = fields.Boolean('Replace Existing User')
+    force = fields.Boolean('Replace Current Picking Employee')
 
     @api.multi
     def set_picking_employee(self):

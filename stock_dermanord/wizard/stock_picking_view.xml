@@ -14,7 +14,7 @@
                         <field name="force"/>
                     </group>
                     <footer>
-                        <button name="set_picking_employee" string="Set Picking User" type="object" class="oe_highlight"/>
+                        <button name="set_picking_employee" string="Set Picking Employee" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
