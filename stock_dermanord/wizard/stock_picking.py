@@ -29,36 +29,25 @@ _logger = logging.getLogger(__name__)
 
 class stock_picking_wizard(models.TransientModel):
     _name = 'stock.picking.wizard'
-    _description = 'Get the first available stock picking'
-
-    def _default_picking_type(self):
-        return self.env.ref('stock.picking_type_out', False)
-    picking_type_id = fields.Many2one(comodel_name='stock.picking.type', string='Picking Type', default=_default_picking_type)
+    _description = 'Set Picking Employee'
+    
     def _default_employee_id(self):
         hr = self.env['hr.employee'].search([('user_id', '=', self.env.uid if self.env.uid else '')])
         return hr[0].id if len(hr) > 0 else None
-    employee_id = fields.Many2one(comodel_name='hr.employee', string='Picking User', default=_default_employee_id)
+    
+    def _default_picking_id(self):
+        picking_id = self._context.get('active_id')
+        if not picking_id:
+            picking_id = self._context.get('active_ids') and self._context.get('active_ids')[0]
+        return picking_id
+    employee_id = fields.Many2one(comodel_name='hr.employee', string='Picking Employee', default=_default_employee_id, required=True)
+    picking_id = fields.Many2one('stock.picking', 'Stock Picking', default=_default_picking_id, required=True)
+    force = fields.Boolean('Replace Existing User')
 
     @api.multi
-    def get_first_available_picking(self):
-        picking = self.env['stock.picking'].search([('picking_type_id', '=', self.picking_type_id.id), ('employee_id', '=', None), ('state', '=', 'assigned')])
-        if len(picking) > 0:
-            picking[0].write({ 'employee_id': self.employee_id.id })
-            picking_form = self.env.ref('stock.view_picking_form', False)
-            ctx = dict(
-                default_model='stock.picking',
-                default_res_id=picking[0].id,
-            )
-            return {
-                'type': 'ir.actions.act_window',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'stock.picking',
-                'views': [(picking_form.id, 'form')],
-                'view_id': picking_form.id,
-                'res_id': picking[0].id if picking else None,
-                'context': ctx,
-            }
+    def set_picking_employee(self):
+        if self.force or not self.picking_id.employee_id:
+            self.picking_id.employee_id = self.employee_id
         else:
-            raise Warning(_('No available pickings'))
+            raise Warning(_('Picking Employee is already set.'))
 

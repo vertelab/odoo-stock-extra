@@ -7,30 +7,26 @@
             <field name="model">stock.picking.wizard</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Get First Available Picking">
+                <form string="Set Picking Employee">
                     <group>
-                        <field name="picking_type_id"/>
+                        <field name="picking_id"/>
                         <field name="employee_id"/>
+                        <field name="force"/>
                     </group>
                     <footer>
-                        <button name="get_first_available_picking" string="Get" type="object" class="oe_highlight"/>
+                        <button name="set_picking_employee" string="Set Picking User" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
         </record>
 
         <record id="stock_picking_wizard_form_act" model="ir.actions.act_window">
-            <field name="name">Get First Available Picking</field>
+            <field name="name">Set Picking Employee</field>
             <field name="res_model">stock.picking.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="context">{'active_test': False}</field>
         </record>
-
-        <menuitem id="stock_picking_wizard_form_menu"
-            action="stock_picking_wizard_form_act"
-            parent="stock.menu_stock_warehouse_mgmt" />
 
     </data>
 </openerp>
