@@ -100,9 +100,11 @@
             <field name="priority" eval="99"/>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+<!--
                 <field name="state" position="before">
                     <button name="stock_dermanord.stock_picking_wizard_form_act" type="action" string="Set Picking User" class="oe_highlight"/>
                 </field>
+-->
                 <field name="backorder_id" position="after">
                     <field name="employee_id" attrs="{'readonly': [('employee_id_readonly', '=', True)]}"/>
                     <field name="employee_id_readonly" invisible="1"/>
