@@ -36,9 +36,12 @@ class stock_picking(models.Model):
     #export_shipping = fields.Boolean('Foreign shipping',oldname='x_export_shipping')
     picking_user = fields.Char('Old picking user',oldname='x_pickin_user')
     #~ user_id = fields.Many2one(string='Picking user', comodel_name='res.users')
+
+# stock_multiple_users
     employee_id = fields.Many2one(string='Picking employee', comodel_name='hr.employee')
     #~ employee_id_readonly = fields.Boolean(compute='_get_employee_id_readonly')
     qc_id = fields.Many2one(string='Controlled by', comodel_name='hr.employee')
+
     qc_user = fields.Char(string='Old controlled by', oldname='x_qc')
     pickup_time = fields.Datetime('Pickup time',oldname='x_pickup_time')
     prio = fields.Boolean('Prio',oldname='x_prio')
@@ -48,38 +51,17 @@ class stock_picking(models.Model):
     #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
     address_id = fields.Many2one(comodel_name='res.partner', related='sale_id.partner_shipping_id')
 
-    #~ @api.one
-    #~ def _get_employee_id_readonly(self):
-        #~ self.employee_id_readonly = self.env.user not in self.env.ref('stock.group_stock_manager').users
+    @api.one
+    def _get_employee_id_readonly(self):
+        self.employee_id_readonly = self.env.user not in self.env.ref('stock.group_stock_manager').users
 
-    #~ @api.multi
-    #~ def write(self, vals):
-        #~ raise Warning(vals, self[0].write_date)
-        #~ org_rec = self[0]
-        #~ if org_rec.employee_id and vals.get('employee_id'):
-            #~ action = self.env.ref('stock.do_view_pickings')
-            #~ action = action.with_context({'active_id': self[0].id})
-            #~ action.domain = [('group_id', '=', self[0].id)]
-            #~ raise RedirectWarning('Hejsan hopsan %s' %action.domain, action.id, 'go on')
-        #~ _logger.warn('%s, %s' %(org_rec.employee_id.id, vals.get('employee_id')))
-        #~ res = super(stock_picking, self[0]).write(vals)
-        #~ return res
+class purchase_order(models.Model):
+    _inherit = "purchase.order"
 
-    #~ @api.v7
-    #~ def read(self, cr, user, ids, fields=None, context=None, load='_classic_read'):
-        #~ context['record_date'] = 'Haojun7'
-        #~ _logger.warn('v7')
-        #~ return super(stock_picking, self).read(cr, user, ids, fields, context, load)
-
-    #~ @api.v8
-    #~ def read(self, fields=None, load='_classic_read'):
-        #~ context = dict(self.env.context)
-        #~ context['record_date'] = 'Haojun'
-        #~ self.env.context = context
-        #~ result = super(stock_picking, self).read(fields, load)
-        #~ _logger.warn('v8')
-        #~ _logger.warn(result)
-        #~ return result
+    @api.one
+    def action_picking_create(self):
+        picking_id = super(purchase_order, self).action_picking_create()
+        self.env['stock.picking'].browse(picking_id).expected_delivery_date = self.minimum_planned_date
 
 class res_users(models.Model):
    _inherit="res.users"
