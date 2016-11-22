@@ -38,8 +38,8 @@ class stock_picking(models.Model):
     #~ user_id = fields.Many2one(string='Picking user', comodel_name='res.users')
 
 # stock_multiple_users
-    #~ employee_id = fields.Many2one(string='Picking employee', comodel_name='hr.employee')
-    #~ employee_id_readonly = fields.Boolean(compute='_get_employee_id_readonly')
+    employee_id = fields.Many2one(string='Picking employee', comodel_name='hr.employee')
+    employee_id_readonly = fields.Boolean(compute='_get_employee_id_readonly')
     #~ qc_id = fields.Many2one(string='Controlled by', comodel_name='hr.employee')
 
     qc_user = fields.Char(string='Old controlled by', oldname='x_qc')
