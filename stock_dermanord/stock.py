@@ -40,8 +40,7 @@ class stock_picking(models.Model):
 # stock_multiple_users
     employee_id = fields.Many2one(string='Picking employee', comodel_name='hr.employee')
     employee_id_readonly = fields.Boolean(compute='_get_employee_id_readonly')
-    #~ qc_id = fields.Many2one(string='Controlled by', comodel_name='hr.employee')
-
+    qc_id = fields.Many2one(string='Controlled by', comodel_name='hr.employee')
     qc_user = fields.Char(string='Old controlled by', oldname='x_qc')
     pickup_time = fields.Datetime('Pickup time',oldname='x_pickup_time')
     prio = fields.Boolean('Prio',oldname='x_prio')
@@ -50,11 +49,11 @@ class stock_picking(models.Model):
     #~ invoice_type = fields.Selection(string='Invoice Type', [('invoice_in_package','Invoice in package'),('invoice_in_letter','Invoice in letter')])
     #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
     address_id = fields.Many2one(comodel_name='res.partner', related='sale_id.partner_shipping_id')
-    
+
     @api.one
     def _get_employee_id_readonly(self):
         self.employee_id_readonly = self.env.user not in self.env.ref('stock.group_stock_manager').users
-    
+
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
@@ -62,7 +61,7 @@ class purchase_order(models.Model):
     def action_picking_create(self):
         picking_id = super(purchase_order, self).action_picking_create()
         self.env['stock.picking'].browse(picking_id).expected_delivery_date = self.minimum_planned_date
-        
+
 class res_users(models.Model):
    _inherit="res.users"
    def Xname_get(self, cr, uid, ids, context=None):
