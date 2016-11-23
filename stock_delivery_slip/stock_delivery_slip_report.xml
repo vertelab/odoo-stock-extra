@@ -48,11 +48,20 @@
                                             </span>
                                             <span t-field="o.partner_id.customer_no"/>
                                         </div>
-                                        <div>
+                                        <div t-if="o.employee_ids">
                                             <span>
-                                                <strong>Plockansvarig: </strong>
+                                                <strong t-if="len(o.employee_ids) == 1">Plockansvarig:</strong>
+                                                <strong t-if="len(o.employee_ids) &gt; 1">Plockansvariga:</strong>
+                                                <br/>
+                                                <t t-set="first_picker" t-value="True"/>
+                                                <span>
+                                                    <t t-foreach="o.employee_ids" t-as="picker">
+                                                        <t t-esc=", " t-if="not first_picker"/>
+                                                        <t t-set="first_picker" t-value="False"/>
+                                                        <t t-esc="picker.name"/>
+                                                    </t>
+                                                </span>
                                             </span>
-                                            <span t-field="o.picking_user"/>
                                         </div>
                                         <!--
                                         <p t-if="o.partner_id.ref">
