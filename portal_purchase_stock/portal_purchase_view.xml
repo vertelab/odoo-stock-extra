@@ -34,8 +34,16 @@
         <button name="action_cancel" position="attributes">
           <attribute name="groups">base.group_user</attribute>
         </button>
+        <field name="dest_address_id" position="attributes">
+            <attribute name="groups">stock.group_locations,base.group_portal</attribute>
+        </field>
+        <field name="date_order" position="after">
+            <field name="delivery_date" attrs="{'invisible': [('delivery_date', '=', False)]}"/>
+            <field name="delivery_datetime" attrs="{'invisible': [('delivery_datetime', '=', False)]}"/>
+        </field>
       </field>
     </record>
+    
     <record id="purchase_order" model="ir.actions.act_window">
       <field name="name">Purchase Orders</field>
       <field name="type">ir.actions.act_window</field>
@@ -65,6 +73,7 @@
         </button>
       </field>
     </record>
+    
     <record id="portal_delivery_action" model="ir.actions.act_window">
       <field name="name">Deliveries</field>
       <field name="type">ir.actions.act_window</field>
@@ -78,6 +87,8 @@
         <p>You can track your deliveries here.</p>
       </field>
     </record>
+    
     <menuitem action="portal_delivery_action" id="menu_delivery_form_action" parent="portal_purchase" sequence="10" />
+    
   </data>
 </openerp>

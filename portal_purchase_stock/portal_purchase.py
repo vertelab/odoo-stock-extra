@@ -20,10 +20,10 @@
 ##############################################################################
 
 from openerp import SUPERUSER_ID
-from openerp.osv import osv
+from openerp import api, models, fields, _
 
 
-class purchase_order(osv.osv):
+class purchase_order(models.Model):
     _inherit = "purchase.order"
 
     def _get_default_partner_id(self, cr, uid, context=None):
@@ -40,5 +40,20 @@ class purchase_order(osv.osv):
     _defaults = {
         'partner_id': lambda s, cr, uid, c: s._get_default_partner_id(cr, uid, c),
     }
+    
+    #TODO: Move edi_gs1 support into its own module.
+    @api.one
+    def _get_sale_order_id(self):
+        order = self.env['sale.order'].browse()
+        
+        for procurement in self.env['procurement.order'].search([('purchase_id', '=', self.id)]):
+            order |= procurement.sale_line_id.order_id
+        if len(order) == 1:
+            if order.dtm_delivery:
+                self.delivery_date = order.dtm_delivery
+            else:
+                self.delivery_datetime = order.date_order
+    delivery_date = fields.Date('Delivery Date', compute='_get_sale_order_id')
+    delivery_datetime = fields.Datetime('Delivery Time', compute='_get_sale_order_id')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

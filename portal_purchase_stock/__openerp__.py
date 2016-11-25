@@ -27,6 +27,9 @@
     'complexity': 'easy',
     'summary': 'Purchase menu and rights for suppliers',
     'description': """
+        
+TODO: Move edi_gs1 support into its own module.
+
 This module adds purchase menu for suppliers
 ============================================
 
@@ -47,7 +50,7 @@ you can add this in your "Template User" before you invite your supplier.
 
     """,
     'author': 'Vertel AB',
-    'depends': ['sale','purchase','stock','portal','procurement'],
+    'depends': ['sale','purchase','stock','portal','procurement', 'edi_gs1'],
     'data': [
         'portal_purchase_view.xml',
         'security/ir.model.access.csv',
