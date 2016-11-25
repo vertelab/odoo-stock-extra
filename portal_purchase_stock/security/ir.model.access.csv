@@ -8,6 +8,7 @@ access_product_price_list_partnerinfo,purchase.product.pricelist.partnerinfo,pro
 access_product_price_type,purchase.product.price.type,product.model_product_price_type,base.group_portal,1,0,0,0
 access_stock_pack_operation,stock.pack.operation,stock.model_stock_pack_operation,base.group_portal,1,1,0,0
 access_stock_quant,stock.quant,stock.model_stock_quant,base.group_portal,1,1,0,0
+access_stock_quant_package,stock.quant.package Portal,stock.model_stock_quant_package,base.group_portal,1,1,1,0
 access_stock_location_path,stock.location.path,stock.model_stock_location_path,base.group_portal,1,0,0,0
 access_stock_location,stock.location,stock.model_stock_location,base.group_portal,1,0,0,0
 access_stock_warehouse,stock.warehouse,stock.model_stock_warehouse,base.group_portal,1,0,0,0
