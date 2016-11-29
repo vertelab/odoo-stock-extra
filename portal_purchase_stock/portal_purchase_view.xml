@@ -40,6 +40,7 @@
         <field name="date_order" position="after">
             <field name="delivery_date" attrs="{'invisible': [('delivery_date', '=', False)]}"/>
             <field name="delivery_datetime" attrs="{'invisible': [('delivery_datetime', '=', False)]}"/>
+            <field name="customer_order_ref"/>
         </field>
       </field>
     </record>

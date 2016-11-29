@@ -49,14 +49,12 @@ class purchase_order(models.Model):
             order |= procurement.sale_line_id.order_id
         if len(order) == 1:
             self.customer_order_ref = order.client_order_ref
-            self.partner_shipping_id = order.partner_shipping_id
             if order.dtm_delivery:
                 self.delivery_date = order.dtm_delivery
             else:
                 self.delivery_datetime = order.date_order
     
     customer_order_ref = fields.Char('Customer Order Ref', compute='_get_delivery_date_and_ref')
-    partner_shipping_id = fields.Many2one('res.partner', 'Delivery Address', compute='_get_delivery_date_and_ref')
     delivery_date = fields.Date('Delivery Date', compute='_get_delivery_date_and_ref')
     delivery_datetime = fields.Datetime('Delivery Time', compute='_get_delivery_date_and_ref')
 
