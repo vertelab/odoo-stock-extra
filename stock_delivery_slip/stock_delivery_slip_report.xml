@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <report id="stock_delivery_slip_report" model="stock.picking" string="Stock Delivery Slip" report_type="qweb-pdf" name="stock_delivery_slip.stock_delivery_slip_document" file="stock_delivery_slip.stock_delivery_slip_document"/>
+        <report id="stock_delivery_slip_report" model="stock.picking" string="Stock Delivery Slip" report_type="qweb-pdf" name="stock_delivery_slip.stock_delivery_slip" file="stock_delivery_slip.stock_delivery_slip"/>
+        
+        <template id="stock_delivery_slip">
+            <t t-name="stock_delivery_slip.stock_delivery_slip">
+                <t t-call="report.html_container">
+                    <t t-foreach="doc_ids" t-as="doc_id">
+                        <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'stock_delivery_slip.stock_delivery_slip_document')"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
         <template id="stock_delivery_slip_document">
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
@@ -26,7 +37,7 @@
                                     </div>
                                     <div t-if="o.picking_user">
                                         <span>
-                                            <strong>Plockansvarig:</strong><br />
+                                            <strong>Picker:</strong><br />
                                             <span t-field="o.picking_user"/>
                                         </span>
                                     </div>
@@ -44,7 +55,7 @@
                                         </p>
                                         <div>
                                             <span>
-                                                <strong>Kundnummer: </strong>
+                                                <strong>Customer Number: </strong>
                                             </span>
                                             <span t-field="o.partner_id.customer_no"/>
                                         </div>
@@ -109,13 +120,13 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            <strong>Beskrivning</strong>
+                                            <strong>Description</strong>
                                         </th>
                                         <th class="text-right">
-                                            <strong>Kvantitet</strong>
+                                            <strong>Quantity</strong>
                                         </th>
                                         <th class="text-right">
-                                            <strong>Vikt</strong>
+                                            <strong>Weight</strong>
                                         </th>
                                     </tr>
                                 </thead>

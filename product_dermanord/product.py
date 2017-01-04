@@ -21,8 +21,10 @@
 
 import openerp.exceptions
 from openerp import models, fields, api, _
-import erppeek
-
+try:
+    import erppeek
+except:
+    pass
 
 import logging
 _logger = logging.getLogger(__name__)

@@ -17,7 +17,7 @@ msgstr ""
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Beskrivning"
+msgid "Description"
 msgstr "Beskrivning"
 
 #. module: stock_delivery_slip
@@ -42,12 +42,12 @@ msgstr "Kundorder"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Kundnummer:"
+msgid "Customer Number:"
 msgstr "Kundnummer:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Kvantitet"
+msgid "Quantity"
 msgstr "Kvantitet"
 
 #. module: stock_delivery_slip
@@ -72,11 +72,10 @@ msgstr "VAT:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Vikt"
+msgid "Weight"
 msgstr "Vikt"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Warehouse Address:"
 msgstr "Lageradress:"
-
