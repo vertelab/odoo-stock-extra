@@ -98,9 +98,13 @@
                             <h2>
                                 <span>Delivery slip</span>
                                 :
-                                <span t-field="o.sale_id.name"/>
+                                <span t-field="o.name"/>
                             </h2>
-
+                            <h4>
+                                <span>Sale order</span>
+                                :
+                                <span t-field="o.sale_id.name"/>
+                            </h4>
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
