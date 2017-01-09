@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <report id="stock_delivery_slip_report" model="stock.picking" string="Stock Delivery Slip" report_type="qweb-pdf" name="stock_delivery_slip.stock_delivery_slip" file="stock_delivery_slip.stock_delivery_slip"/>
-        
+
         <template id="stock_delivery_slip">
             <t t-name="stock_delivery_slip.stock_delivery_slip">
                 <t t-call="report.html_container">
@@ -12,7 +12,7 @@
                 </t>
             </t>
         </template>
-        
+
         <template id="stock_delivery_slip_document">
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
@@ -138,7 +138,11 @@
                                             <t t-set="total_quantity" t-value="total_quantity + ml.product_qty"/>
                                             <t t-set="total_weight" t-value="total_weight + ml.weight"/>
                                             <td>
-                                                <span t-field="ml.name"/>
+                                                <span t-field="ml.product_id"/>
+                                                <t t-if="len(str(ml.name)) != len(str(ml.product_id))">
+                                                    <br/>
+                                                    <span t-esc="str(ml.name)[(len(str(ml.product_id.default_code)) + len(str(ml.product_id.name)) + 3) if ml.product_id.default_code else len(str(ml.product_id.name)):]" style="font-style: italic;"/>
+                                                </t>
                                             </td>
                                             <td class="text-right">
                                                 <span t-field="ml.product_qty"/>
