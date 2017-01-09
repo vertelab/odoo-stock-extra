@@ -62,7 +62,7 @@
                                         <div t-if="o.employee_ids">
                                             <span>
                                                 <strong t-if="len(o.employee_ids) == 1">Picking Responsible:</strong>
-                                                <strong t-if="len(o.employee_ids) &gt; 1">Picking Responsible:</strong>
+                                                <strong t-if="len(o.employee_ids) &gt; 1">Picking Responsibles:</strong>
                                                 <br/>
                                                 <t t-set="first_picker" t-value="True"/>
                                                 <span>

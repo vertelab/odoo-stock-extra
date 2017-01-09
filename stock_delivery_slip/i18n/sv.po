@@ -56,6 +56,11 @@ msgid "Picking Responsible:"
 msgstr "Plockansvarig:"
 
 #. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Picking Responsibles:"
+msgstr "Plockansvariga:"
+
+#. module: stock_delivery_slip
 #: model:ir.actions.report.xml,name:stock_delivery_slip.stock_delivery_slip_report
 msgid "Stock Delivery Slip"
 msgstr "Lager följesedel"
