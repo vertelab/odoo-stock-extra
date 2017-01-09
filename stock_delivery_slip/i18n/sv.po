@@ -52,7 +52,7 @@ msgstr "Kvantitet"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Plockansvarig:"
+msgid "Picking Responsible:"
 msgstr "Plockansvarig:"
 
 #. module: stock_delivery_slip
