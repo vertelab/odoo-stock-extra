@@ -141,6 +141,7 @@
                                                 <span t-field="ml.product_id"/>
                                                 <t t-if="len(str(ml.name)) != len(str(ml.product_id))">
                                                     <br/>
+                                                    <!-- 3 means '[]' plus ' ' -->
                                                     <span t-esc="str(ml.name)[(len(str(ml.product_id.default_code)) + len(str(ml.product_id.name)) + 3) if ml.product_id.default_code else len(str(ml.product_id.name)):]" style="font-style: italic;"/>
                                                 </t>
                                             </td>
