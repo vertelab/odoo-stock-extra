@@ -138,12 +138,14 @@
                                             <t t-set="total_quantity" t-value="total_quantity + ml.product_qty"/>
                                             <t t-set="total_weight" t-value="total_weight + ml.weight"/>
                                             <td>
-                                                <span t-field="ml.product_id"/>
+                                                <span><t t-esc="ml.product_id.display_name"/></span>
+                                                <span style="font-style: italic;"><t t-if="ml.product_id.description"><br/><t t-esc="ml.product_id.description"/></t></span>
+<!--
                                                 <t t-if="len(str(ml.name.encode('utf-8'))) != len(str(ml.product_id.name.encode('utf-8')))">
                                                     <br/>
-                                                    <!-- 3 means '[]' plus ' ' -->
                                                     <span t-esc="str(ml.name.encode('utf-8'))[(len(str(ml.product_id.default_code.encode('utf-8'))) + len(str(ml.product_id.name.encode('utf-8'))) + 3) if ml.product_id.default_code else len(str(ml.product_id.name.encode('utf-8'))):]" style="font-style: italic;"/>
                                                 </t>
+-->
                                             </td>
                                             <td class="text-right">
                                                 <span t-field="ml.product_qty"/>
