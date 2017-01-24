@@ -139,7 +139,7 @@
                                             <t t-set="total_weight" t-value="total_weight + ml.weight"/>
                                             <td>
                                                 <span><t t-esc="ml.product_id.display_name"/></span>
-                                                <span style="font-style: italic;"><t t-if="ml.product_id.description"><br/><t t-esc="ml.product_id.description_sale"/></t></span>
+                                                <span style="font-style: italic;"><t t-if="ml.product_id.description_sale"><br/><t t-esc="ml.product_id.description_sale"/></t></span>
 <!--
                                                 <t t-if="len(str(ml.name.encode('utf-8'))) != len(str(ml.product_id.name.encode('utf-8')))">
                                                     <br/>
