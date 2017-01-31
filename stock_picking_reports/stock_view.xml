@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
+<!--
     <record id="view_move_picking_tree" model="ir.ui.view">
       <field name="name">stock.move.tree</field>
       <field name="model">stock.move</field>
@@ -13,6 +14,7 @@
         <field name="location_dest_id" position="replace" />
       </field>
     </record>
+-->
 
 <!--
     <record id="vpicktree" model="ir.ui.view">
