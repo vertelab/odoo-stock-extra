@@ -4,7 +4,7 @@
 
         <template id="picking_operations_document" inherit_id="stock_multiple_picker.picking_operations_document">
           <xpath expr="//table[@t-if='o.pack_operation_ids']/thead/tr/th[@class='text-right']" position="after">
-            <th class="text-right"><strong>Comment</strong></th>
+            <th class="text-center"><strong>Comment</strong></th>
           </xpath>
           <xpath expr="//table[@t-if='o.pack_operation_ids']/tbody/tr/td[@class='text-right']" position="after">
             <td ><span t-field="pack_operation.product_id.picking_comment"/></td>
