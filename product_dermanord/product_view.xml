@@ -197,5 +197,19 @@
                 </td>
             </xpath>
         </template>
+        <!-- show all internal stock locations -->
+        <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form.inherit.product_dermanord</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_stock_procurement']" position="attributes">
+                    <attribute name="domain">[('usage','=','internal')]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='property_stock_production']" position="attributes">
+                    <attribute name="domain">[('usage','=','internal')]</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
