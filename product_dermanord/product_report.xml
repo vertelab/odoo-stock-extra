@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <!-- 52.5x25.4 mm -->
+        <report string="Shelf Talker 52.2x25.4 mm" id="action_shelf_talker_report_522_254" model="product.product" report_type="glabels" name="product_dermanord.shelf_talker_report_522_254" />
+        <record id="action_shelf_talker_report_522_254" model="ir.actions.report.xml">
+            <field name="glabels_template" type="base64" file="product_dermanord/522_254_mm.glabels" />
+        </record>
+        <!-- 70x25.4 mm -->
+        <report string="Shelf Talker 70x25.4 mm" id="action_shelf_talker_report_70_254" model="product.product" report_type="glabels" name="product_dermanord.shelf_talker_report_70_254" />
+        <record id="action_shelf_talker_report_522_254" model="ir.actions.report.xml">
+            <field name="glabels_template" type="base64" file="product_dermanord/70_254_mm.glabels" />
+        </record>
+        <!-- 105x25.4 mm -->
+        <report string="Shelf Talker 105x25.4 mm" id="action_shelf_talker_report_105_254" model="product.product" report_type="glabels" name="product_dermanord.shelf_talker_report_105_254" />
+        <record id="action_shelf_talker_report_105_254" model="ir.actions.report.xml">
+            <field name="glabels_template" type="base64" file="product_dermanord/105_254_mm.glabels" />
+        </record>
 
         <report id="report_product_label_qweb" model="product.product" name="product_dermanord.product_label_qweb" string="Products Labels (Qweb)" report_type="qweb-pdf" file="product_dermanord.product_label_qweb"/>
         <template id="product_label_qweb"><t t-call="product_dermanord.product_label"/></template>
