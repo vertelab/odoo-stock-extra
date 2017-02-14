@@ -8,7 +8,7 @@
         </record>
         <!-- 70x25.4 mm -->
         <report string="Shelf Talker 70x25.4 mm" id="action_shelf_talker_report_70_254" model="product.product" report_type="glabels" name="product_dermanord.shelf_talker_report_70_254" />
-        <record id="action_shelf_talker_report_522_254" model="ir.actions.report.xml">
+        <record id="action_shelf_talker_report_70_254" model="ir.actions.report.xml">
             <field name="glabels_template" type="base64" file="product_dermanord/70_254_mm.glabels" />
         </record>
         <!-- 105x25.4 mm -->
