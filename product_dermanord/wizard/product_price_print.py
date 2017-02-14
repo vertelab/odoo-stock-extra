@@ -49,7 +49,7 @@ class product_price_print_wizard(models.TransientModel):
             vals = {
                 'name': product.name,
                 'default_code': product.default_code,
-                'pricelist_price': round(self.pricelist.price_get(product.id, 1, None)[self.pricelist.price_get(product.id, 1, None).keys()[0]], 2),
+                'pricelist_price': '%.2f' % round(self.pricelist.price_get(product.id, 1, None)[self.pricelist.price_get(product.id, 1, None).keys()[0]], 2),
                 'ean13': product.ean13,
                 'currency_name': product.currency_name,
                 'attribute_value_names': ','.join(a.name for a in product.attribute_value_ids),
@@ -63,7 +63,7 @@ class product_price_label(models.TransientModel):
 
     name = fields.Char(string='Name')
     default_code = fields.Char(string='Internal Reference')
-    pricelist_price = fields.Float(sting='Pricelist Price')
+    pricelist_price = fields.Float(sting='Pricelist Price', digits=(16, 2))
     ean13 = fields.Char(string='EAN13 Barcode', size=13)
     currency_name = fields.Char(string='Currency')
     attribute_value_names = fields.Char(string='Attribute Names')
