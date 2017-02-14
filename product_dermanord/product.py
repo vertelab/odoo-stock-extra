@@ -120,7 +120,7 @@ class product_product(models.Model):
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
     @api.one
     def _currency_name(self):
-        self.currency_name = self.company_id.currency_id.name
+        self.currency_name = self.company_id.currency_id.symbol
     currency_name = fields.Char(string='Currency', compute='_currency_name', help='This field made for glabel printing')
 
     # account.analytic.line för produkten på line, knyt till external id produkt-konto
