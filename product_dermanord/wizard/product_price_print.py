@@ -63,7 +63,7 @@ class product_price_label(models.TransientModel):
 
     name = fields.Char(string='Name')
     default_code = fields.Char(string='Internal Reference')
-    pricelist_price = fields.Float(sting='Pricelist Price', digits=(16, 2))
+    pricelist_price = fields.Char(sting='Pricelist Price')
     ean13 = fields.Char(string='EAN13 Barcode', size=13)
     currency_name = fields.Char(string='Currency')
     attribute_value_names = fields.Char(string='Attribute Names')
