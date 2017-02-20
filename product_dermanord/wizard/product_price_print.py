@@ -51,7 +51,7 @@ class product_price_print_wizard(models.TransientModel):
                 'default_code': product.default_code,
                 'pricelist_price': '%.2f' % round(self.pricelist.price_get(product.id, 1, None)[self.pricelist.price_get(product.id, 1, None).keys()[0]], 2),
                 'ean13': product.ean13,
-                'currency_name': product.currency_name,
+                'currency_name': self.pricelist.currency_id.symbol,
                 'attribute_value_names': ','.join(a.name for a in product.attribute_value_ids),
                 'shelf_label_desc': product.shelf_label_desc,
             }
