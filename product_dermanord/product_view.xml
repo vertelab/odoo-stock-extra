@@ -204,9 +204,23 @@
         </td>
       </xpath>
     </template>
+       <!-- show all internal stock locations -->
+        <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form.inherit.product_dermanord</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_stock_procurement']" position="attributes">
+                    <attribute name="domain">[('usage','=','internal')]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='property_stock_production']" position="attributes">
+                    <attribute name="domain">[('usage','=','internal')]</attribute>
+                </xpath>
+            </field>
+        </record>
+
     <!-- Mandatory fields product.template -->
 
-<<<<<<< HEAD
     <record id="product_template_form_view_intrastat" model="ir.ui.view">
       <field name="name">product.template.form.intrastat_mandatory</field>
       <field name="model">product.template</field>
@@ -242,54 +256,7 @@
         </field>
       </field>
     </record>
+
+
   </data>
 </openerp>
-=======
-             <tree string="Product Variants">
-             <field name="default_code"/>
-             <field name="name"/>
-             <field name="attribute_value_ids" widget="many2many_tags"/>
-             <field name="lst_price"/>
-             <field name="price" invisible="not context.get('pricelist',False)"/>
-             <field name="uom_id"/>
-             <field name="ean13"/>
-             <field name="state" invisible="1"/>
-             <field name="product_tmpl_id" invisible="1"/>
-             </tree>
-             </field>
-             </record>
-        -->
-        <record id="variants_template_tree_view" model="ir.ui.view">
-            <field name="name">variants.template.tree.price</field>
-            <field name="model">product.attribute.value</field>
-            <field name="inherit_id" ref="product.variants_template_tree_view" />
-            <field name="arch" type="xml">
-                <field name="price_extra" position="after">
-                    <button name="get_remote_price" string="Get price" type="object" icon="terp-stock_format-default" groups="product.group_sale_pricelist" />
-                </field>
-            </field>
-        </record>
-        <template id="report_pricelist" inherit_id="product.report_pricelist">
-            <xpath expr="//tbody//tr[2]/td" position="replace">
-                <td>
-                    <span t-esc="request.env['product.product'].browse(p['id']).name_get()[0][1]" />
-                </td>
-            </xpath>
-        </template>
-        <!-- show all internal stock locations -->
-        <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
-            <field name="name">product.template.form.inherit.product_dermanord</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="stock.view_template_property_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='property_stock_procurement']" position="attributes">
-                    <attribute name="domain">[('usage','=','internal')]</attribute>
-                </xpath>
-                <xpath expr="//field[@name='property_stock_production']" position="attributes">
-                    <attribute name="domain">[('usage','=','internal')]</attribute>
-                </xpath>
-            </field>
-        </record>
-    </data>
-</openerp>
->>>>>>> e591f1c89081898e2370cda7c682f09e8cb22253
