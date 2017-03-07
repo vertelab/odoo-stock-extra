@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -29,8 +29,8 @@ some changes
 Financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['product','stock_dermanord', 'report_intrastat', 'account'],
+'depends': ['product','stock_dermanord', 'report_intrastat', 'account', 'report_glabels'],
 'external_dependencies': {'python': ['erppeek',]},
-'data': ['product_view.xml', 'product_data.xml', 'product_report.xml'],
+'data': ['product_view.xml', 'product_data.xml', 'product_report.xml', 'wizard/product_price_print_view.xml'],
 'installable': True,
 }

@@ -77,21 +77,21 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit="product.product"
 
-    ingredients = fields.Text(String='Ingredients', translate=True,)
-    ingredients_changed_by = fields.Char(String='Ingredients Changed By', )
-    ingredients_last_changed = fields.Date(String='Ingredients Last Changed', )
-    public_desc = fields.Text(String='Public Description', translate=True, )
-    public_desc_changed_by = fields.Char(String='Public Description Changed By', )
-    public_desc_last_changed = fields.Date(String='Public Description Last Changed', )
-    reseller_desc = fields.Text(String='Reseller Description', translate=True, )
-    reseller_desc_changed_by = fields.Char(String='Reseller Description Changed By', )
-    reseller_desc_last_changed = fields.Date(String='Reseller Description Last Changed', )
-    shelf_label_desc = fields.Text(String='Shelf Label Description', translate=True, )
-    shelf_label_desc_changed_by = fields.Char(String='Shelf Label Description Changed By', )
-    shelf_label_desc_last_changed = fields.Date(String='Shelf Label Description Last Changed', )
-    use_desc = fields.Text(String='Use Description', translate=True, )
-    use_desc_changed_by = fields.Char(String='Use Description Changed By', )
-    use_desc_last_changed = fields.Date(String='Use Description Last Changed', )
+    ingredients = fields.Text(string='Ingredients', translate=True,)
+    ingredients_changed_by = fields.Char(string='Ingredients Changed By', )
+    ingredients_last_changed = fields.Date(string='Ingredients Last Changed', )
+    public_desc = fields.Text(string='Public Description', translate=True, )
+    public_desc_changed_by = fields.Char(string='Public Description Changed By', )
+    public_desc_last_changed = fields.Date(string='Public Description Last Changed', )
+    reseller_desc = fields.Text(string='Reseller Description', translate=True, )
+    reseller_desc_changed_by = fields.Char(string='Reseller Description Changed By', )
+    reseller_desc_last_changed = fields.Date(string='Reseller Description Last Changed', )
+    shelf_label_desc = fields.Text(string='Shelf Label Description', translate=True, )
+    shelf_label_desc_changed_by = fields.Char(string='Shelf Label Description Changed By', )
+    shelf_label_desc_last_changed = fields.Date(string='Shelf Label Description Last Changed', )
+    use_desc = fields.Text(string='Use Description', translate=True, )
+    use_desc_changed_by = fields.Char(string='Use Description Changed By', )
+    use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
 
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
@@ -114,13 +114,17 @@ class product_product(models.Model):
     reseller_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Reseller Description Changed By')
     shelf_label_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Shelf Label Description Changed By')
     use_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Use Description Changed By')
-    
+    @api.one
+    def _attribute_value_names(self):
+        self.attribute_value_names = ','.join(a.name for a in self.attribute_value_ids)
+    attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
+
     # account.analytic.line för produkten på line, knyt till external id produkt-konto
     # om produkten på line är is_kit -> slå upp produkter på bom (säljbara produkter)
     # för varje produkt på bom skapa account.analytic.line
     # antal hänsynt till antal på line samt antal på bom
     # belopp hänsyn till andel av bom-kostnad omräknad till belopp på line säljpris lst_price
-    
+
     @api.model
     def bom_account_create(self, line):
         product = line.product_id
@@ -134,7 +138,7 @@ class product_product(models.Model):
                 'name': line.name,
                 'date': line.invoice_id.date_invoice,
                 'account_id': account.id,
-                'unit_amount': line.quantity,  
+                'unit_amount': line.quantity,
                 'amount': currency.compute(line.price_subtotal, line.invoice_id.company_id.currency_id) * 1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1,
                 'product_id': line.product_id.id,
                 'product_uom_id': line.uos_id.id,
@@ -156,7 +160,7 @@ class product_product(models.Model):
                             'name': line.name,
                             'date': line.invoice_id.date_invoice,
                             'account_id': account.id,
-                            'unit_amount': line.quantity * bom_line.product_qty,  
+                            'unit_amount': line.quantity * bom_line.product_qty,
                             'amount': currency.compute(amount, line.invoice_id.company_id.currency_id) * 1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1,
                             'product_id': bom_line.product_id.id,
                             'product_uom_id': bom_line.product_uos.id,
@@ -219,7 +223,7 @@ class account_invoice_line(models.Model):
 
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice'
-    
+
     @api.one
     def action_move_create(self):
         res = super(account_invoice_line, self).action_move_create()

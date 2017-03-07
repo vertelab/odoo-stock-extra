@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -18,18 +19,30 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-'name': 'Stock Dermanord',
-'version': '0.1',
-'summary': '',
-'category': 'stock',
-'description': """Extended stock with custom fields for Dermanord.
 
+try:
+    import odoorpc
+except ImportError:
+    raise Warning('odoorpc library missing, pip install odoorpc')
 
-Financed by Dermanord-Svensk Hudvård AB""",
-'author': 'Vertel AB',
-'website': 'http://www.vertel.se',
-'depends': ['stock_multiple_picker', 'delivery', 'sale_journal', 'sale_delivery_address','warning_extended','picking_comment'],
-'data': ['stock_view.xml', 'stock_picking_report.xml'],
-'installable': True,
-}
+#TODO: Make database a parameter. Add a sequence to servers to avoid hard coding. Make mail adress in bash script configurable.
+params = odoorpc.session.get('payroll')
+odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
+odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
+
+msg = ""
+for server_id in range(1, 3):
+    sync_id = odoo.env['base.synchro'].create({
+        'server_url': server_id,
+        'user_id': odoo.env.uid,
+    })
+    res = {}
+    try:
+        res = odoo.env['base.synchro'].browse(sync_id).upload_download_multi_thread()
+    except:
+        pass
+    if res.get('views', [[0]])[0][0] != odoo.env.ref('base_synchro.view_base_synchro_finish').id:
+        msg += "Sync failed on server %s." % server_id
+        exit(msg)
+    else:
+        msg += "Synced server %s.\n" % server_id
