@@ -30,6 +30,7 @@
                     <group>
                         <field name="glabels_template"/>
                         <field name="pricelist"/>
+                        <field name="tax_included"/>
                     </group>
                     <footer>
                         <div>

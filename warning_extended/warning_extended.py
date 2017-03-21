@@ -164,7 +164,7 @@ class stock_picking(models.Model):
 
     @api.multi
 #    def do_enter_transfer_details(self, cr,uid,ids,picking,context=None):
-    def action_assign(self,picking, context=None):
+    def action_assign(self):
         #raise Warning('%s | %s' % (ids,picking))
         if self.picking_warn in ['warning', 'block']:
             #~ partner_id = self.partner_id.parent_id.id
