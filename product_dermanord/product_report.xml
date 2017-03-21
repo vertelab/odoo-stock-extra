@@ -20,7 +20,7 @@
         <!-- 52.5x25.4 mm -->
         <report string="Shelf Talker 52.2x25.4 mm (based on pricelist)" id="action_shelf_talker_report_522_254_pricelist" model="product.price.label" report_type="glabels" name="product_dermanord.52_2_25_4mm_pricelist" />
         <record id="action_shelf_talker_report_522_254_pricelist" model="ir.actions.report.xml">
-            <field name="glabels_template" type="base64" file="product_dermanord/522_254_mm_pricelist.glabels" />
+            <field name="glabels_template" type="base64" file="product_dermanord/52mm_based_on_pricelist.glabels" />
         </record>
         <!-- 70x25.4 mm -->
         <report string="Shelf Talker 70x25.4 mm (based on pricelist)" id="action_shelf_talker_report_70_254_pricelist" model="product.price.label" report_type="glabels" name="product_dermanord.70_25_4mm_pricelist" />
