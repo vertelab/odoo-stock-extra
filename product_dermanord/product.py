@@ -76,7 +76,6 @@ class product_template(models.Model):
     #~ orderpoints = fields.Char(compute='_stock')
 
 class product_product(osv.osv):
-    _name = 'product.product'
     _inherit = 'product.product'
     
     _columns = {
