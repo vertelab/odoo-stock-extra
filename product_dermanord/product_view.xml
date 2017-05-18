@@ -12,7 +12,7 @@
             <field name="default_code" />
             <field name="name" />
             <field invisible="1" name="categ_id" />
-            <field name="ustariff" attrs="{'required':[('sale_ok','=',True)]}" />
+            <field name="ustariff" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
             <field name="variants" />
             <field name="uom_id" string="Enhet" />
             <field name="type" />
@@ -115,7 +115,7 @@
       <field name="inherit_id" ref="product.product_template_form_view" />
       <field name="arch" type="xml">
         <field name="product_manager" position="after">
-          <field name="ustariff" attrs="{'required':[('sale_ok','=',True)]}" />
+          <field name="ustariff" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
           <field name="iskit" />
         </field>
          <field name="state" position="replace">
@@ -228,7 +228,7 @@
       <field name="inherit_id" ref="report_intrastat.product_template_form_view" />
       <field name="arch" type="xml">
         <field name="intrastat_id" position="replace">
-          <field name="intrastat_id" attrs="{'required':[('sale_ok','=',True)]}" />
+          <field name="intrastat_id" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
         </field>
       </field>
     </record>
