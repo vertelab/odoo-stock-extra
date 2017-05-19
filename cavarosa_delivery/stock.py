@@ -33,7 +33,7 @@ class sale_order(models.Model):
     @api.model
     def _prepare_procurement_group(self, order):
         vals = super(sale_order, self)._prepare_procurement_group(order)
-        vals['cavarosa_box'] = self.cavarosa_box
+        vals['cavarosa_box'] = order.cavarosa_box
         return vals
 
 
@@ -49,7 +49,7 @@ class procurement_order(models.Model):
     @api.model
     def _run_move_create(self, procurement):
         vals = super(procurement_order, self)._run_move_create(procurement)
-        vals['cavarosa_box'] = procurement.cavarosa_box
+        vals['cavarosa_box'] = procurement.group_id.cavarosa_box
         return vals
 
 

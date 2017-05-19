@@ -1,5 +1,5 @@
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
 
         <record id="act_cavarosa_home_delivery" model="ir.actions.server">
             <field name="name">Import Cavarosa Home Delivery Cost</field>

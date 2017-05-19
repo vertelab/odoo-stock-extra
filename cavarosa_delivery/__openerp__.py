@@ -33,6 +33,7 @@ Delivery Cavarosa AB.
     'website': 'http://www.vertel.se',
     'depends': ['delivery_carrier_data',],
     'data': [
+        'stock_view.xml',
         'delivery_data.xml',
     ],
     'installable': True,
