@@ -66,11 +66,9 @@ class delivery_carrier(models.Model):
     @api.model
     def lookup_carrier(self, carrier_id, carrier_data, order):
         carrier = self.env['delivery.carrier'].browse(int(carrier_id))
-        _logger.warn('before %s' %carrier_data)
         if carrier and carrier == self.env.ref('cavarosa_delivery.delivery_carrier'):
             order.cavarosa_box = carrier_data
             order.partner_shipping_id = carrier.id
-            _logger.warn('inside %s' %order.cavarosa_box)
         else:
             super(delivery_carrier, self).lookup_carrier(carrier_id, carrier_data, order)
 
