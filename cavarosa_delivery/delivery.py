@@ -59,7 +59,7 @@ class delivery_carrier(models.Model):
     @api.one
     def _carrier_data(self):
         if self == self.env.ref('cavarosa_delivery.delivery_carrier'):
-            self.carrier_data = '<input name="carrier_data" type="text"/>'
+            self.carrier_data = '<input name="carrier_data" type="text" placeholder="Box number..."/>'
         else:
             super(delivery_carrier, self)._carrier_data()
 
@@ -68,7 +68,7 @@ class delivery_carrier(models.Model):
         carrier = self.env['delivery.carrier'].browse(int(carrier_id))
         if carrier and carrier == self.env.ref('cavarosa_delivery.delivery_carrier'):
             order.cavarosa_box = carrier_data
-            order.partner_shipping_id = carrier.id
+            order.partner_shipping_id = carrier.partner_id.id
         else:
             super(delivery_carrier, self).lookup_carrier(carrier_id, carrier_data, order)
 

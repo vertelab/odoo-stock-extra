@@ -57,3 +57,9 @@ class stock_move(models.Model):
     _inherit = 'stock.move'
 
     cavarosa_box = fields.Char(string='Cavarosa Box')
+
+
+class stock_pack_operation(models.Model):
+    _inherit = 'stock.pack.operation'
+
+    cavarosa_box = fields.Char(string='Cavarosa Box')
