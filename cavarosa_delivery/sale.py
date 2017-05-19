@@ -21,56 +21,12 @@
 
 from openerp import api, models, fields, _
 from openerp.exceptions import except_orm, Warning, RedirectWarning
-from xlrd import open_workbook
-from xlrd.book import Book
-from xlrd.sheet import Sheet
-import os
 import logging
 _logger = logging.getLogger(__name__)
 
 
-wb = open_workbook(os.path.join(os.path.dirname(os.path.abspath(__file__)), u'cavarosa_20161024.xlsx'))
-ws = wb.sheet_by_index(0)
-print ws.row(0)
-
-class Iterator(object):
-    def __init__(self, data):
-        self.row = 0
-        self.data = data
-        self.rows = data.nrows - 3
-        self.header = [c.value.lower() for c in data.row(0)]
-        self.zip_from = data.row(1)[1].value
-        self.zip_to = data.row(data.nrows - 1)[1].value
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        if self.row >= self.rows:
-            raise StopIteration
-        r = self.data.row(self.row + 3)
-        self.row += 1
-        return {self.header[n]: r[n].value for n in range(len(self.header))}
-
-
-class delivery_carrier(models.Model):
+class sale_order(models.Model):
     _inherit = 'delivery.carrier'
-
-    @api.one
-    def _carrier_data(self):
-        if self == self.env.ref('cavarosa_delivery.delivery_carrier'):
-            self.carrier_data = '<input name="carrier_data" type="text"/>'
-        else:
-            super(delivery_carrier, self)._carrier_data()
-
-    @api.model
-    def lookup_carrier(self, carrier_id, carrier_data, order):
-        carrier = self.env['delivery.carrier'].browse(int(carrier_id))
-        if carrier and self == self.env.ref('cavarosa_delivery.delivery_carrier'):
-            order.cavarosa_box = carrier_data
-            order.partner_shipping_id = carrier.id
-        else:
-            super(delivery_carrier, self).lookup_carrier(carrier_id, carrier_data, order)
 
     @api.one
     def import_costs(self):

@@ -31,7 +31,7 @@ Delivery Cavarosa AB.
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['delivery',],
+    'depends': ['delivery_carrier_data',],
     'data': [
         'delivery_data.xml',
     ],
