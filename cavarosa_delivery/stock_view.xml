@@ -19,9 +19,7 @@
                 </t>
             </xpath>
             <xpath expr="//span[@t-field='pack_operation.result_package_id']" position="after">
-                <t t-if="move.cavarosa_box">
-                    <span>Box: <t t-esc="move.cavarosa_box"/></span>
-                </t>
+                <span>Box: <t t-esc="pack_operation.linked_move_operation_ids.move_id.cavarosa_box"/></span>
             </xpath>
         </template>
 
