@@ -53,12 +53,10 @@ class stock_return_picking(models.TransientModel):
     def _create_returns(self):
         new_picking, pick_type_id = super(stock_return_picking, self)._create_returns()
         picking = self.env['stock.picking'].browse(new_picking)
-        #Direct returns back to the configured stock location.
-        if picking.picking_type_id.code == 'incoming':
-            for line in picking.move_lines:
-                #location_dest_id = line.lot_ids[0].quant_ids.mapped('location_id') if line.lot_ids else self.env['stock.quant'].search([('product_id', '=', line.product_id.id)]).mapped('location_id')
-                location_dest_ids = line.lot_ids[0].quant_ids.filtered(lambda l: l.qty > 0.0).mapped('location_id') if line.lot_ids else []
-                line.location_dest_id = location_dest_ids[-1].id if len(location_dest_ids) > 0 else line.product_id.property_stock_procurement.id
+        wh_stock = self.env.ref('stock.stock_location_stock')
+        for line in picking.move_lines:
+            if line.location_dest_id == wh_stock:
+                line.location_dest_id = line.product_id.property_stock_procurement
         return new_picking, pick_type_id
 
 
