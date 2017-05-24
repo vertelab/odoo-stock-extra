@@ -66,7 +66,7 @@ class product_template(models.Model):
     @api.one
     def _taxes(self):
         self.taxes_view = ','.join([t.description for t in self.taxes_id])
-        self.supplier_taxes_view = ','.join([t.description for t in self.supplier_taxes_id])
+        self.supplier_taxes_view = ','.join([t.description or '' for t in self.supplier_taxes_id])
     taxes_view = fields.Char(compute="_taxes")
     supplier_taxes_view = fields.Char(compute="_taxes")
     #~ orderpoints = fields.One2many(related='product_variant_ids.orderpoint_ids')

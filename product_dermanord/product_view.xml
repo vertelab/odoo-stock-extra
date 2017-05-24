@@ -22,7 +22,9 @@
             -->
             <field name="lst_price" />
             <field invisible="not context.get('pricelist',False)" name="price" />
+<!--
             <field name="iskit" />
+-->
             <field name="sale_ok" />
             <field name="purchase_ok" />
             <!--
@@ -116,7 +118,9 @@
       <field name="arch" type="xml">
         <field name="product_manager" position="after">
           <field name="ustariff" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
+<!--
           <field name="iskit" />
+-->
         </field>
          <field name="state" position="replace">
           <field name="state" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
