@@ -77,7 +77,7 @@ class product_template(models.Model):
 
 class product_product(osv.osv):
     _inherit = 'product.product'
-    
+
     _columns = {
         'property_stock_procurement': osv_fields.property(
             type='many2one',

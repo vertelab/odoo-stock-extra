@@ -1,0 +1,54 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* cavarosa_delivery
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20170514\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-19 10:01+0000\n"
+"PO-Revision-Date: 2017-05-19 10:01+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cavarosa_delivery
+#: model:ir.model,name:cavarosa_delivery.model_delivery_carrier
+msgid "Carrier"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: field:procurement.group,cavarosa_box:0
+#: field:sale.order,cavarosa_box:0
+#: field:stock.move,cavarosa_box:0
+msgid "Cavarosa Box"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: model:ir.actions.server,name:cavarosa_delivery.act_cavarosa_home_delivery
+msgid "Import Cavarosa Home Delivery Cost"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: model:ir.model,name:cavarosa_delivery.model_procurement_order
+msgid "Procurement"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: model:ir.model,name:cavarosa_delivery.model_procurement_group
+msgid "Procurement Requisition"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: model:ir.model,name:cavarosa_delivery.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: cavarosa_delivery
+#: model:ir.model,name:cavarosa_delivery.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
