@@ -118,9 +118,7 @@
       <field name="arch" type="xml">
         <field name="product_manager" position="after">
           <field name="ustariff" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
-<!--
           <field name="iskit" />
--->
         </field>
          <field name="state" position="replace">
           <field name="state" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
