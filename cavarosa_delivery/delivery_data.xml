@@ -12,7 +12,7 @@
     'view_mode': 'form',
     'view_id': env.ref('cavarosa_delivery.cavarosa_delivery_cost_import_form').id,
     'target': 'new',
-    'context': {},
+    'context': {'active_id': context.get('active_id', [])},
 }
             </field>
         </record>
