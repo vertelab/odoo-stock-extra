@@ -7,7 +7,8 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="partner_shipping_id" position="after">
-                    <field name="cavarosa_box" attrs="{'invisible': [('cavarosa_box', '=', False)]}"/>
+                    <field name="carrier_cavarosa_box" invisible="1"/>
+                    <field name="cavarosa_box" attrs="{'invisible': [('carrier_cavarosa_box', '=', False)]}"/>
                 </field>
             </field>
         </record>

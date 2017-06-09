@@ -117,6 +117,7 @@ class Product(models.Model):
     use_desc = fields.Text(string='Use Description', translate=True, )
     use_desc_changed_by = fields.Char(string='Use Description Changed By', )
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
+    sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
 
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
