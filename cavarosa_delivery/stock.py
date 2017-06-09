@@ -29,6 +29,7 @@ class sale_order(models.Model):
     _inherit = 'sale.order'
 
     cavarosa_box = fields.Char(string='Cavarosa Box')
+    carrier_cavarosa_box = fields.Boolean(related='carrier_id.cavarosa_box')
 
     @api.model
     def _prepare_procurement_group(self, order):

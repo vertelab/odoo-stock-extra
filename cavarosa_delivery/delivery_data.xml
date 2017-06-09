@@ -17,12 +17,14 @@ method.import_costs()
             <field name="value" eval="'ir.actions.server,%s' %ref('cavarosa_delivery.act_cavarosa_home_delivery')"/>
         </record>
 
+<!--
         <record id="delivery_carrier" model="delivery.carrier">
             <field name="name">Cavarosafack</field>
             <field name="normal_price">0</field>
             <field name="partner_id" ref="base.main_partner"/>
             <field name="product_id" ref="product.product_product_consultant"/>
         </record>
+-->
 
     </data>
 </openerp>

@@ -29,9 +29,9 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-wb = open_workbook(os.path.join(os.path.dirname(os.path.abspath(__file__)), u'cavarosa_20161024.xlsx'))
-ws = wb.sheet_by_index(0)
-print ws.row(0)
+#~ wb = open_workbook(os.path.join(os.path.dirname(os.path.abspath(__file__)), u'cavarosa_20161024.xlsx'))
+#~ ws = wb.sheet_by_index(0)
+#~ print ws.row(0)
 
 class Iterator(object):
     def __init__(self, data):
@@ -52,13 +52,20 @@ class Iterator(object):
         self.row += 1
         return {self.header[n]: r[n].value for n in range(len(self.header))}
 
-
 class delivery_carrier(models.Model):
     _inherit = 'delivery.carrier'
+    
+    cavarosa_box = fields.Boolean(string="Cavarosa Box",help="Check this field if the Carrier Type is a Cavarosa Box.")
+    #~ @api.one
+    #~ def _data_input(self):
+        #~ if self.pickup_location:
+            #~ self.data_input = '<select id="carrier_data" class="selectpicker" data-style="btn-primary"><option value="1">Choose location</option>%s</select>' % \
+                              #~ '\n'.join(['<option value="%s">%s</option>' % (p.id,p.name) for p in self.env['res.partner'].search([('pickup_location','=',True)])]) 
+    #~ data_input = fields.Text(compute="_data_input",)    
 
     @api.one
     def _carrier_data(self):
-        if self == self.env.ref('cavarosa_delivery.delivery_carrier'):
+        if self.cavarosa_box:
             self.carrier_data = '<input name="carrier_data" type="text" placeholder="Box number..."/>'
         else:
             super(delivery_carrier, self)._carrier_data()
@@ -66,7 +73,7 @@ class delivery_carrier(models.Model):
     @api.model
     def lookup_carrier(self, carrier_id, carrier_data, order):
         carrier = self.env['delivery.carrier'].browse(int(carrier_id))
-        if carrier and carrier == self.env.ref('cavarosa_delivery.delivery_carrier'):
+        if carrier and carrier.cavarosa_box:
             order.cavarosa_box = carrier_data
             order.partner_shipping_id = carrier.partner_id.id
         else:
