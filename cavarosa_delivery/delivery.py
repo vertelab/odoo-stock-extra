@@ -25,13 +25,10 @@ from xlrd import open_workbook
 from xlrd.book import Book
 from xlrd.sheet import Sheet
 import os
+import base64
 import logging
 _logger = logging.getLogger(__name__)
 
-
-wb = open_workbook(os.path.join(os.path.dirname(os.path.abspath(__file__)), u'cavarosa_20161024.xlsx'))
-ws = wb.sheet_by_index(0)
-print ws.row(0)
 
 class Iterator(object):
     def __init__(self, data):
@@ -53,6 +50,54 @@ class Iterator(object):
         return {self.header[n]: r[n].value for n in range(len(self.header))}
 
 
+class CavarosaDeliveryCostImport(models.TransientModel):
+    _name = 'cavarosa.delivery.cost.import'
+
+    data = fields.Binary(string='File')
+    @api.model
+    def _active_id(self):
+        return self.env['delivery.carrier'].browse(self._context.get('active_id', []))
+    carrier_id = fields.Many2one(comodel_name='delivery.carrier', default=_active_id)
+
+    @api.one
+    def import_costs(self):
+        if self.data:
+            wb = open_workbook(file_contents=base64.b64decode(self.data))
+            ws = wb.sheet_by_index(0)
+            if len(self.carrier_id.pricelist_ids) > 0:
+                for grid in self.carrier_id.pricelist_ids:
+                    self.env['delivery.grid.line'].search([('grid_id', '=', grid.id)]).unlink()
+                    grid.unlink()
+            pricelist = self.env['delivery.grid'].create({
+                'carrier_id': self.carrier_id.id,
+                'name': 'Home Delivery',
+                'country_ids': [(4, self.env.ref('base.se').id, 0)],
+                'zip_from': str(int(Iterator(ws).zip_from)),
+                'zip_to': str(int(Iterator(ws).zip_to)),
+            })
+            for r in Iterator(ws):
+                self.env['delivery.grid.line'].create({
+                    'name': '%s - 1-3 kli' %int(r.get('postnummer')),
+                    'type': 'quantity',
+                    'operator': '<=',
+                    'max_value': 3.0,
+                    'price_type': 'fixed',
+                    'list_price': r.get('pris 1-3 kli'),
+                    'standard_price': 0.0,
+                    'grid_id': pricelist.id,
+                })
+                self.env['delivery.grid.line'].create({
+                    'name': '%s - 4-6 kli' %int(r.get('postnummer')),
+                    'type': 'quantity',
+                    'operator': '>=',
+                    'max_value': 4.0,
+                    'price_type': 'fixed',
+                    'list_price': r.get('pris 4-6 kli'),
+                    'standard_price': 0.0,
+                    'grid_id': pricelist.id,
+                })
+
+
 class delivery_carrier(models.Model):
     _inherit = 'delivery.carrier'
 
@@ -71,38 +116,3 @@ class delivery_carrier(models.Model):
             order.partner_shipping_id = carrier.partner_id.id
         else:
             super(delivery_carrier, self).lookup_carrier(carrier_id, carrier_data, order)
-
-    @api.one
-    def import_costs(self):
-        if len(self.pricelist_ids) > 0:
-            for grid in self.pricelist_ids:
-                self.env['delivery.grid.line'].search([('grid_id', '=', grid.id)]).unlink()
-                grid.unlink()
-        pricelist = self.env['delivery.grid'].create({
-            'carrier_id': self.id,
-            'name': 'Home Delivery',
-            'country_ids': [(4, self.env.ref('base.se').id, 0)],
-            'zip_from': str(int(Iterator(ws).zip_from)),
-            'zip_to': str(int(Iterator(ws).zip_to)),
-        })
-        for r in Iterator(ws):
-            self.env['delivery.grid.line'].create({
-                'name': '%s - 1-3 kli' %int(r.get('postnummer')),
-                'type': 'quantity',
-                'operator': '<=',
-                'max_value': 3.0,
-                'price_type': 'fixed',
-                'list_price': r.get('pris 1-3 kli'),
-                'standard_price': 0.0,
-                'grid_id': pricelist.id,
-            })
-            self.env['delivery.grid.line'].create({
-                'name': '%s - 4-6 kli' %int(r.get('postnummer')),
-                'type': 'quantity',
-                'operator': '>=',
-                'max_value': 4.0,
-                'price_type': 'fixed',
-                'list_price': r.get('pris 4-6 kli'),
-                'standard_price': 0.0,
-                'grid_id': pricelist.id,
-            })
