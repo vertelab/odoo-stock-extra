@@ -37,6 +37,7 @@ Delivery Cavarosa AB.
         'sale_view.xml',
         'procurement_view.xml',
         'delivery_data.xml',
+        'delivery_view.xml',
     ],
     'installable': True,
 }
