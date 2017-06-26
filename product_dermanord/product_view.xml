@@ -197,7 +197,14 @@
         </field>
       </field>
     </record>
-<!--
+    <report
+        id="product.action_report_pricelist"
+        string="Pricelist"
+        model="product.product"
+        report_type="qweb-pdf"
+        name="product.report_pricelist"
+        file="product.report_pricelist"
+    menu="True"/>
     <template id="report_pricelist" inherit_id="product.report_pricelist">
       <xpath expr="//tbody//tr[2]/td" position="replace">
         <td>
@@ -205,7 +212,6 @@
         </td>
       </xpath>
     </template>
--->
        <!-- show all internal stock locations -->
         <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
             <field name="name">product.template.form.inherit.product_dermanord</field>
