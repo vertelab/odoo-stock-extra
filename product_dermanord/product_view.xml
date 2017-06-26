@@ -197,14 +197,13 @@
         </field>
       </field>
     </record>
-    <report
-        id="product.action_report_pricelist"
-        string="Pricelist"
-        model="product.product"
-        report_type="qweb-pdf"
-        name="product.report_pricelist"
-        file="product.report_pricelist"
-    menu="True"/>
+    <act_window id="product.action_product_price_list"
+            key2="client_print_multi"
+            name="Price List"
+            res_model="product.price_list"
+            src_model="product.product"
+            groups="product.group_sale_pricelist"
+            view_mode="form" target="new" view_type="form" />
     <template id="report_pricelist" inherit_id="product.report_pricelist">
       <xpath expr="//tbody//tr[2]/td" position="replace">
         <td>
