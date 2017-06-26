@@ -197,6 +197,14 @@
         </field>
       </field>
     </record>
+    <report
+        id="product.action_report_pricelist"
+        string="Pricelist"
+        model="product.product"
+        report_type="qweb-pdf"
+        name="product.report_pricelist"
+        file="product.report_pricelist"
+    menu="False"/>
     <act_window id="product.action_product_price_list"
             key2="client_print_multi"
             name="Price List"
