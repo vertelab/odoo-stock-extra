@@ -22,9 +22,7 @@
             -->
             <field name="lst_price" />
             <field invisible="not context.get('pricelist',False)" name="price" />
-<!--
             <field name="iskit" />
--->
             <field name="sale_ok" />
             <field name="purchase_ok" />
             <!--

@@ -31,7 +31,7 @@ odoo = odoorpc.ODOO(params.get('host'),port=params.get('port'))
 odoo.login(params.get('database'),params.get('user'),params.get('passwd'))
 
 msg = ""
-for server_id in range(1, 3):
+for server_id in range(1, 4):
     sync_id = odoo.env['base.synchro'].create({
         'server_url': server_id,
         'user_id': odoo.env.uid,

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2016- Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,26 +18,5 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Cavarosa Delivery',
-    'version': '0.1',
-    'summary': '',
-    'category': 'stock',
-    'description': """
-Delivery Cavarosa AB.
-=====================
-* Import delivery costs of Cavarosa AB.
-* New delivery method Cavarosafack.
-""",
-    'author': 'Vertel AB',
-    'website': 'http://www.vertel.se',
-    'depends': ['delivery_carrier_data',],
-    'data': [
-        'stock_view.xml',
-        'sale_view.xml',
-        'procurement_view.xml',
-        'delivery_data.xml',
-        'delivery_view.xml',
-    ],
-    'installable': True,
-}
+import stock_picking_report
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
