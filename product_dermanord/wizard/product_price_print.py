@@ -33,7 +33,7 @@ class product_price_print_wizard(models.TransientModel):
     product_ids = fields.Many2many(comodel_name='product.product', default=_product_ids)
     pricelist= fields.Many2one(comodel_name='product.pricelist', string='Price List', required=True)
     tax_included = fields.Boolean('Include Tax')
-    
+
 
     @api.model
     def _glabel_template(self):
@@ -58,7 +58,7 @@ class product_price_print_wizard(models.TransientModel):
                 'pricelist_price': '%.2f' % price,
                 'ean13': product.ean13,
                 'currency_name': self.pricelist.currency_id.symbol,
-                'attribute_value_names': ','.join(a.name for a in product.attribute_value_ids),
+                'attribute_value_names': ','.join(a.name for a in filter(None, product.attribute_value_ids)),
                 'shelf_label_desc': product.shelf_label_desc,
             }
             product_price_label |= self.env['product.price.label'].create(vals)
