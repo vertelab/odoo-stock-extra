@@ -142,7 +142,7 @@ class Product(models.Model):
     use_desc_changed_by_uid = fields.Many2one(comodel_name='res.users', String='Use Description Changed By')
     @api.one
     def _attribute_value_names(self):
-        self.attribute_value_names = ','.join(a.name for a in self.attribute_value_ids)
+        self.attribute_value_names = ','.join(a.name for a in filter(None, self.attribute_value_ids))
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
 
     # account.analytic.line för produkten på line, knyt till external id produkt-konto
