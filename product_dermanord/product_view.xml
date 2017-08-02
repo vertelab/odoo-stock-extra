@@ -105,7 +105,11 @@
               <field name="ingredients_changed_by_uid" />
             </group>
           </group>
-        </field>
+        </field  >
+          <group name="sale_condition" position="inside">
+              <field name="sale_start" />
+              <field name="sale_end" />
+          </group>
       </field>
     </record>
     <!-- ustariff -->
