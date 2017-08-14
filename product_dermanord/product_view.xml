@@ -49,6 +49,9 @@
       <field name="model">product.product</field>
       <field name="inherit_id" ref="product.product_normal_form_view" />
       <field name="arch" type="xml">
+          <field name="seller_ids" position="replace">
+            <field name="seller_ids" context="{'default_product_tmpl_id': product_tmpl_id}"/>
+          </field>
         <field name="description" position="after">
           <hr />
           <label for="public_desc">Public Description</label>
@@ -107,6 +110,16 @@
           </group>
         </field>
       </field>
+    </record>
+    <record id="product_supplierinfo_form_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo.inherited.form.view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+            <field name="product_name" position="after">
+                <field name="product_tmpl_id" invisible="1"/>
+            </field>
+        </field>
     </record>
     <!-- ustariff -->
     <record id="ustariff_product_template_form_view" model="ir.ui.view">

@@ -23,6 +23,7 @@ import openerp.exceptions
 from openerp.osv import osv
 from openerp.osv import fields as osv_fields
 from openerp import models, fields, api, _
+from openerp.osv import osv
 try:
     import erppeek
 except:
@@ -118,6 +119,7 @@ class Product(models.Model):
     use_desc_changed_by = fields.Char(string='Use Description Changed By', )
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
+    seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
 
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
@@ -195,9 +197,16 @@ class Product(models.Model):
                             'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
                         })
 
+
+class product_supplierinfo(models.Model):
+    _inherit = "product.supplierinfo"
+
+    product_variant_id = fields.Many2one(comodel_name='product.product', string='Product Variant', ondelete='cascade', select=True)
+    product_uom = fields.Many2one(comodel_name='product.uom', related='product_variant_id.uom_po_id', string="Supplier Unit of Measure", readonly="1", help="This comes from the product form.")
+
+
 class product_attribute_value(models.Model):
     _inherit = "product.attribute.value"
-
 
     def get_param(self,param,value):
         if not self.env['ir.config_parameter'].get_param(param):
@@ -257,5 +266,56 @@ class account_invoice_line(models.Model):
         #raise Warning('kalle')
         for l in self.invoice_line:
             self.env['product.product'].bom_account_create(l)
+
+
+class procurement_order(osv.osv):
+    _inherit = 'procurement.order'
+
+    def _get_product_supplier(self, cr, uid, procurement, context=None):
+        ''' returns the main supplier of the procurement's product given as argument'''
+        supplierinfo = self.pool['product.supplierinfo']
+        company_supplier = supplierinfo.search(cr, uid,
+            [('product_variant_id', '=', procurement.product_id.id), ('company_id', '=', procurement.company_id.id)], limit=1, context=context)
+        if company_supplier:
+            return supplierinfo.browse(cr, uid, company_supplier[0], context=context).name
+        return procurement.product_id.seller_id
+
+    def _calc_new_qty_price(self, cr, uid, procurement, po_line=None, cancel=False, context=None):
+        if not po_line:
+            po_line = procurement.purchase_line_id
+
+        uom_obj = self.pool.get('product.uom')
+        qty = uom_obj._compute_qty(cr, uid, procurement.product_uom.id, procurement.product_qty,
+            procurement.product_id.uom_po_id.id)
+        if cancel:
+            qty = -qty
+
+        # Make sure we use the minimum quantity of the partner corresponding to the PO
+        # This does not apply in case of dropshipping
+        supplierinfo_min_qty = 0.0
+        if po_line.order_id.location_id.usage != 'customer':
+            if po_line.product_id.seller_id.id == po_line.order_id.partner_id.id:
+                supplierinfo_min_qty = po_line.product_id.seller_qty
+            else:
+                supplierinfo_obj = self.pool.get('product.supplierinfo')
+                supplierinfo_ids = supplierinfo_obj.search(cr, uid, [('name', '=', po_line.order_id.partner_id.id), ('product_variant_id', '=', po_line.product_id.id)])
+                supplierinfo_min_qty = supplierinfo_obj.browse(cr, uid, supplierinfo_ids).min_qty
+
+        if supplierinfo_min_qty == 0.0:
+            qty += po_line.product_qty
+        else:
+            # Recompute quantity by adding existing running procurements.
+            for proc in po_line.procurement_ids:
+                qty += uom_obj._compute_qty(cr, uid, proc.product_uom.id, proc.product_qty,
+                    proc.product_id.uom_po_id.id) if proc.state == 'running' else 0.0
+            qty = max(qty, supplierinfo_min_qty) if qty > 0.0 else 0.0
+
+        price = po_line.price_unit
+        if qty != po_line.product_qty:
+            pricelist_obj = self.pool.get('product.pricelist')
+            pricelist_id = po_line.order_id.partner_id.property_product_pricelist_purchase.id
+            price = pricelist_obj.price_get(cr, uid, [pricelist_id], procurement.product_id.id, qty, po_line.order_id.partner_id.id, {'uom': procurement.product_id.uom_po_id.id})[pricelist_id]
+
+        return qty, price
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
