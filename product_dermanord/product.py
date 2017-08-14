@@ -146,12 +146,35 @@ class Product(models.Model):
     def _attribute_value_names(self):
         self.attribute_value_names = ','.join(a.name for a in filter(None, self.attribute_value_ids))
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
+    
+    # sale_ok by date
+    sale_start = fields.Date(string="Sale Start",help="Sale starts att this date")
+    sale_end = fields.Date(string="Sale End",help="Sale ends att this date")
+
+    @api.one
+    @api.onchange('sale_start','sale_end')
+    def check_file(self):
+        if not self.sale_ok and self.sale_start >= fields.Date.today():
+            self.sale_ok = True
+        if self.sale_ok and self.sale_end > '' and self.sale_end <= fields.Date.today():
+            self.sale_ok = False
+
+
+    @api.v7
+    def sale_ok_cron_job(self, cr, uid, context=None):
+        _logger.debug('sale_ok_cron_job')
+        for product_id in self.pool.get('product.product').search(cr, uid, [('sale_ok','=',False),('sale_start','>=',fields.Date.today())]):
+            self.pool.get('product.product').write(cr,uid,product_id,{'sale_ok': True})
+        for product_id in self.pool.get('product.product').search(cr, uid, [('sale_ok','=',True),('sale_end','>',''),('sale_end','<=',fields.Date.today())]):
+            self.pool.get('product.product').write(cr,uid,product_id,{'sale_ok': False})
 
     # account.analytic.line för produkten på line, knyt till external id produkt-konto
     # om produkten på line är is_kit -> slå upp produkter på bom (säljbara produkter)
     # för varje produkt på bom skapa account.analytic.line
     # antal hänsynt till antal på line samt antal på bom
     # belopp hänsyn till andel av bom-kostnad omräknad till belopp på line säljpris lst_price
+
+
 
     @api.model
     def bom_account_create(self, line):

@@ -46,18 +46,18 @@ class stock_move(models.Model):
             self.quant_source_location = self.location_id.name + _(' (not reserved)')
         # self.quant_source_location = 'Quant:' + ','.join([q.location_id._name_get(q.location_id) for q in self.reserved_quant_ids])
 
-class stock_return_picking(models.TransientModel):
-    _inherit = 'stock.return.picking'
+#~ class stock_return_picking(models.TransientModel):
+    #~ _inherit = 'stock.return.picking'
     
-    @api.multi
-    def _create_returns(self):
-        new_picking, pick_type_id = super(stock_return_picking, self)._create_returns()
-        picking = self.env['stock.picking'].browse(new_picking)
-        wh_stock = self.env.ref('stock.stock_location_stock')
-        for line in picking.move_lines:
-            if line.location_dest_id == wh_stock:
-                line.location_dest_id = line.product_id.property_stock_procurement
-        return new_picking, pick_type_id
+    #~ @api.multi
+    #~ def _create_returns(self):
+        #~ new_picking, pick_type_id = super(stock_return_picking, self)._create_returns()
+        #~ picking = self.env['stock.picking'].browse(new_picking)
+        #~ wh_stock = self.env.ref('stock.stock_location_stock')
+        #~ for line in picking.move_lines:
+            #~ if line.location_dest_id == wh_stock:
+                #~ line.location_dest_id = line.product_id.property_stock_procurement
+        #~ return new_picking, pick_type_id
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
