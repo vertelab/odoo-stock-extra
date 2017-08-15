@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_copy_info_form" model="ir.ui.view">
+            <field name="name">product.info.copy.wizard.form</field>
+            <field name="model">product.info.copy.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Copy Product Info">
+                    <h2><field name="name" readonly="1"/></h2>
+                    <group col="8" colspan="4">
+                        <group col="4" colspan="2">
+                            <div class="oe_left">
+                                <h2>Source</h2>
+                                <div>
+                                    <field name="description_copy"/>
+                                    <label for="description_copy"/>
+                                </div>
+                                <div><field name="description" readonly="1"/></div>
+                                <div>
+                                    <field name="public_desc_copy"/>
+                                    <label for="public_desc_copy"/>
+                                </div>
+                                <div><field name="public_desc" readonly="1"/></div>
+                                <div>
+                                    <field name="reseller_desc_copy"/>
+                                    <label for="reseller_desc_copy"/>
+                                </div>
+                                <div><field name="reseller_desc" readonly="1"/></div>
+                                <div>
+                                    <field name="use_desc_copy"/>
+                                    <label for="use_desc_copy"/>
+                                </div>
+                                <div><field name="use_desc" readonly="1"/></div>
+                                <div>
+                                    <field name="shelf_label_desc_copy"/>
+                                    <label for="shelf_label_desc_copy"/>
+                                </div>
+                                <div><field name="shelf_label_desc" readonly="1"/></div>
+                                <div>
+                                    <field name="ingredients_copy"/>
+                                    <label for="ingredients_copy"/>
+                                </div>
+                                <div><field name="ingredients" readonly="1"/></div>
+                            </div>
+                        </group>
+                        <group col="4" colspan="2">
+                            <div class="oe_right">
+                                <h2>Targets</h2>
+                                <field name="product_variants">
+                                    <tree>
+                                        <field name="default_code"/>
+                                        <field name="name"/>
+                                        <field name="attribute_value_ids"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                    </group>
+                    <footer>
+                        <div>
+                            <button name="copy_info" string="Copy Info" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_info_copy_act" model="ir.actions.act_window">
+            <field name="name">Copy Product Info</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.info.copy.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_dermanord.product_copy_info_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
