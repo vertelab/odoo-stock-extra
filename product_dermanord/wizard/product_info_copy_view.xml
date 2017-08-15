@@ -62,15 +62,23 @@
             </field>
         </record>
 
-        <record id="product_info_copy_act" model="ir.actions.act_window">
+        <act_window id="product_info_copy_act"
+            key2="client_action_multi"
+            name="Copy Product Info"
+            res_model="product.info.copy.wizard"
+            src_model="product.product"
+            groups="base.group_user"
+            view_mode="form" target="new" view_type="form" />
+
+<!--
+        <record id="product_info_copy_wizard" model="ir.values">
+            <field name="model">product.product</field>
             <field name="name">Copy Product Info</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">product.info.copy.wizard</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="product_dermanord.product_copy_info_form"/>
-            <field name="target">new</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,%d' %product_info_copy_act" />
+            <field name="key">action</field>
         </record>
+-->
 
     </data>
 </openerp>
