@@ -13,11 +13,6 @@
                             <div class="oe_left">
                                 <h2>Source</h2>
                                 <div>
-                                    <field name="description_copy"/>
-                                    <label for="description_copy"/>
-                                </div>
-                                <div><field name="description" readonly="1"/></div>
-                                <div>
                                     <field name="public_desc_copy"/>
                                     <label for="public_desc_copy"/>
                                 </div>

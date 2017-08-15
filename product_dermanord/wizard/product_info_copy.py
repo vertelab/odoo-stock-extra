@@ -32,10 +32,6 @@ class product_info_copy_wizard(models.TransientModel):
         attributes = obj.attribute_value_ids.mapped('name')
         return str(obj.name) + ((', ' + ','.join(attributes)) if len(attributes) > 0 else '')
     name = fields.Char(string='Name', default=get_name)
-    def get_description(self):
-        return self.env['product.product'].browse(self._context.get('active_id')).description
-    description = fields.Text(string='Description', default=get_description)
-    description_copy = fields.Boolean(string='Copy Description')
     def get_ingredients(self):
         return self.env['product.product'].browse(self._context.get('active_id')).ingredients
     ingredients = fields.Text(string='Ingredients', default=get_ingredients)
@@ -65,23 +61,25 @@ class product_info_copy_wizard(models.TransientModel):
     def copy_info(self):
         source = self.env['product.product'].browse(self._context.get('active_id'))
         for v in source.product_tmpl_id.product_variant_ids | source:
-            v.write({
-                'description': source.description,
-                'ingredients': source.ingredients,
-                'ingredients_changed_by': source.ingredients_changed_by,
-                'ingredients_last_changed': source.ingredients_last_changed,
-                'public_desc': source.public_desc,
-                'public_desc_changed_by': source.public_desc_changed_by,
-                'public_desc_last_changed': source.public_desc_last_changed,
-                'reseller_desc': source.reseller_desc,
-                'reseller_desc_changed_by': source.reseller_desc_changed_by,
-                'reseller_desc_last_changed': source.reseller_desc_last_changed,
-                'shelf_label_desc': source.shelf_label_desc,
-                'shelf_label_desc_changed_by': source.shelf_label_desc_changed_by,
-                'shelf_label_desc_last_changed': source.shelf_label_desc_last_changed,
-                'use_desc': source.use_desc,
-                'use_desc_changed_by': source.use_desc_changed_by,
-                'use_desc_last_changed': source.use_desc_last_changed,
-            })
+            if self.public_desc_copy:
+                v.public_desc = source.public_desc
+                v.public_desc_changed_by = source.public_desc_changed_by
+                v.public_desc_last_changed = source.public_desc_last_changed
+            if self.reseller_desc_copy:
+                v.reseller_desc = source.reseller_desc
+                v.reseller_desc_changed_by = source.reseller_desc_changed_by
+                v.reseller_desc_last_changed = source.reseller_desc_last_changed
+            if self.shelf_label_desc_copy:
+                v.shelf_label_desc = source.shelf_label_desc
+                v.shelf_label_desc_changed_by = source.shelf_label_desc_changed_by
+                v.shelf_label_desc_last_changed = source.shelf_label_desc_last_changed
+            if self.use_desc_copy:
+                v.use_desc = source.use_desc
+                v.use_desc_changed_by = source.use_desc_changed_by
+                v.use_desc_last_changed = source.use_desc_last_changed
+            if self.ingredients_copy:
+                v.ingredients = source.ingredients
+                v.ingredients_changed_by = source.ingredients_changed_by
+                v.ingredients_last_changed = source.ingredients_last_changed
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
