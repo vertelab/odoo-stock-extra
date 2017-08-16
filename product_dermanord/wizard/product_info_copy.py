@@ -60,7 +60,7 @@ class product_info_copy_wizard(models.TransientModel):
     @api.one
     def copy_info(self):
         source = self.env['product.product'].browse(self._context.get('active_id'))
-        for v in source.product_tmpl_id.product_variant_ids - source:
+        for v in product_variants:
             if self.public_desc_copy:
                 v.public_desc = source.public_desc
                 v.public_desc_changed_by = source.public_desc_changed_by
