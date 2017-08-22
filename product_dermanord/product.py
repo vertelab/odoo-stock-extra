@@ -120,7 +120,7 @@ class Product(models.Model):
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
     seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
-
+    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
@@ -146,7 +146,7 @@ class Product(models.Model):
     def _attribute_value_names(self):
         self.attribute_value_names = ','.join(a.name for a in filter(None, self.attribute_value_ids))
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
-    
+
     # sale_ok by date
     sale_start = fields.Date(string="Sale Start",help="Sale starts att this date")
     sale_end = fields.Date(string="Sale End",help="Sale ends att this date")

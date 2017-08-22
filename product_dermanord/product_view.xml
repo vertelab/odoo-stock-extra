@@ -113,6 +113,9 @@
               <field name="sale_start" />
               <field name="sale_end" />
           </group>
+          <field name="company_id" position="after">
+            <field name="access_group_ids" widget="many2many_tags"/>
+          </field>
       </field>
     </record>
     <record id="product_supplierinfo_form_view" model="ir.ui.view">
