@@ -279,14 +279,12 @@ class account_invoice_line(models.Model):
 
     tariff = fields.Char(string='Tariff', compute='_tariff')
 
-class account_invoice_line(models.Model):
+class account_invoice(models.Model):
     _inherit = 'account.invoice'
 
     @api.one
     def action_move_create(self):
-        res = super(account_invoice_line, self).action_move_create()
-        _logger.warn('invoice',self,'lines',self.invoice_line)
-        #raise Warning('kalle')
+        res = super(account_invoice, self).action_move_create()
         for l in self.invoice_line:
             self.env['product.product'].bom_account_create(l)
 
