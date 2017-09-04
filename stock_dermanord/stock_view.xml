@@ -66,6 +66,7 @@
             </field>
         </record>
 
+<!--
         <record id="view_picking_withcarrier_out_form" model="ir.ui.view">
             <field name="name">delivery.stock.picking_withcarrier.form.view.inherit</field>
             <field name="priority" eval="1"/>
@@ -76,6 +77,7 @@
                 <field name="weight" position="replace" />
             </field>
         </record>
+-->
 
 
         <record model="ir.ui.view" id="sale_journal_picking_order">
