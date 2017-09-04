@@ -159,6 +159,17 @@ class Product(models.Model):
         if self.sale_ok and self.sale_end > '' and self.sale_end <= fields.Date.today():
             self.sale_ok = False
 
+    @api.one
+    @api.onchange('weight','sale_ok','type')
+    def check_weight(self):
+        if self.sale_ok and self.type != 'service' and self.weight <= 0.0:
+            raise Warning(_('The product has to have a weight!'))
+    
+    @api.multi
+    def write(self, vals):
+        if self.sale_ok and self.type != 'service' and (self.weight <= 0.0 and vals.get('weight',0.0) <= 0.0):
+            raise Warning(_('The product has to have a weight!'))
+        return super(Product, self).write(vals)
 
     @api.v7
     def sale_ok_cron_job(self, cr, uid, context=None):
