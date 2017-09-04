@@ -116,6 +116,10 @@
           <field name="company_id" position="after">
             <field name="access_group_ids" widget="many2many_tags"/>
           </field>
+         <field name='weight' position='replace'>
+            <field name="weight" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
+         </field> 
+          
       </field>
     </record>
     <record id="product_supplierinfo_form_view" model="ir.ui.view">
