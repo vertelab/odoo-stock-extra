@@ -77,12 +77,17 @@ import unicodecsv as csv
 f = open(DOCUMENT,'r')
 d = csv.DictReader(f)
 for r in d:
-    template_id =  int(r['id'].split('_')[-1])
-    template = client.model('product.template').browse(template_id)
-    print template.name
-    print.template.product_variant_ids
-    print template_id
-    #~ odoo.env['product.template'].write(template_id, {'iskit': True})
+    template_id = client.model('product.template').search([('id','=',int(r['id'].split('_')[-1]))])
+    if len(template_id) > 0:
+        template = client.model('product.template').get(template_id[0])
+        print template.name, r
+        template.write({
+            'website_published': r['website_published'] == 'True', 
+            'active': r['active'] == 'True',
+            })
+        for product in template.product_variant_ids:
+            print 'Variant',product.name
+            product.sale_ok = r['sale_ok'] == 'True'
     
     
     
