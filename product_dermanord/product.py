@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-import openerp.exceptions
+from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp.osv import osv
 from openerp.osv import fields as osv_fields
 from openerp import models, fields, api, _
