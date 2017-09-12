@@ -70,7 +70,7 @@ for o, a in opts:
 
 client = erppeek.Client(HOST+':'+PORT, DATABASE, 'admin', PASSWD)
 
-
+weightless = []
 
 import unicodecsv as csv
 
@@ -86,12 +86,19 @@ for r in d:
             'active': r['active'] == 'True',
             })
         for product in template.product_variant_ids:
-            print 'Variant',product.name
+            print '\t',product.name
+            if product.type != 'service' and not product.weight:
+                product.weight = 123
+                weightless.append((product.id, product.name))
             product.sale_ok = r['sale_ok'] == 'True'
+
+if weightless:
+    print 'The following products were missing weight and had their weight set to 123.'
+    for w in weightless:
+        print '%s (id %s)' % (w[1], w[0])
     
     
-    
-f.close()    
+f.close()
 
 
 #Find all products with x_iskit == True
