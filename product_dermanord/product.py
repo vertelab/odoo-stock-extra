@@ -167,9 +167,11 @@ class Product(models.Model):
     
     @api.multi
     def write(self, vals):
-        for record in self:
-            if record.sale_ok and record.type != 'service' and (vals.get('weight', record.weight) <= 0.0):
-                raise Warning(_('The product has to have a weight! Product %s, id %s is missing weight.' % (record.name, record.id)))
+        _logger.warn('\n\nsupress_checks: %s' % self.env.context.get('supress_checks'))
+        if not self.env.context.get('supress_checks'):
+            for record in self:
+                if record.sale_ok and record.type != 'service' and (vals.get('weight', record.weight) <= 0.0):
+                    raise Warning(_('The product has to have a weight! Product %s, id %s is missing weight.' % (record.name, record.id)))
         return super(Product, self).write(vals)
 
     @api.v7

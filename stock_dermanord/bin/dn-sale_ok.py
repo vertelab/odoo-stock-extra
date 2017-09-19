@@ -70,34 +70,25 @@ for o, a in opts:
 
 client = erppeek.Client(HOST+':'+PORT, DATABASE, 'admin', PASSWD)
 
-weightless = []
-
 import unicodecsv as csv
 
 f = open(DOCUMENT,'r')
 d = csv.DictReader(f)
 for r in d:
-    template_id = client.model('product.template').search([('id','=',int(r['id'].split('_')[-1]))])
-    if len(template_id) > 0:
-        template = client.model('product.template').get(template_id[0])
-        print template.name, r
-        template.write({
-            'website_published': r['website_published'] == 'True', 
-            'active': r['active'] == 'True',
-            })
-        for product in template.product_variant_ids:
-            print '\t',product.name
-            if product.type != 'service' and not product.weight:
-                product.weight = 123
-                weightless.append((product.id, product.name))
-            product.sale_ok = r['sale_ok'] == 'True'
+    id = r['id'].split('_')[-1]
+    if id.isdigit():
+        template_id = client.model('product.template').search([('id','=', int(id))])
+        if len(template_id) > 0:
+            template = client.model('product.template').get(template_id[0])
+            print template.name, r
+            template.write({
+                'website_published': r['website_published'] == 'True', 
+                'active': r['active'] == 'True',
+                }, context={'supress_checks': True})
+            for product in template.product_variant_ids:
+                print '\t',product.name
+                product.write({'sale_ok': r['sale_ok'] == 'True'}, context={'supress_checks': True})
 
-if weightless:
-    print 'The following products were missing weight and had their weight set to 123.'
-    for w in weightless:
-        print '%s (id %s)' % (w[1], w[0])
-    
-    
 f.close()
 
 
