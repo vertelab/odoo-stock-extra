@@ -46,6 +46,7 @@ class product_template(models.Model):
     #~ tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
+    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
 
     #combine products
     @api.one
