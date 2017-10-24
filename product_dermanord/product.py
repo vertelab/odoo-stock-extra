@@ -194,15 +194,13 @@ class Product(models.Model):
         product = line.product_id
         if product:
             account = self.env.ref('product_dermanord.account_products')
-            move_line = line.invoice_id.move_id.line_id.filtered(lambda l: len(l.analytic_lines) > 0)
-            move_id = move_line[0].id if move_line else None
             currency = line.invoice_id.currency_id.with_context(date=line.invoice_id.date_invoice)
             self.env['account.analytic.line'].create({
-                'move_id': move_id,
+                'move_id': line.invoice_id.move_id.id,
                 'name': line.name,
                 'date': line.invoice_id.date_invoice,
                 'account_id': account.id,
-                'unit_amount': line.quantity,
+                'unit_amount': line.quantity * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                 'amount': currency.compute(line.price_subtotal, line.invoice_id.company_id.currency_id) * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                 'product_id': line.product_id.id,
                 'product_uom_id': line.uos_id.id,
@@ -220,11 +218,11 @@ class Product(models.Model):
                     if bom_line.product_id.sale_ok:
                         amount = line.price_subtotal * bom_line.product_id.lst_price * bom_line.product_qty / total
                         self.env['account.analytic.line'].create({
-                            'move_id': move_id,
+                            'move_id': line.invoice_id.move_id.id,
                             'name': line.name,
                             'date': line.invoice_id.date_invoice,
                             'account_id': account.id,
-                            'unit_amount': line.quantity * bom_line.product_qty,
+                            'unit_amount': line.quantity * bom_line.product_qty * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                             'amount': currency.compute(amount, line.invoice_id.company_id.currency_id) * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                             'product_id': bom_line.product_id.id,
                             'product_uom_id': bom_line.product_uos.id,
