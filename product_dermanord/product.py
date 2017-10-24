@@ -46,7 +46,6 @@ class product_template(models.Model):
     #~ tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
 
     #combine products
     @api.one
@@ -121,7 +120,6 @@ class Product(models.Model):
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
     seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
@@ -165,7 +163,7 @@ class Product(models.Model):
     def check_weight(self):
         if self.sale_ok and self.type != 'service' and self.weight <= 0.0:
             raise Warning(_('The product has to have a weight!'))
-    
+
     @api.multi
     def write(self, vals):
         _logger.warn('\n\nsupress_checks: %s' % self.env.context.get('supress_checks'))
