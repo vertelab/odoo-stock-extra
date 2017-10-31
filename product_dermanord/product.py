@@ -211,10 +211,14 @@ class Product(models.Model):
             if product.iskit and product.bom_ids:
                 account = self.env.ref('product_dermanord.account_kit_products')
                 total = 0
-                for bom_line in product.bom_ids[0].bom_line_ids:
+                bom = product.bom_ids.filtered(lambda r: r.product_id == product) or product.bom_ids.filtered(lambda r: not r.product_id)
+                if not bom:
+                    return
+                bom = bom[0]
+                for bom_line in bom.bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         total += bom_line.product_id.lst_price * bom_line.product_qty
-                for bom_line in product.bom_ids[0].bom_line_ids:
+                for bom_line in bom.bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         amount = line.price_subtotal * bom_line.product_id.lst_price * bom_line.product_qty / total
                         self.env['account.analytic.line'].create({
