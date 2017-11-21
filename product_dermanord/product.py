@@ -76,7 +76,23 @@ class product_template(models.Model):
     #~ def _stock(self):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
+    
+    @api.multi
+    def check_access_group(self,user):
+        self.ensureone()
+        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
 
+    @api.model
+    def search_access_group(self,domain, limit=0, offset=0, order=''):
+        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        return self.env['product.template'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
+
+    @api.model
+    def browse_access_group(self,ids):
+        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
+
+        
 class product_product(osv.osv):
     _inherit = 'product.product'
 
@@ -236,6 +252,21 @@ class Product(models.Model):
                             'journal_id': line.invoice_id.journal_id.analytic_journal_id.id,
                             'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
                         })
+
+    @api.multi
+    def check_access_group(self,user):
+        self.ensureone()
+        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
+
+    @api.model
+    def search_access_group(self,domain, limit=0, offset=0, order=''):
+        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        return self.env['product.product'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
+
+    @api.model
+    def browse_access_group(self,ids):
+        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
 
 class product_supplierinfo(models.Model):
