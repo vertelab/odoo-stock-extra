@@ -84,12 +84,12 @@ class product_template(models.Model):
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_groups_ids    
         return self.env['product.template'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
     @api.model
     def browse_access_group(self,ids):
-        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_groups_ids
         return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
         
@@ -255,17 +255,17 @@ class Product(models.Model):
 
     @api.multi
     def check_access_group(self,user):
-        self.ensureone()
+        self.ensure_one()
         return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_groups_ids 
         return self.env['product.product'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
     @api.model
     def browse_access_group(self,ids):
-        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_groups_ids 
         return self.env['product.product'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
 
