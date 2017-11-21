@@ -356,4 +356,10 @@ class procurement_order(osv.osv):
 
         return qty, price
 
+class res_partner(models.Model):
+    _inherit = "res.partner"
+
+    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access products in webshop')
+
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

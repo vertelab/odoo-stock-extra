@@ -61,9 +61,9 @@
       <field name="model">product.product</field>
       <field name="inherit_id" ref="product.product_normal_form_view" />
       <field name="arch" type="xml">
-          <field name="seller_ids" position="replace">
-            <field name="seller_ids" context="{'default_product_tmpl_id': product_tmpl_id}"/>
-          </field>
+        <field name="seller_ids" position="replace">
+          <field name="seller_ids" context="{'default_product_tmpl_id': product_tmpl_id}" />
+        </field>
         <field name="description" position="after">
           <hr />
           <label for="public_desc">Public Description</label>
@@ -135,14 +135,14 @@
       </field>
     </record>
     <record id="product_supplierinfo_form_view" model="ir.ui.view">
-        <field name="name">product.supplierinfo.inherited.form.view</field>
-        <field name="model">product.supplierinfo</field>
-        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
-        <field name="arch" type="xml">
-            <field name="product_name" position="after">
-                <field name="product_tmpl_id" invisible="1"/>
-            </field>
+      <field name="name">product.supplierinfo.inherited.form.view</field>
+      <field name="model">product.supplierinfo</field>
+      <field name="inherit_id" ref="product.product_supplierinfo_form_view" />
+      <field name="arch" type="xml">
+        <field name="product_name" position="after">
+          <field name="product_tmpl_id" invisible="1" />
         </field>
+      </field>
     </record>
     <!-- ustariff -->
     <record id="ustariff_product_template_form_view" model="ir.ui.view">
@@ -154,13 +154,12 @@
           <field name="ustariff" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
           <field name="iskit" />
         </field>
-         <field name="state" position="replace">
+        <field name="state" position="replace">
           <field name="state" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
         </field>
         <field name="product_manager" position="replace">
           <field name="product_manager" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
         </field>
-
       </field>
     </record>
     <!-- tariff in invoice line -->
@@ -233,21 +232,8 @@
         </field>
       </field>
     </record>
-    <report
-        id="product.action_report_pricelist"
-        string="Pricelist"
-        model="product.product"
-        report_type="qweb-pdf"
-        name="product.report_pricelist"
-        file="product.report_pricelist"
-    menu="False"/>
-    <act_window id="product.action_product_price_list"
-            key2="client_print_multi"
-            name="Price List"
-            res_model="product.price_list"
-            src_model="product.product"
-            groups="product.group_sale_pricelist"
-            view_mode="form" target="new" view_type="form" />
+    <report id="product.action_report_pricelist" string="Pricelist" model="product.product" report_type="qweb-pdf" name="product.report_pricelist" file="product.report_pricelist" menu="False" />
+    <act_window id="product.action_product_price_list" key2="client_print_multi" name="Price List" res_model="product.price_list" src_model="product.product" groups="product.group_sale_pricelist" view_mode="form" target="new" view_type="form" />
     <template id="report_pricelist" inherit_id="product.report_pricelist">
       <xpath expr="//tbody//tr[2]/td" position="replace">
         <td>
@@ -255,23 +241,21 @@
         </td>
       </xpath>
     </template>
-       <!-- show all internal stock locations -->
-        <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
-            <field name="name">product.template.form.inherit.product_dermanord</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="stock.view_template_property_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='property_stock_procurement']" position="attributes">
-                    <attribute name="domain">[('usage','=','internal')]</attribute>
-                </xpath>
-                <xpath expr="//field[@name='property_stock_production']" position="attributes">
-                    <attribute name="domain">[('usage','=','internal')]</attribute>
-                </xpath>
-            </field>
-        </record>
-
+    <!-- show all internal stock locations -->
+    <record id="procurement_domain_product_template_form_view" model="ir.ui.view">
+      <field name="name">product.template.form.inherit.product_dermanord</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="stock.view_template_property_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='property_stock_procurement']" position="attributes">
+          <attribute name="domain">[('usage','=','internal')]</attribute>
+        </xpath>
+        <xpath expr="//field[@name='property_stock_production']" position="attributes">
+          <attribute name="domain">[('usage','=','internal')]</attribute>
+        </xpath>
+      </field>
+    </record>
     <!-- Mandatory fields product.template -->
-
     <record id="product_template_form_view_intrastat" model="ir.ui.view">
       <field name="name">product.template.form.intrastat_mandatory</field>
       <field name="model">product.template</field>
@@ -293,17 +277,24 @@
         <field name="categ_id" position="replace">
           <field name="categ_id" colspan="3" nolabel="1" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
         </field>
-
         <field name="taxes_id" position="replace">
           <field name="taxes_id" colspan="2" widget="many2many_tags" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
         </field>
-
         <field name="supplier_taxes_id" position="replace">
           <field name="supplier_taxes_id" colspan="2" widget="many2many_tags" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
         </field>
       </field>
     </record>
-
-
+    <!-- res partner -->
+    <record id="view_partner_form" model="ir.ui.view">
+      <field name="name">res.partner.form.accessgroups</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form" />
+      <field name="arch" type="xml">
+        <field name="website" position="after">
+          <field name="access_group_ids" widget='many2many_tags' />
+        </field>
+      </field>
+    </record>
   </data>
 </openerp>
