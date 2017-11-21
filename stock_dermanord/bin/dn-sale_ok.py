@@ -70,28 +70,26 @@ for o, a in opts:
 
 client = erppeek.Client(HOST+':'+PORT, DATABASE, 'admin', PASSWD)
 
-
-
 import unicodecsv as csv
 
 f = open(DOCUMENT,'r')
 d = csv.DictReader(f)
 for r in d:
-    template_id = client.model('product.template').search([('id','=',int(r['id'].split('_')[-1]))])
-    if len(template_id) > 0:
-        template = client.model('product.template').get(template_id[0])
-        print template.name, r
-        template.write({
-            'website_published': r['website_published'] == 'True', 
-            'active': r['active'] == 'True',
-            })
-        for product in template.product_variant_ids:
-            print 'Variant',product.name
-            product.sale_ok = r['sale_ok'] == 'True'
-    
-    
-    
-f.close()    
+    id = r['id'].split('_')[-1]
+    if id.isdigit():
+        template_id = client.model('product.template').search([('id','=', int(id))])
+        if len(template_id) > 0:
+            template = client.model('product.template').get(template_id[0])
+            print template.name, r
+            template.write({
+                'website_published': r['website_published'] == 'True', 
+                'active': r['active'] == 'True',
+                }, context={'supress_checks': True})
+            for product in template.product_variant_ids:
+                print '\t',product.name
+                product.write({'sale_ok': r['sale_ok'] == 'True'}, context={'supress_checks': True})
+
+f.close()
 
 
 #Find all products with x_iskit == True

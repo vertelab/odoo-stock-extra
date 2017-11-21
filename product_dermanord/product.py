@@ -120,7 +120,6 @@ class Product(models.Model):
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
     seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
@@ -164,11 +163,14 @@ class Product(models.Model):
     def check_weight(self):
         if self.sale_ok and self.type != 'service' and self.weight <= 0.0:
             raise Warning(_('The product has to have a weight!'))
-    
+
     @api.multi
     def write(self, vals):
-        if self.sale_ok and self.type != 'service' and (self.weight <= 0.0 and vals.get('weight',0.0) <= 0.0):
-            raise Warning(_('The product has to have a weight!'))
+        _logger.warn('\n\nsupress_checks: %s' % self.env.context.get('supress_checks'))
+        if not self.env.context.get('supress_checks'):
+            for record in self:
+                if record.sale_ok and record.type != 'service' and (vals.get('weight', record.weight) <= 0.0) and not record.is_offer:
+                    raise Warning(_('The product has to have a weight! Product %s, id %s is missing weight.' % (record.name, record.id)))
         return super(Product, self).write(vals)
 
     @api.v7
@@ -192,15 +194,13 @@ class Product(models.Model):
         product = line.product_id
         if product:
             account = self.env.ref('product_dermanord.account_products')
-            move_line = line.invoice_id.move_id.line_id.filtered(lambda l: len(l.analytic_lines) > 0)
-            move_id = move_line[0].id if move_line else None
             currency = line.invoice_id.currency_id.with_context(date=line.invoice_id.date_invoice)
             self.env['account.analytic.line'].create({
-                'move_id': move_id,
+                'move_id': line.invoice_id.move_id.id,
                 'name': line.name,
                 'date': line.invoice_id.date_invoice,
                 'account_id': account.id,
-                'unit_amount': line.quantity,
+                'unit_amount': line.quantity * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                 'amount': currency.compute(line.price_subtotal, line.invoice_id.company_id.currency_id) * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                 'product_id': line.product_id.id,
                 'product_uom_id': line.uos_id.id,
@@ -211,18 +211,22 @@ class Product(models.Model):
             if product.iskit and product.bom_ids:
                 account = self.env.ref('product_dermanord.account_kit_products')
                 total = 0
-                for bom_line in product.bom_ids[0].bom_line_ids:
+                bom = product.bom_ids.filtered(lambda r: r.product_id == product) or product.bom_ids.filtered(lambda r: not r.product_id)
+                if not bom:
+                    return
+                bom = bom[0]
+                for bom_line in bom.bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         total += bom_line.product_id.lst_price * bom_line.product_qty
-                for bom_line in product.bom_ids[0].bom_line_ids:
+                for bom_line in bom.bom_line_ids:
                     if bom_line.product_id.sale_ok:
                         amount = line.price_subtotal * bom_line.product_id.lst_price * bom_line.product_qty / total
                         self.env['account.analytic.line'].create({
-                            'move_id': move_id,
+                            'move_id': line.invoice_id.move_id.id,
                             'name': line.name,
                             'date': line.invoice_id.date_invoice,
                             'account_id': account.id,
-                            'unit_amount': line.quantity * bom_line.product_qty,
+                            'unit_amount': line.quantity * bom_line.product_qty * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                             'amount': currency.compute(amount, line.invoice_id.company_id.currency_id) * (1 if line.invoice_id.type in ('out_invoice', 'in_refund') else -1),
                             'product_id': bom_line.product_id.id,
                             'product_uom_id': bom_line.product_uos.id,
