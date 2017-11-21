@@ -266,7 +266,7 @@ class Product(models.Model):
     @api.model
     def browse_access_group(self,ids):
         access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
-        return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
+        return self.env['product.product'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
 
 class product_supplierinfo(models.Model):
