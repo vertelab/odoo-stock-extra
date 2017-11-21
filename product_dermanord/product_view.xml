@@ -281,7 +281,7 @@
       <field name="inherit_id" ref="base.view_partner_form" />
       <field name="arch" type="xml">
         <field name="website" position="after">
-          <field name="access_group_ids" widgert='many2many_tags' />
+          <field name="access_group_ids" widget='many2many_tags' />
         </field>
       </field>
     </record>
