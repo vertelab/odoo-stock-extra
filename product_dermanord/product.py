@@ -76,7 +76,7 @@ class product_template(models.Model):
     #~ def _stock(self):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
-    
+
     @api.multi
     def check_access_group(self,user):
         self.ensureone()
@@ -84,7 +84,7 @@ class product_template(models.Model):
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids    
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids
         return self.env['product.template'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
     @api.model
@@ -92,7 +92,7 @@ class product_template(models.Model):
         access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids
         return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
-        
+
 class product_product(osv.osv):
     _inherit = 'product.product'
 
@@ -170,11 +170,13 @@ class Product(models.Model):
 
     @api.one
     @api.onchange('sale_start','sale_end')
-    def check_file(self):
-        if not self.sale_ok and self.sale_start >= fields.Date.today():
-            self.sale_ok = True
-        if self.sale_ok and self.sale_end > '' and self.sale_end <= fields.Date.today():
-            self.sale_ok = False
+    def check_sale_ok(self):
+        if self.sale_start:
+            self.sale_ok = False if self.sale_start >= fields.Date.today() else True
+        if self.sale_end:
+            self.sale_ok = True if (self.sale_end >= fields.Date.today() and self.sale_start <= fields.Date.today()) else False
+            if self.sale_end < self.sale_start:
+                raise Warning(_('You cannot set end date before start.'))
 
     @api.one
     @api.onchange('weight','sale_ok','type')
@@ -260,12 +262,12 @@ class Product(models.Model):
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids 
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids
         return self.env['product.product'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
     @api.model
     def browse_access_group(self,ids):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids 
+        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids
         return self.env['product.product'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
 
@@ -392,5 +394,5 @@ class res_partner(models.Model):
 
     access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access products in webshop')
 
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
