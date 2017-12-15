@@ -46,7 +46,16 @@ class product_template(models.Model):
     #~ tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
+    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups(Template)', help='Allowed groups to access this product in webshop')
+
+    @api.multi
+    def get_default_variant(self):
+        self.ensure_one()
+        variant = super(product_template, self).get_default_variant()
+        if variant.check_access_group(self.env.user):
+            return variant
+        variants = self.product_variant_ids.filtered(lambda v: v.check_access_group(self.env.user))
+        return variants[0] if len(variants) > 0 else None
 
     #combine products
     @api.one
@@ -79,8 +88,11 @@ class product_template(models.Model):
 
     @api.multi
     def check_access_group(self,user):
-        self.ensureone()
-        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
+        self.ensure_one()
+        if self.sudo().access_group_ids:
+            return True if len(user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids) > 0 else False
+        else:
+            return True
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
@@ -137,7 +149,7 @@ class Product(models.Model):
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
     seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
+    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups(Variant)', help='Allowed groups to access this product in webshop')
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
@@ -258,7 +270,10 @@ class Product(models.Model):
     @api.multi
     def check_access_group(self,user):
         self.ensure_one()
-        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
+        if self.sudo().access_group_ids:
+            return True if len(user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids) > 0 else False
+        else:
+            return True
 
     @api.model
     def search_access_group(self,domain, limit=0, offset=0, order=''):
