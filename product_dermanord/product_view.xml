@@ -44,17 +44,6 @@
       </field>
     </record>
 
-    <record id="access_groups_product_template_form_view" model="ir.ui.view">
-        <field name="name">product.template.form.access_groups</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view" />
-        <field name="arch" type="xml">
-            <field name="company_id" position="after">
-                <field name="access_group_ids" widget="many2many_tags"/>
-            </field>
-        </field>
-    </record>
-
     <!-- product product -->
     <record id="product_normal_form_view" model="ir.ui.view">
       <field name="name">product.product.form.inherit</field>
@@ -125,9 +114,6 @@
               <field name="sale_start" />
               <field name="sale_end" />
           </group>
-          <field name="company_id" position="after">
-            <field name="access_group_ids" widget="many2many_tags"/>
-          </field>
          <field name='weight' position='replace'>
             <field name="weight" attrs="{'required':[('sale_ok','=',True), ('type', '!=', 'service')]}" />
          </field>
@@ -282,17 +268,6 @@
         </field>
         <field name="supplier_taxes_id" position="replace">
           <field name="supplier_taxes_id" colspan="2" widget="many2many_tags" attrs="{'required':['|',('sale_ok','=',True),('purchase_ok','=',True)]}" />
-        </field>
-      </field>
-    </record>
-    <!-- res partner -->
-    <record id="view_partner_form" model="ir.ui.view">
-      <field name="name">res.partner.form.accessgroups</field>
-      <field name="model">res.partner</field>
-      <field name="inherit_id" ref="base.view_partner_form" />
-      <field name="arch" type="xml">
-        <field name="website" position="after">
-          <field name="access_group_ids" widget='many2many_tags' />
         </field>
       </field>
     </record>
