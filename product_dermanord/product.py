@@ -173,7 +173,7 @@ class Product(models.Model):
     @api.one
     @api.onchange('weight','sale_ok','type')
     def check_weight(self):
-        if self.sale_ok and self.type != 'service' and self.weight <= 0.0:
+        if self.sale_ok and self.type == 'product' and self.weight <= 0.0:
             raise Warning(_('The product has to have a weight!'))
 
     @api.multi
@@ -181,7 +181,7 @@ class Product(models.Model):
         _logger.warn('\n\nsupress_checks: %s' % self.env.context.get('supress_checks'))
         if not self.env.context.get('supress_checks'):
             for record in self:
-                if record.sale_ok and record.type != 'service' and (vals.get('weight', record.weight) <= 0.0) and not record.is_offer:
+                if record.sale_ok and record.type == 'product' and (vals.get('weight', record.weight) <= 0.0) and not record.is_offer:
                     raise Warning(_('The product has to have a weight! Product %s, id %s is missing weight.' % (record.name, record.id)))
         return super(Product, self).write(vals)
 
