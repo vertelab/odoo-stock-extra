@@ -54,7 +54,7 @@ class product_template(models.Model):
         if variant.check_access_group(self.env.user):
             return variant
         variants = self.product_variant_ids.filtered(lambda v: v.check_access_group(self.env.user))
-        return variants[0] if len(variants) > 0 else None
+        return variants[0] if len(variants) > 0 else super(product_template, self).get_default_variant()
 
     #combine products
     @api.one
