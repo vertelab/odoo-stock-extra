@@ -155,6 +155,7 @@ class Product(models.Model):
     def _attribute_value_names(self):
         self.attribute_value_names = ','.join(a.name for a in filter(None, self.attribute_value_ids))
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
+    website_published = fields.Boolean(string='Available in the website', copy=False)
 
     # sale_ok by date
     sale_start = fields.Date(string="Sale Start",help="Sale starts att this date")
