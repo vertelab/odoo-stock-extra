@@ -46,7 +46,15 @@ class product_template(models.Model):
     #~ tariff = fields.Char(string='Tariff', compute='_tariff')
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
+
+    @api.multi
+    def get_default_variant(self):
+        self.ensure_one()
+        variant = super(product_template, self).get_default_variant()
+        if variant.check_access_group(self.env.user):
+            return variant
+        variants = self.product_variant_ids.filtered(lambda v: v.check_access_group(self.env.user))
+        return variants[0] if len(variants) > 0 else super(product_template, self).get_default_variant()
 
     #combine products
     @api.one
@@ -76,23 +84,8 @@ class product_template(models.Model):
     #~ def _stock(self):
         #~ self.orderpoints = ','.join([o.name or '' for o in [v.orderpoint_ids or [] for v in self.product_variant_ids]])
     #~ orderpoints = fields.Char(compute='_stock')
-    
-    @api.multi
-    def check_access_group(self,user):
-        self.ensureone()
-        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
 
-    @api.model
-    def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids    
-        return self.env['product.template'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
-    @api.model
-    def browse_access_group(self,ids):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids
-        return self.env['product.template'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
-
-        
 class product_product(osv.osv):
     _inherit = 'product.product'
 
@@ -137,7 +130,6 @@ class Product(models.Model):
     use_desc_last_changed = fields.Date(string='Use Description Last Changed', )
     sale_ok = fields.Boolean(string="Can be Sold",help="Specify if the product can be selected in a sales order line.")
     seller_ids = fields.One2many(comodel_name='product.supplierinfo', inverse_name='product_variant_id', string='Supplier')
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access this product in webshop')
     #~ ingredients = fields.Text(String='Ingredients', translate=True, oldname='x_ingredients')
     #~ ingredients_changed_by = fields.Char(String='Ingredients Changed By', oldname='x_ingredients_changed_by')
     #~ ingredients_last_changed = fields.Date(String='Ingredients Last Changed', oldname='x_ingredients_last_changed')
@@ -163,6 +155,7 @@ class Product(models.Model):
     def _attribute_value_names(self):
         self.attribute_value_names = ','.join(a.name for a in filter(None, self.attribute_value_ids))
     attribute_value_names = fields.Char(string='Attribute Names', compute='_attribute_value_names', help='This field made for glabel printing')
+    website_published = fields.Boolean(string='Available in the website', copy=False)
 
     # sale_ok by date
     sale_start = fields.Date(string="Sale Start",help="Sale starts att this date")
@@ -170,16 +163,18 @@ class Product(models.Model):
 
     @api.one
     @api.onchange('sale_start','sale_end')
-    def check_file(self):
-        if not self.sale_ok and self.sale_start >= fields.Date.today():
-            self.sale_ok = True
-        if self.sale_ok and self.sale_end > '' and self.sale_end <= fields.Date.today():
-            self.sale_ok = False
+    def check_sale_ok(self):
+        if self.sale_start:
+            self.sale_ok = False if self.sale_start >= fields.Date.today() else True
+        if self.sale_end:
+            self.sale_ok = True if (self.sale_end >= fields.Date.today() and self.sale_start <= fields.Date.today()) else False
+            if self.sale_end < self.sale_start:
+                raise Warning(_('You cannot set end date before start.'))
 
     @api.one
     @api.onchange('weight','sale_ok','type')
     def check_weight(self):
-        if self.sale_ok and self.type != 'service' and self.weight <= 0.0:
+        if self.sale_ok and self.type == 'product' and self.weight <= 0.0:
             raise Warning(_('The product has to have a weight!'))
 
     @api.multi
@@ -187,7 +182,7 @@ class Product(models.Model):
         _logger.debug('perform_checks: %s' % self.env.context.get('supress_checks'))
         if self.env.context.get('perform_checks'):
             for record in self:
-                if record.sale_ok and record.type != 'service' and (vals.get('weight', record.weight) <= 0.0) and not record.is_offer:
+                if record.sale_ok and record.type == 'product' and (vals.get('weight', record.weight) <= 0.0) and not record.is_offer:
                     raise Warning(_('The product has to have a weight! Product %s, id %s is missing weight.' % (record.name, record.id)))
         return super(Product, self).write(vals)
 
@@ -252,21 +247,6 @@ class Product(models.Model):
                             'journal_id': line.invoice_id.journal_id.analytic_journal_id.id,
                             'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
                         })
-
-    @api.multi
-    def check_access_group(self,user):
-        self.ensure_one()
-        return user.sudo().commercial_partner_id.access_group_ids & self.sudo().access_group_ids
-
-    @api.model
-    def search_access_group(self,domain, limit=0, offset=0, order=''):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids 
-        return self.env['product.product'].search(domain, limit=limit, offset=offset, order=order).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
-
-    @api.model
-    def browse_access_group(self,ids):
-        access_group_ids = self.env['res.users'].sudo().browse(self.env.uid).commercial_partner_id.access_group_ids 
-        return self.env['product.product'].browse(ids).filtered(lambda p: not p.sudo().access_group_ids or access_group_ids & p.sudo().access_group_ids)
 
 
 class product_supplierinfo(models.Model):
@@ -387,10 +367,5 @@ class procurement_order(osv.osv):
 
         return qty, price
 
-class res_partner(models.Model):
-    _inherit = "res.partner"
 
-    access_group_ids = fields.Many2many(comodel_name='res.groups', string='Access Groups', help='Allowed groups to access products in webshop')
-
-    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
