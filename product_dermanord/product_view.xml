@@ -56,6 +56,10 @@
     </record>
 
     <!-- product product -->
+    <record id="product.product_normal_action_sell" model="ir.actions.act_window">
+      <field name="context" eval="{'search_default_filter_to_sell': 1, 'perform_checks': True}"/>
+    </record>
+    
     <record id="product_normal_form_view" model="ir.ui.view">
       <field name="name">product.product.form.inherit</field>
       <field name="model">product.product</field>
