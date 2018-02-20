@@ -47,15 +47,6 @@ class product_template(models.Model):
     ustariff = fields.Char(string='US Tariff',oldname='x_ustariff')
     iskit = fields.Boolean(string='Is Kit',oldname='x_iskit')
 
-    @api.multi
-    def get_default_variant(self):
-        self.ensure_one()
-        variant = super(product_template, self).get_default_variant()
-        if variant.check_access_group(self.env.user):
-            return variant
-        variants = self.product_variant_ids.filtered(lambda v: v.check_access_group(self.env.user))
-        return variants[0] if len(variants) > 0 else super(product_template, self).get_default_variant()
-
     #combine products
     @api.one
     def combine_products(self, tmp=None):
