@@ -248,7 +248,28 @@ class Product(models.Model):
                             'ref': line.invoice_id.reference if line.invoice_id.type in ('in_invoice', 'in_refund') else line.invoice_id.number,
                         })
 
-
+  
+class product_uom(models.Model):
+    _inherit = 'product.uom'
+    _description = 'Product Unit of Measure'
+  
+    @api.model
+    def _compute_price(self,from_uom_id, price, to_uom_id=False):
+        _logger.error('compute price %s %s %s' % (from_uom_id, price, to_uom_id))
+        if price == -0.01:
+            return 0.00001
+        if (not from_uom_id or not price or not to_uom_id
+                or (to_uom_id == from_uom_id)):
+            return price
+        from_unit, to_unit = self.browse([from_uom_id, to_uom_id])
+        if from_unit.category_id.id != to_unit.category_id.id:
+            return price
+        amount = price * from_unit.factor
+        if to_uom_id:
+            amount = amount / to_unit.factor
+        return amount
+        
+        
 class product_supplierinfo(models.Model):
     _inherit = "product.supplierinfo"
 
@@ -366,6 +387,15 @@ class procurement_order(osv.osv):
             price = pricelist_obj.price_get(cr, uid, [pricelist_id], procurement.product_id.id, qty, po_line.order_id.partner_id.id, {'uom': procurement.product_id.uom_po_id.id})[pricelist_id]
 
         return qty, price
+        
+        
 
+class product_pricelist(models.Model):
 
+    _inherit = "product.pricelist"
+
+    def XXXprice_get(self, cr, uid, ids, prod_id, qty, partner=None, context=None):
+        return dict((key, price[0]) for key, price in self.price_rule_get(cr, uid, ids, prod_id, qty, partner=partner, context=context).items())
+        
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
