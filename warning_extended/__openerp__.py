@@ -32,6 +32,7 @@ Warning messages can be displayed for objects like sale order, purchase order,
 picking and invoice. The message is triggered by the form's onchange event.
     """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'depends': ['warning'],
     'data': ['stock_picking_view.xml'],
     'demo': [],

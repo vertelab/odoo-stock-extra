@@ -50,6 +50,7 @@ you can add this in your "Template User" before you invite your supplier.
 
     """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'depends': ['sale','purchase','stock','portal','procurement', 'edi_gs1'],
     'data': [
         'portal_purchase_view.xml',
