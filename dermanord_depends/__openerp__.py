@@ -25,6 +25,7 @@
 'category': '',
 'description': """Test for all installed modules for Dermanord""",
 'author': 'Vertel AB',
+    'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
 'depends': [
 #odoo-stock-extra
