@@ -27,6 +27,11 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class stock_move(models.Model):
+    _inherit = "stock.move"
+    
+    procurement_id = fields.Many2one(index=True)
+
 class stock_picking(models.Model):
     _inherit = "stock.picking"
 
