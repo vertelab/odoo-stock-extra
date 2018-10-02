@@ -30,8 +30,22 @@ _logger = logging.getLogger(__name__)
 class stock_move(models.Model):
     _inherit = "stock.move"
     
+    # Queries on procurement_id take a lot of time when confirming a sale order (~2.5 s per line)
     procurement_id = fields.Many2one(index=True)
 
+class procurement_order(models.Model):
+    _inherit = "procurement.order"
+
+    # Queries on sale_line_id take a lot of time when confirming a sale order (~1.5 s per line)
+    sale_line_id = fields.Many2one(index=True)
+
+class stock_move_operation_link(models.Model):
+    _inherit = "stock.move.operation.link"
+    
+    # Queries on operation_id and move_id take a lot of time when moving a picking order
+    operation_id = fields.Many2one(index=True)
+    move_id = fields.Many2one(index=True)
+    
 class stock_picking(models.Model):
     _inherit = "stock.picking"
 
