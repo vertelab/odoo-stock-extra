@@ -26,6 +26,7 @@ from openerp import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
+#stock_quant_move_rel.move_id
 
 class stock_move(models.Model):
     _inherit = "stock.move"
@@ -36,8 +37,9 @@ class stock_move(models.Model):
 class procurement_order(models.Model):
     _inherit = "procurement.order"
 
-    # Queries on sale_line_id take a lot of time when confirming a sale order (~1.5 s per line)
+    # Queries on sale_line_id and group_id take a lot of time when confirming a sale order (~1.5 s per line)
     sale_line_id = fields.Many2one(index=True)
+    group_id = fields.Many2one(index=True)
 
 class stock_move_operation_link(models.Model):
     _inherit = "stock.move.operation.link"
@@ -45,6 +47,12 @@ class stock_move_operation_link(models.Model):
     # Queries on operation_id and move_id take a lot of time when moving a picking order
     operation_id = fields.Many2one(index=True)
     move_id = fields.Many2one(index=True)
+
+class stock_pack_operation(models.Model):
+    _inherit = "stock.pack.operation"
+    
+    # Queries on picking_id take a lot of time when moving a picking order
+    picking_id = fields.Many2one(index=True)
     
 class stock_picking(models.Model):
     _inherit = "stock.picking"
