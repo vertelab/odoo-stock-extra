@@ -35,15 +35,30 @@ class sale_order(models.Model):
     @api.onchange('user_id')
     def onchange_warning_extended(self):
         #raise Warning(self)
-        if self.partner_id.sale_warn != 'no-message':
+        partner = self.partner_id.commercial_partner_id
+        if partner.sale_warn != 'no-message':
             warning = {
-                    'title': _("Warning for %s") % self.partner_id.name,
-                    'message': self.partner_id.sale_warn_msg,
+                    'title': _("Warning for %s") % partner.name,
+                    'message': partner.sale_warn_msg,
             }
-            if self.partner_id.sale_warn == 'warning':
+            if partner.sale_warn == 'warning':
                 return {'value': {}, 'warning': warning}
-            if self.partner_id.sale_warn == 'block':
+            if partner.sale_warn == 'block':
                 return {'value': {'partner_id': False,'user_id': False,}, 'warning': warning} # Does not block really
+
+    # ~ #This might be a popup if there's warning text so comfirm button should includ inside the popup.
+    # ~ def action_button_confirm(self):
+        # ~ if self.partner_id.sale_warn == 'warning':
+            # ~ return {
+            # ~ 'value': {},
+            # ~ 'warning': warning = {
+                # ~ 'title': _("Warning for %s") % self.partner_id.name,
+                # ~ 'message': self.partner_id.sale_warn_msg,
+            # ~ }}
+
+    # ~ #Confirm button inside the popup
+    # ~ def action_button_confirm_2(self):
+        # ~ res = super(sale_order, self).action_button_confirm()
 
 #~ class purchase_order(osv.osv):
     #~ _inherit = 'purchase.order'
