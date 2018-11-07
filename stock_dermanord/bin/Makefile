@@ -88,6 +88,11 @@ dn-sale_ok.tmp: dn-sale_ok.py
 	@sudo chmod a+x /usr/bin/dn-sale_ok
 	@touch dn-sale_ok.tmp
 
+dn-flush-cache.tmp: dn-flush-cache.sh
+	@sudo cp dn-flush-cache.sh /usr/bin/dn-flush-cache
+	@sudo chmod a+x /usr/bin/dn-flush-cache
+	@touch dn-flush-cache.tmp
+
 clean:
 	@rm -f *tmp
 	@echo "Cleaned up"

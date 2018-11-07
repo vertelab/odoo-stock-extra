@@ -33,6 +33,7 @@ class stock_move(models.Model):
     
     # Queries on procurement_id take a lot of time when confirming a sale order (~2.5 s per line)
     procurement_id = fields.Many2one(index=True)
+    quant_ids = fields.Many2many(index=True)
 
 class procurement_order(models.Model):
     _inherit = "procurement.order"

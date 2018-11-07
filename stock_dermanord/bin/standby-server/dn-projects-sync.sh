@@ -4,7 +4,7 @@
 . /etc/profile.d/odootools.sh
 
 SRC_ADDRESS=192.168.2.40
-SRC_PROJECTS=$(ssh $SRC_ADDRESS ls /usr/share | grep odoo | grep -v odoo-addons)
+SRC_PROJECTS=$(sudo ssh $SRC_ADDRESS ls /usr/share | grep odoo | grep -v odoo-addons)
 LOC_PROJECTS=$(ls /usr/share | grep odoo | grep -v odoo-addons)
 
 # Check if we got a list of projects
@@ -26,16 +26,16 @@ do
         done
         if [ "$DEL_PROJECT" -eq 1 ]
         then
-                rm -rf /usr/share/$p
+                sudo rm -rf /usr/share/$p
         fi
 done
 
 # Sync projects
 for p in $SRC_PROJECTS
 do
-        rsync -var --delete --filter="-, p *.pyc" $SRC_ADDRESS:/usr/share/$p /usr/share
-        chown odoo:odoo /usr/share/$p -R
-        chmod g+w /usr/share/$p -R;
+        sudo rsync -var --delete --filter="-, p *.pyc" $SRC_ADDRESS:/usr/share/$p /usr/share
+        sudo chown odoo:odoo /usr/share/$p -R
+        sudo chmod g+w /usr/share/$p -R;
 done
 
 # Update addons path and restart Odoo
