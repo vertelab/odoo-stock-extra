@@ -112,7 +112,7 @@ class delivery_carrier(models.Model):
     @api.one
     def _carrier_data(self):
         if self.cavarosa_box:
-            self.carrier_data = '<input name="carrier_data" type="text" placeholder="Box number..."/>'
+            self.carrier_data = '<input name="carrier_data" type="text" class="form-control carrier_input" placeholder="Box number..."/>'
         else:
             super(delivery_carrier, self)._carrier_data()
 
