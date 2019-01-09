@@ -57,14 +57,14 @@
                                     </span>
                                     <span t-field="o.partner_id.customer_no"/>
                                 </div>
-                                <div t-if="o.employee_ids">
+                                <div t-if="o.sudo().employee_ids">
                                     <span>
-                                        <strong t-if="len(o.employee_ids) == 1">Picking Responsible:</strong>
-                                        <strong t-if="len(o.employee_ids) &gt; 1">Picking Responsibles:</strong>
+                                        <strong t-if="len(o.sudo().employee_ids) == 1">Picking Responsible:</strong>
+                                        <strong t-if="len(o.sudo().employee_ids) &gt; 1">Picking Responsibles:</strong>
                                         <br/>
                                         <t t-set="first_picker" t-value="True"/>
                                         <span>
-                                            <t t-foreach="o.employee_ids" t-as="picker">
+                                            <t t-foreach="o.sudo().employee_ids" t-as="picker">
                                                 <t t-esc=", " t-if="not first_picker"/>
                                                 <t t-set="first_picker" t-value="False"/>
                                                 <t t-esc="picker.name"/>
@@ -132,7 +132,7 @@
                             <t t-set="total_quantity" t-value="0"/>
                             <t t-set="total_weight" t-value="0"/>
                             <t t-foreach="o.move_lines" t-as="ml">
-                                <t t-if="offer_line and offer_line.procurement_id and offer_line.procurement_id.sale_line_id != ml.procurement_id.sale_line_id">
+                                <t t-if="offer_line and offer_line.sudo().procurement_id and offer_line.sudo().procurement_id.sale_line_id != ml.sudo().procurement_id.sale_line_id">
                                     <t t-set="offer_line" t-value="False"/>
                                 </t>
                                 <tr>
@@ -140,8 +140,8 @@
                                         <t t-set="total_quantity" t-value="total_quantity + ml.product_qty"/>
                                         <t t-set="total_weight" t-value="total_weight + ml.weight"/>
                                         <td t-att-style="'padding-left:30px;' if offer_line else ''">
-                                            <span t-field="ml.product_id.display_name"/>
-                                            <span style="font-style: italic;"><t t-if="ml.product_id.description_sale"><br/><span t-field="ml.product_id.description_sale"/></t></span>
+                                            <span t-field="ml.sudo().product_id.display_name"/>
+                                            <span style="font-style: italic;"><t t-if="ml.sudo().product_id.description_sale"><br/><span t-field="ml.sudo().product_id.description_sale"/></t></span>
 <!--
                                             <t t-if="len(str(ml.name.encode('utf-8'))) != len(str(ml.product_id.name.encode('utf-8')))">
                                                 <br/>
