@@ -1,5 +1,5 @@
 
-all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-update-product_info.tmp dn-remove_old_translation.tmp dn-sale_ok.tmp
+all : erppeek.tmp dn-migrate-products.tmp odoorpc.tmp dn-customer_no.tmp dn-partner_name.tmp dn-fix-product-template-attributes.tmp dn-inventory-remote.tmp dn-weight.tmp dn-product_name.tmp dn-get_product_category.tmp dn-account_voucher_customer_no.tmp dn-iskit.tmp dn-latest-activity.tmp dn-update-product_info.tmp dn-remove_old_translation.tmp dn-sale_ok.tmp dn-categories.tmp
 	@echo Complete
 
 erppeek.tmp:
@@ -92,6 +92,12 @@ dn-flush-cache.tmp: dn-flush-cache.sh
 	@sudo cp dn-flush-cache.sh /usr/bin/dn-flush-cache
 	@sudo chmod a+x /usr/bin/dn-flush-cache
 	@touch dn-flush-cache.tmp
+
+dn-categories.tmp: dn-categories.py
+	@sudo cp dn-categories.py /usr/bin/dn-categories
+	@sudo chmod a+x /usr/bin/dn-categories
+	@touch dn-categories.tmp
+
 
 clean:
 	@rm -f *tmp
