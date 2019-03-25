@@ -39,7 +39,7 @@ class stock_move(models.Model):
 #    @api.onchange('reserved_quant_ids','state')
     def _quant_source_location(self):
         if self.reserved_quant_ids:
-            self.quant_source_location = ','.join([q.location_id.name for q in self.reserved_quant_ids])
+            self.quant_source_location = ','.join(set([q.location_id.name for q in self.reserved_quant_ids]))
         elif self.picking_id.pack_operation_ids:
             self.quant_source_location = _('(transfered)')
         elif self.product_id.type == 'consu':
