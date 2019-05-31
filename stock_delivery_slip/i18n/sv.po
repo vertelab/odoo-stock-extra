@@ -17,13 +17,13 @@ msgstr ""
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Description"
-msgstr "Beskrivning"
+msgid "Customer Address:"
+msgstr "Kundadress:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Customer Address:"
-msgstr "Kundadress:"
+msgid "Customer Number:"
+msgstr "Kundnummer:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -37,18 +37,13 @@ msgstr "Följesedel"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Sale order"
-msgstr "Kundorder"
+msgid "Description"
+msgstr "Beskrivning"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Customer Number:"
-msgstr "Kundnummer:"
-
-#. module: stock_delivery_slip
-#: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Quantity"
-msgstr "Kvantitet"
+msgid "Ordered Quantity"
+msgstr "Beställd kvantitet"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -59,6 +54,16 @@ msgstr "Plockansvarig:"
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Picking Responsibles:"
 msgstr "Plockansvariga:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Quantity"
+msgstr "Kvantitet"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Sale order"
+msgstr "Kundorder"
 
 #. module: stock_delivery_slip
 #: model:ir.actions.report.xml,name:stock_delivery_slip.stock_delivery_slip_report
