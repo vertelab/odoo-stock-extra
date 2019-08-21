@@ -138,7 +138,9 @@
                                 <tr>
                                     <t t-if="not ml.scrapped">
                                         <t t-set="total_quantity" t-value="total_quantity + ml.product_qty"/>
-                                        <t t-set="total_weight" t-value="total_weight + ml.weight"/>
+                                        <t t-if="not offer_line">
+                                            <t t-set="total_weight" t-value="total_weight + ml.weight"/>
+                                        </t>
                                         <td t-att-style="'padding-left:30px;' if offer_line else ''">
                                             <span t-field="ml.sudo().product_id.display_name"/>
                                             <span style="font-style: italic;"><t t-if="ml.sudo().product_id.description_sale"><br/><span t-field="ml.sudo().product_id.description_sale"/></t></span>
@@ -158,7 +160,7 @@
                                     </t>
                                     <t t-if="not offer_line and ml.is_offer">
                                         <t t-set="offer_line" t-value="ml"/>
-                                    </t>
+                                    </t>                                    
                                 </tr>
                             </t>
                             <tr>
