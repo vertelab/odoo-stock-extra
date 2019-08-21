@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <report id="stock_delivery_slip_report" model="stock.picking" string="Stock Delivery Slip" report_type="qweb-pdf" name="stock_delivery_slip.stock_delivery_slip" file="stock_delivery_slip.stock_delivery_slip"/>
+        <report
+            id="stock_delivery_slip_report"
+            model="stock.picking"
+            string="Stock Delivery Slip"
+            report_type="qweb-pdf"
+            name="stock_delivery_slip.stock_delivery_slip"
+            file="stock_delivery_slip"
+        />
+        <!--attachment="object._get_delivery_slip_name()"-->
 
         <template id="stock_delivery_slip">
             <t t-name="stock_delivery_slip.stock_delivery_slip">
@@ -16,6 +24,7 @@
         <template id="stock_delivery_slip_document">
             <t t-call="report.external_layout">
                 <div class="page">
+                    <t t-set="original_qty" t-value="o.get_original_quantities()"/>
                     <div class="row">
                         <div class="col-xs-4 pull-right">
                             <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:50px;" />
@@ -53,7 +62,7 @@
                                 </p>
                                 <div>
                                     <span>
-                                        <strong>Customer Number: </strong>
+                                        <strong>Customer Number:</strong>
                                     </span>
                                     <span t-field="o.partner_id.customer_no"/>
                                 </div>
@@ -121,6 +130,9 @@
                                     <strong>Description</strong>
                                 </th>
                                 <th class="text-right">
+                                    <strong>Ordered Quantity</strong>
+                                </th>
+                                <th class="text-right">
                                     <strong>Quantity</strong>
                                 </th>
                                 <th class="text-right">
@@ -151,10 +163,13 @@
                                             </t>
 -->
                                         </td>
-                                        <td>
+                                        <td class="text-right">
+                                            <span t-field="o.with_context(float_format_field=original_qty.get(ml.product_id.id, {'qty': 0.0})['qty']).float_format_field"/>
+                                        </td>
+                                        <td class="text-right">
                                             <span t-field="ml.product_qty"/>
                                         </td>
-                                        <td>
+                                        <td class="text-right">
                                             <span t-field="ml.weight"/>
                                         </td>
                                     </t>
@@ -163,15 +178,44 @@
                                     </t>                                    
                                 </tr>
                             </t>
+                            <t t-foreach="original_qty" t-as="product_id">
+                                <t t-set="product" t-value="original_qty[product_id]"/>
+                                <t t-if="product_id not in o.move_lines.mapped('product_id')._ids">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="product['name']"/>
+    <!--
+                                            <span style="font-style: italic;"><t t-if="ml.sudo().product_id.description_sale"><br/><span t-field="ml.sudo().product_id.description_sale"/></t></span>
+    -->
+
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="o.with_context(float_format_field=product['qty']).float_format_field"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="o.with_context(float_format_field=0.0).float_format_field"/>
+                                        </td>
+                                        <td class="text-right">
+    <!--
+                                            <span t-field="ml.weight"/>
+    -->
+                                        </td>
+                                        
+                                    </tr>
+                                </t>
+                            </t>
                             <tr>
                                 <td class="text-right">
                                     <strong>Total</strong>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="total_quantity"/>
+                                    <span t-field="o.with_context(float_format_field=sum([val['qty'] for key, val in original_qty.iteritems()])).float_format_field"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="total_weight"/>
+                                    <span t-field="o.with_context(float_format_field=total_quantity).float_format_field"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.with_context(float_format_field=total_weight).float_format_field"/>
                                 </td>
                             </tr>
                         </tbody>
