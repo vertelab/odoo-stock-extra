@@ -55,7 +55,7 @@ class StockPicking(models.Model):
                 product_dict = get_product(product)
                 product_dict['qty'] = product_dict['qty'] + qty
                 # Handle kit products
-                if product.iskit or product.is_offer:
+                if product.is_offer:
                     bom = product.bom_ids.filtered(lambda r: r.product_id == product) or product.bom_ids.filtered(lambda r: not r.product_id)
                     if bom:
                         bom = bom[0]
