@@ -51,6 +51,8 @@ class StockPicking(models.Model):
         for order in self.env['sale.order'].search([('procurement_group_id', '=', self.group_id.id)]):
             for line in order.order_line:
                 product = line.product_id
+                if product.type == 'service':
+                    continue
                 qty = line.product_uom._compute_qty_obj(line.product_uom, line.product_uom_qty, product.uom_id)
                 product_dict = get_product(product)
                 product_dict['qty'] = product_dict['qty'] + qty
