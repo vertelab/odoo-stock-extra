@@ -15,6 +15,7 @@
                         <field name="expected_delivery_date" />
                         <!-- 2019-09-04 TILLÄGG -->
                         <button name="print_picking_with_location" attrs="{'invisible': [('employee_ids', '=', [])]}" type="object" icon="gtk-print" />
+                        <field name="move_lines" string="#lines"/> 
                         <field name="name" />
                         <field name="partner_id" />
                         <field name="address_id" />

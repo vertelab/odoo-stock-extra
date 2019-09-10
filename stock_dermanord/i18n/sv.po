@@ -4,23 +4,73 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20161025\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-01 07:45+0000\n"
-"PO-Revision-Date: 2016-11-01 09:00+0100\n"
+"POT-Creation-Date: 2019-09-10 13:39+0000\n"
+"PO-Revision-Date: 2019-09-10 15:41+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
-"Language: sv\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"Language: en\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#. module: stock_dermanord
+#: field:res.users,consent_count:0
+msgid "# Consents"
+msgstr "# Consents"
+
+#. module: stock_dermanord
+#: field:res.users,gdpr_count:0
+msgid "# Inventories"
+msgstr "# Inventories"
+
+#. module: stock_dermanord
+#: field:res.users,gdpr_object_count:0
+msgid "# Objects"
+msgstr "# Objects"
+
+#. module: stock_dermanord
+#: view:stock.picking:stock_dermanord.vpicktree
+msgid "#lines"
+msgstr "#rader"
+
+#. module: stock_dermanord
+#: field:res.users,order_line_agent_ids:0
+msgid "Agent Lines"
+msgstr "Agent Lines"
+
+#. module: stock_dermanord
+#: field:res.users,always_searchable:0
+msgid "Always searchable"
+msgstr "Always searchable"
+
+#. module: stock_dermanord
+#: field:res.users,brand_name:0
+msgid "Brand Name"
+msgstr "Brand Name"
+
+#. module: stock_dermanord
+#: field:product.sale_ok.wizard,data:0
+msgid "CSV File"
+msgstr "CSV File"
+
+#. module: stock_dermanord
+#: view:product.sale_ok.wizard:stock_dermanord.product_sale_ok_wizard_form
+msgid "Cancel"
+msgstr "Cancel"
 
 #. module: stock_dermanord
 #: field:stock.picking,pure_cell:0
 msgid "Cell"
 msgstr "Cell"
+
+#. module: stock_dermanord
+#: field:res.users,child_competence_ids:0
+msgid "Child Competences"
+msgstr "Child Competences"
 
 #. module: stock_dermanord
 #: field:res.users,child_category_ids:0
@@ -33,17 +83,27 @@ msgid "Claim"
 msgstr "Claim"
 
 #. module: stock_dermanord
+#: view:website:stock_multiple_picker.picking_operations_document
+msgid "Comment"
+msgstr "Kommentar"
+
+#. module: stock_dermanord
+#: field:res.users,consent_ids:0
+msgid "Consents"
+msgstr "Consents"
+
+#. module: stock_dermanord
 #: field:stock.picking,qc_id:0
 msgid "Controlled by"
 msgstr "Kontrollerad av"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,create_uid:0
+#: field:product.sale_ok.wizard,create_uid:0
 msgid "Created by"
 msgstr "Created by"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,create_date:0
+#: field:product.sale_ok.wizard,create_date:0
 msgid "Created on"
 msgstr "Created on"
 
@@ -53,7 +113,12 @@ msgid "Credit card"
 msgstr "Kreditkort"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,display_name:0
+#: field:res.users,customer_date:0
+msgid "Customer Since"
+msgstr "Customer Since"
+
+#. module: stock_dermanord
+#: field:product.sale_ok.wizard,display_name:0
 msgid "Display Name"
 msgstr "Display Name"
 
@@ -74,6 +139,31 @@ msgid "Expected Delivery Date"
 msgstr "Förväntat leveransdatum"
 
 #. module: stock_dermanord
+#: field:res.users,gdpr_object_ids:0
+msgid "GDPR Objects"
+msgstr "GDPR Objects"
+
+#. module: stock_dermanord
+#: field:res.users,gdpr_ids:0
+msgid "GDPRs"
+msgstr "GDPRs"
+
+#. module: stock_dermanord
+#: field:res.users,partner_latitude:0
+msgid "Geo Latitude"
+msgstr "Geo Latitude"
+
+#. module: stock_dermanord
+#: field:res.users,date_localization:0
+msgid "Geo Localization Date"
+msgstr "Geo Localization Date"
+
+#. module: stock_dermanord
+#: field:res.users,partner_longitude:0
+msgid "Geo Longitude"
+msgstr "Geo Longitude"
+
+#. module: stock_dermanord
 #: model:ir.model,name:stock_dermanord.model_stock_picking_wizard
 msgid "Get the first available stock picking"
 msgstr "Get the first available stock picking"
@@ -84,9 +174,24 @@ msgid "Group By"
 msgstr "Gruppera efter"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,id:0
+#: field:res.users,has_account:0
+msgid "Has account"
+msgstr "Has account"
+
+#. module: stock_dermanord
+#: field:product.sale_ok.wizard,id:0
 msgid "ID"
 msgstr "ID"
+
+#. module: stock_dermanord
+#: field:res.users,incoterm:0
+msgid "Incoterm"
+msgstr "Incoterm"
+
+#. module: stock_dermanord
+#: help:res.users,incoterm:0
+msgid "International Commercial Terms are a series of predefined commercial terms used in international transactions."
+msgstr "International Commercial Terms are a series of predefined commercial terms used in international transactions."
 
 #. module: stock_dermanord
 #: field:res.users,invoice_warn:0
@@ -99,17 +204,22 @@ msgid "Invoicing Type"
 msgstr "Invoicing Type"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,__last_update:0
+#: field:res.users,is_home_admin:0
+msgid "Is home admin"
+msgstr "Is home admin"
+
+#. module: stock_dermanord
+#: field:product.sale_ok.wizard,__last_update:0
 msgid "Last Modified on"
 msgstr "Last Modified on"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,write_uid:0
+#: field:product.sale_ok.wizard,write_uid:0
 msgid "Last Updated by"
 msgstr "Last Updated by"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,write_date:0
+#: field:product.sale_ok.wizard,write_date:0
 msgid "Last Updated on"
 msgstr "Last Updated on"
 
@@ -122,6 +232,16 @@ msgstr "Last activity by this partner"
 #: field:res.users,latest_activity:0
 msgid "Latest activity"
 msgstr "Latest activity"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.model_stock_move_operation_link
+msgid "Link between stock moves and pack operations"
+msgstr "Link between stock moves and pack operations"
+
+#. module: stock_dermanord
+#: field:product.sale_ok.wizard,message:0
+msgid "Message"
+msgstr "Message"
 
 #. module: stock_dermanord
 #: field:res.users,invoice_warn_msg:0
@@ -149,6 +269,11 @@ msgid "Missed Child Tags"
 msgstr "Missed Child Tags"
 
 #. module: stock_dermanord
+#: field:res.users,partner_ids:0
+msgid "Multi Clients"
+msgstr "Multi Clients"
+
+#. module: stock_dermanord
 #: field:res.users,my_context:0
 msgid "My context"
 msgstr "My context"
@@ -174,14 +299,14 @@ msgid "Packing List"
 msgstr "Packing List"
 
 #. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.model_stock_pack_operation
+msgid "Packing Operation"
+msgstr "Packing Operation"
+
+#. module: stock_dermanord
 #: field:res.users,count_participants:0 field:res.users,participant_ids:0
 msgid "Participants"
 msgstr "Participants"
-
-#. module: stock_dermanord
-#: field:stock.picking.wizard,employee_id:0
-msgid "Picking Employee"
-msgstr "Picking Employee"
 
 #. module: stock_dermanord
 #: code:addons/stock_dermanord/wizard/stock_picking.py:52
@@ -210,8 +335,23 @@ msgid "Prio"
 msgstr "Prio"
 
 #. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.model_procurement_order
+msgid "Procurement"
+msgstr "Anskaffning"
+
+#. module: stock_dermanord
+#: field:res.users,webshop_category_ids:0
+msgid "Product Categories"
+msgstr "Product Categories"
+
+#. module: stock_dermanord
 #: field:res.users,purchase_warn:0
 msgid "Purchase Order"
+msgstr "Inköpsorder"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.model_purchase_order
+msgid "Purchase order"
 msgstr "Inköpsorder"
 
 #. module: stock_dermanord
@@ -220,24 +360,22 @@ msgid "Ready for picking"
 msgstr "Plockbar"
 
 #. module: stock_dermanord
-#: field:stock.picking.wizard,force:0
-msgid "Replace Current Picking Employee"
-msgstr "Ersätt nuvarande plockansvarig"
-
-#. module: stock_dermanord
 #: field:res.users,sale_warn:0
 msgid "Sales Order"
 msgstr "Kundorder"
 
 #. module: stock_dermanord
-#: model:ir.actions.act_window,name:stock_dermanord.stock_picking_wizard_form_act
-#: view:stock.picking:stock_dermanord.view_picking_form
-#: view:stock.picking.wizard:stock_dermanord.stock_picking_wizard_form
-msgid "Set Picking Employee"
-msgstr "Sätt Plockansvarig"
+#: field:res.users,is_reseller:0
+msgid "Show Reseller in websearch"
+msgstr "Show Reseller in websearch"
 
 #. module: stock_dermanord
-#: field:res.users,picking_warn:0 field:stock.picking.wizard,picking_id:0
+#: model:ir.model,name:stock_dermanord.model_stock_move
+msgid "Stock Move"
+msgstr "Lagerflytt"
+
+#. module: stock_dermanord
+#: field:res.users,picking_warn:0
 msgid "Stock Picking"
 msgstr "Stock Picking"
 
@@ -250,6 +388,42 @@ msgstr "Summa"
 #: help:res.users,property_invoice_type:0
 msgid "This invoicing type will be used, by default, to invoice the current partner."
 msgstr "This invoicing type will be used, by default, to invoice the current partner."
+
+#. module: stock_dermanord
+#: help:res.users,has_account:0
+msgid "This partner has an account"
+msgstr "This partner has an account"
+
+#. module: stock_dermanord
+#: help:res.users,is_home_admin:0
+msgid "This partner has home admin right"
+msgstr "This partner has home admin right"
+
+#. module: stock_dermanord
+#: field:res.users,token:0
+msgid "Token"
+msgstr "Token"
+
+#. module: stock_dermanord
+#: field:res.users,top_image:0
+msgid "Top Image"
+msgstr "Top Image"
+
+#. module: stock_dermanord
+#: model:ir.ui.menu,name:stock_dermanord.menu_product_sale_ok_wizard
+#: view:product.sale_ok.wizard:stock_dermanord.product_sale_ok_wizard_form
+msgid "Update Products"
+msgstr "Update Products"
+
+#. module: stock_dermanord
+#: model:ir.actions.act_window,name:stock_dermanord.action_product_sale_ok_wizard_form
+msgid "Update Products Wizard"
+msgstr "Update Products Wizard"
+
+#. module: stock_dermanord
+#: model:ir.model,name:stock_dermanord.model_product_sale_ok_wizard
+msgid "Update Sale ok"
+msgstr "Update Sale ok"
 
 #. module: stock_dermanord
 #: view:stock.picking:stock_dermanord.view_picking_internal_search
@@ -271,3 +445,13 @@ msgstr "VIES-kontroll"
 #: help:res.users,purchase_warn:0 help:res.users,sale_warn:0
 msgid "Val av \"Varning\"-alternativet kommer att meddela användare med meddelandet, välj \"Spärrmeddelande\" kommer att skapa ett undantag med meddelandet och blockera flödet. Meddelande måste skrivas i nästa fält."
 msgstr "Val av \"Varning\"-alternativet kommer att meddela användare med meddelandet, välj \"Spärrmeddelande\" kommer att skapa ett undantag med meddelandet och blockera flödet. Meddelande måste skrivas i nästa fält."
+
+#. module: stock_dermanord
+#: help:res.users,always_searchable:0
+msgid "When checked. Reseller is always searchable."
+msgstr "When checked. Reseller is always searchable."
+
+#. module: stock_dermanord
+#: view:product.sale_ok.wizard:stock_dermanord.product_sale_ok_wizard_form
+msgid "or"
+msgstr "or"
