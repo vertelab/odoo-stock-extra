@@ -77,6 +77,12 @@ class stock_picking(models.Model):
     #~ invoice_type = fields.Selection(string='Invoice Type', [('invoice_in_package','Invoice in package'),('invoice_in_letter','Invoice in letter')])
     #~ invoice_control = fields.Selection(string='Invoice Control', [('2_b_invoiced','To be invoiced')])
     address_id = fields.Many2one(comodel_name='res.partner', related='sale_id.partner_shipping_id')
+    nr_move_lines = fields.Integer(string='#lines', compute='_get_nr_move_lines', store=True)
+    
+    @api.one
+    @api.depends('move_lines')
+    def _get_nr_move_lines(self):
+        self.nr_move_lines = len(self.move_lines)
 
     @api.one
     def _get_employee_id_readonly(self):
