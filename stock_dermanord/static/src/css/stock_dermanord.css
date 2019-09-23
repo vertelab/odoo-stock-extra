@@ -1,0 +1,11 @@
+.oe_list_field_cell[data-field="print_picking_with_location"]:empty {
+    display: none !important;
+    visibility: hidden !important;
+}
+th[data-id="print_picking_with_location"] + th[data-id="print_picking_with_location"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/*
+$('th[data-id="print_picking_with_location"] + th[data-id="print_picking_with_location"]')*/

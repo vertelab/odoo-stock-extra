@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <template id="assets_backend" name="Stock Dermanord CSS" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/stock_dermanord/static/src/css/stock_dermanord.css" />
+            </xpath>
+        </template>
         <record id="vpicktree" model="ir.ui.view">
             <field name="name">stock.picking.tree</field>
             <field name="model">stock.picking</field>
@@ -15,7 +20,9 @@
                         <field name="expected_delivery_date" />
                         <!-- 2019-09-04 TILLÄGG -->
                         <button name="print_picking_with_location" attrs="{'invisible': [('employee_ids', '=', [])]}" type="object" icon="gtk-print" />
-                        <field name="nr_move_lines" string="#lines"/> 
+                        <button name="print_picking_with_location" attrs="{'invisible': [('employee_ids', '!=', [])]}" type="object" icon="gtk-print-preview" />
+                        <!-- 2019-09-13 TILLÄGG -->
+                        <field name="nr_move_lines" string="#lines" />
                         <field name="name" />
                         <field name="partner_id" />
                         <field name="address_id" />
