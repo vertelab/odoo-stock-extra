@@ -60,12 +60,8 @@
                                     VAT:
                                     <span t-field="o.partner_id.vat"/>
                                 </p>
-                                <div>
-                                    <span>
-                                        <strong>Customer Number:</strong>
-                                    </span>
-                                    <span t-field="o.partner_id.customer_no"/>
-                                </div>
+                                
+<!--
                                 <div t-if="o.sudo().employee_ids">
                                     <span>
                                         <strong t-if="len(o.sudo().employee_ids) == 1">Picking Responsible:</strong>
@@ -81,6 +77,8 @@
                                         </span>
                                     </span>
                                 </div>
+-->
+                                
                                 <!--
                                 <p t-if="o.partner_id.ref">
                                     Ref:
@@ -111,6 +109,26 @@
                                 </span>
                                 <div t-field="o.picking_type_id.warehouse_id.partner_id" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;fax&quot;], &quot;no_marker&quot;: true}" />
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Customer Number:</strong>
+                            </span>
+                            <span t-field="o.partner_id.customer_no"/>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Controlled by:</strong>
+                            </span>
+                            <span t-if="o.sudo().qc_id" t-field="o.sudo().qc_id"/>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Date printed:</strong>
+                            </span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
                         </div>
                     </div>
                     <h2>
