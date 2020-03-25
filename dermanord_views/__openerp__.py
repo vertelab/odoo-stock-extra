@@ -27,7 +27,7 @@
 'author': 'Vertel AB',
     'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
-'depends': ['sale', 'sale_delivery_address', 'partner_show_contact_type', 'sale_customer_no'],
+'depends': ['sale_stock', 'sale_delivery_address', 'partner_show_contact_type', 'sale_customer_no'],
 'data': ['dermanord_view.xml'],
 'installable': True,
 }
