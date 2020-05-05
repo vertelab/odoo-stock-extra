@@ -182,7 +182,7 @@
 -->
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="o.with_context(float_format_field=original_qty.get(ml.product_id.id, {'qty': 0.0})['qty']).float_format_field"/>
+                                            <span t-field="o.with_context(float_format_field=original_qty.get(ml.id, {'qty': 0.0})['qty']).float_format_field"/>
                                         </td>
                                         <td class="text-right">
                                             <span t-field="ml.product_qty"/>
@@ -196,16 +196,13 @@
                                     </t>                                    
                                 </tr>
                             </t>
+<!--
                             <t t-foreach="original_qty" t-as="product_id">
                                 <t t-set="product" t-value="original_qty[product_id]"/>
                                 <t t-if="product_id not in o.move_lines.mapped('product_id')._ids">
                                     <tr>
                                         <td>
                                             <span t-esc="product['name']"/>
-    <!--
-                                            <span style="font-style: italic;"><t t-if="ml.sudo().product_id.description_sale"><br/><span t-field="ml.sudo().product_id.description_sale"/></t></span>
-    -->
-
                                         </td>
                                         <td class="text-right">
                                             <span t-field="o.with_context(float_format_field=product['qty']).float_format_field"/>
@@ -214,14 +211,11 @@
                                             <span t-field="o.with_context(float_format_field=0.0).float_format_field"/>
                                         </td>
                                         <td class="text-right">
-    <!--
-                                            <span t-field="ml.weight"/>
-    -->
                                         </td>
-                                        
                                     </tr>
                                 </t>
                             </t>
+-->
                             <tr>
                                 <td class="text-right">
                                     <strong>Total</strong>

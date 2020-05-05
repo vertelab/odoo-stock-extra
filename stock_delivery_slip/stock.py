@@ -37,34 +37,10 @@ class StockPicking(models.Model):
     @api.multi
     def get_original_quantities(self):
         """Returns a dict describing the originally ordered quantities."""
-        res = {}
-        
-        def get_product(product):
-            """Returns the dict for the given product from res. Creates it if it doesn't exist yet."""
-            if product.id not in res:
-                res[product.id] = {
-                    'qty': 0.0,
-                    'name': product.display_name,
-                }
-            return res[product.id]
-        
-        for order in self.env['sale.order'].search([('procurement_group_id', '=', self.group_id.id)]):
-            for line in order.order_line:
-                product = line.product_id
-                if product.type == 'service':
-                    continue
-                qty = line.product_uom._compute_qty_obj(line.product_uom, line.product_uom_qty, product.uom_id)
-                product_dict = get_product(product)
-                product_dict['qty'] = product_dict['qty'] + qty
-                # Handle kit products
-                if product.is_offer:
-                    bom = product.bom_ids.filtered(lambda r: r.product_id == product) or product.bom_ids.filtered(lambda r: not r.product_id)
-                    if bom:
-                        bom = bom[0]
-                        for bom_line in bom.bom_line_ids:
-                            product_dict = get_product(bom_line.product_id)
-                            product_dict['qty'] = product_dict['qty'] + qty * bom_line.product_qty
+        res = {} 
+        for line in self.move_lines:
+            res[line.id] = {
+                'qty': line.procurement_id and line.procurement_id.product_qty or 0.0,
+                # ~ 'name': line.product.display_name,
+            }
         return res
-        
-            
-            
