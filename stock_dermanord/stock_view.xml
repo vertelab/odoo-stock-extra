@@ -6,47 +6,7 @@
                 <link rel="stylesheet" href="/stock_dermanord/static/src/css/stock_dermanord.css" />
             </xpath>
         </template>
-        <record id="vpicktree" model="ir.ui.view">
-            <field name="name">stock.picking.tree</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.vpicktree" />
-            <field name="arch" type="xml">
-                <tree string="Picking list" position="replace">
-                    <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
-                        <field name="ready4picking" />
-                        <field name="prio" />
-                        <field name="pure_cell" />
-                        <field name="claim" />
-                        <field name="expected_delivery_date" />
-                        <!-- 2019-09-04 TILLÄGG -->
-                        <button name="print_picking_with_location" attrs="{'invisible': [('employee_ids', '=', [])]}" type="object" icon="gtk-print" />
-                        <button name="print_picking_with_location" attrs="{'invisible': [('employee_ids', '!=', [])]}" type="object" icon="gtk-print-preview" />
-                        <!-- 2019-09-13 TILLÄGG -->
-                        <field name="nr_move_lines" string="#lines" />
-                        <field name="name" />
-                        <field name="partner_id" />
-                        <field name="address_id" />
-                        <field name="weight" />
-                        <field name="origin" />
-                        <field name="invoice_type_id" />
-                        <field name="date" />
-                        <field name="backorder_id" />
-                        <field name="carrier_id" />
-                        <field name="pickup_time" />
-                        <field name="creditcard" />
-                        <!-- 2019-09-04 TILLÄGG, TVÅ FÄLT -->
-                        <field name="qc_id" />
-                        <field name="employee_ids" />
-                        <field name="state" />
-                        <field name="date_done" />
-                        <field name="min_date" invisible="1" />
-                        <field name="group_id" invisible="1" />
-                        <field name="priority" invisible="1" />
-                        <field name="picking_type_id" invisible="1" />
-                    </tree>
-                </tree>
-            </field>
-        </record>
+        
         <record id="view_picking_internal_search" model="ir.ui.view">
             <field name="name">stock.picking.internal.search</field>
             <field name="model">stock.picking</field>
