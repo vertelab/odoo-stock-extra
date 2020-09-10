@@ -1,7 +1,7 @@
-<openerp>
+<odoo>
     <data>
 
-        <record id="procurement_group_form_view" model="ir.ui.view">
+ <!--        <record id="procurement_group_form_view" model="ir.ui.view">
             <field name="name">procurement.group.form.inherited.cavarosa_delivery</field>
             <field name="model">procurement.group</field>
             <field name="inherit_id" ref="procurement.procurement_group_form_view"/>
@@ -11,6 +11,6 @@
                 </field>
             </field>
         </record>
-
+ -->
     </data>
-</openerp>
+</odoo>

@@ -1,4 +1,4 @@
-<openerp>
+<odoo>
     <data noupdate="1">
 
 <!--
@@ -53,12 +53,12 @@
                     <footer>
                         <button name="import_costs" type="object" string="Import" class="oe_highlight"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel" />
+                        <button string="Cancel" class="oe_link" />
                     </footer>
                 </form>
             </field>
         </record>
-        <act_window id="act_cavarosa_home_delivery"
+<!--      <act_window id="act_cavarosa_home_delivery"
             key2="client_action_multi"
             name=" Importera hemleveransprislistan"
             res_model="cavarosa.delivery.cost.import"
@@ -66,6 +66,6 @@
             view_mode="form"
             target="new"
             view_type="form"
-            view_id="cavarosa_delivery.cavarosa_delivery_cost_import_form" />
-    </data>
-</openerp>
+            view_id="cavarosa_delivery.cavarosa_delivery_cost_import_form" />  -->
+    </data> 
+</odoo>

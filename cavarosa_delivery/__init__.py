@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
-import delivery
-import sale
-import stock
+from . import delivery
+from . import sale
+from . import stock

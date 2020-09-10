@@ -40,19 +40,16 @@ class sale_order(models.Model):
 
 class procurement_group(models.Model):
     _inherit = 'procurement.group'
-
     cavarosa_box = fields.Char(string='Cavarosa Box')
 
-
 class procurement_order(models.Model):
-    _inherit = 'procurement.order'
+    _inherit = 'procurement.group'
 
     @api.model
     def _run_move_create(self, procurement):
         vals = super(procurement_order, self)._run_move_create(procurement)
         vals['cavarosa_box'] = procurement.group_id.cavarosa_box
         return vals
-
 
 class stock_move(models.Model):
     _inherit = 'stock.move'
@@ -61,6 +58,6 @@ class stock_move(models.Model):
 
 
 class stock_pack_operation(models.Model):
-    _inherit = 'stock.pack.operation'
+    _inherit = 'stock.package_level'
 
     cavarosa_box = fields.Char(string='Cavarosa Box')

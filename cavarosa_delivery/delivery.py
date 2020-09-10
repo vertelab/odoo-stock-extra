@@ -59,43 +59,43 @@ class CavarosaDeliveryCostImport(models.TransientModel):
         return self.env['delivery.carrier'].browse(self._context.get('active_id', []))
     carrier_id = fields.Many2one(comodel_name='delivery.carrier', default=_active_id)
 
-    @api.one
     def import_costs(self):
-        if self.data:
-            wb = open_workbook(file_contents=base64.b64decode(self.data))
-            ws = wb.sheet_by_index(0)
-            if len(self.carrier_id.pricelist_ids) > 0:
-                for grid in self.carrier_id.pricelist_ids:
-                    self.env['delivery.grid.line'].search([('grid_id', '=', grid.id)]).unlink()
-                    grid.unlink()
-            pricelist = self.env['delivery.grid'].create({
-                'carrier_id': self.carrier_id.id,
-                'name': 'Home Delivery',
-                'country_ids': [(4, self.env.ref('base.se').id, 0)],
-                'zip_from': str(int(Iterator(ws).zip_from)),
-                'zip_to': str(int(Iterator(ws).zip_to)),
-            })
-            for r in Iterator(ws):
-                self.env['delivery.grid.line'].create({
-                    'name': '%s - 1-3 kli' %int(r.get('postnummer')),
-                    'type': 'quantity',
-                    'operator': '<=',
-                    'max_value': 3.0,
-                    'price_type': 'fixed',
-                    'list_price': r.get('pris 1-3 kli'),
-                    'standard_price': 0.0,
-                    'grid_id': pricelist.id,
+        for cost in self:
+            if cost.data:
+                wb = open_workbook(file_contents=base64.b64decode(self.data))
+                ws = wb.sheet_by_index(0)
+                if len(cost.carrier_id.pricelist_ids) > 0:
+                    for grid in cost.carrier_id.pricelist_ids:
+                        cost.env['delivery.grid.line'].search([('grid_id', '=', grid.id)]).unlink()
+                        grid.unlink()
+                pricelist = cost.env['delivery.grid'].create({
+                    'carrier_id': cost.carrier_id.id,
+                    'name': 'Home Delivery',
+                    'country_ids': [(4, cost.env.ref('base.se').id, 0)],
+                    'zip_from': str(int(Iterator(ws).zip_from)),
+                    'zip_to': str(int(Iterator(ws).zip_to)),
                 })
-                self.env['delivery.grid.line'].create({
-                    'name': '%s - 4-6 kli' %int(r.get('postnummer')),
-                    'type': 'quantity',
-                    'operator': '>=',
-                    'max_value': 4.0,
-                    'price_type': 'fixed',
-                    'list_price': r.get('pris 4-6 kli'),
-                    'standard_price': 0.0,
-                    'grid_id': pricelist.id,
-                })
+                for r in Iterator(ws):
+                    cost.env['delivery.grid.line'].create({
+                        'name': '%s - 1-3 kli' %int(r.get('postnummer')),
+                        'type': 'quantity',
+                        'operator': '<=',
+                        'max_value': 3.0,
+                        'price_type': 'fixed',
+                        'list_price': r.get('pris 1-3 kli'),
+                        'standard_price': 0.0,
+                        'grid_id': pricelist.id,
+                    })
+                    cost.env['delivery.grid.line'].create({
+                        'name': '%s - 4-6 kli' %int(r.get('postnummer')),
+                        'type': 'quantity',
+                        'operator': '>=',
+                        'max_value': 4.0,
+                        'price_type': 'fixed',
+                        'list_price': r.get('pris 4-6 kli'),
+                        'standard_price': 0.0,
+                        'grid_id': pricelist.id,
+                    })
 
 
 class delivery_carrier(models.Model):
@@ -109,12 +109,12 @@ class delivery_carrier(models.Model):
                               #~ '\n'.join(['<option value="%s">%s</option>' % (p.id,p.name) for p in self.env['res.partner'].search([('pickup_location','=',True)])])
     #~ data_input = fields.Text(compute="_data_input",)
 
-    @api.one
     def _carrier_data(self):
-        if self.cavarosa_box:
-            self.carrier_data = '<input name="carrier_data" type="text" class="form-control carrier_input" placeholder="Box number..."/>'
-        else:
-            super(delivery_carrier, self)._carrier_data()
+        for carry in self:
+            if carry.cavarosa_box:
+                carry.carrier_data = '<input name="carrier_data" type="text" class="form-control carrier_input" placeholder="Box number..."/>'
+            else:
+                super(delivery_carrier, carry)._carrier_data()
 
     @api.model
     def lookup_carrier(self, carrier_id, carrier_data, order):

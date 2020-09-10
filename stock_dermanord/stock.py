@@ -36,7 +36,7 @@ class stock_move(models.Model):
     quant_ids = fields.Many2many(index=True)
 
 class procurement_order(models.Model):
-    _inherit = "procurement.order"
+    _inherit = "procurement.group"
 
     # Queries on sale_line_id and group_id take a lot of time when confirming a sale order (~1.5 s per line)
     sale_line_id = fields.Many2one(index=True)
@@ -50,7 +50,7 @@ class stock_move_operation_link(models.Model):
     move_id = fields.Many2one(index=True)
 
 class stock_pack_operation(models.Model):
-    _inherit = "stock.pack.operation"
+    _inherit = "stock.package_level"
     
     # Queries on picking_id take a lot of time when moving a picking order
     picking_id = fields.Many2one(index=True)
