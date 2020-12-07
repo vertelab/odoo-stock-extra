@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * stock_delivery_slip
+#	* stock_delivery_slip
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20160410\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-25 07:17+0000\n"
-"PO-Revision-Date: 2016-04-25 07:17+0000\n"
+"POT-Creation-Date: 2020-12-01 12:55+0000\n"
+"PO-Revision-Date: 2020-12-01 12:55+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,25 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_delivery_slip
+#: code:addons/stock_delivery_slip/stock.py:35
+#, python-format
+msgid "%s Delivery Slip.pdf"
+msgstr "%s Delivery Slip.pdf"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Best regards from your MÅ Dream Team!"
+msgstr "Vänliga hälsningar från hela ditt MÅ Dream Team!"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Controlled by:"
+msgstr "Din order har packats av:"
+
+#. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Customer Address:"
-msgstr "Kundadress:"
+msgstr "Customer Address:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -27,8 +43,13 @@ msgstr "Kundnummer:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Date printed:"
+msgstr "Utskriftsdatum:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Delivery Address:"
-msgstr "Leveransadress:"
+msgstr "Delivery Address:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -42,23 +63,58 @@ msgstr "Beskrivning"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Email:"
+msgstr "Epost:"
+
+#. module: stock_delivery_slip
+#: field:stock.picking,float_format_field:0
+msgid "Float Format"
+msgstr "Float Format"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Hello and thank you for choosing MARIA ÅKERBERG!"
+msgstr "Hej och tack för att du väljer MARIA ÅKERBERG!"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Here is a summary of what products you have ordered."
+msgstr "Ovan ser du en sammanställning över din order."
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "If you have specific questions regarding the products or how to use them, or if you wish to return or make a complaint,"
+msgstr "För produktfrågor eller eventuella retur-/reklamationsärenden, var vänlig kontakta din återförsäljare."
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Let’s make the world a more beautiful place. One non-toxic product at time"
+msgstr "Let’s make the world a more beautiful place. One non-toxic product at time"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Ordered Quantity"
 msgstr "Beställd kvantitet"
 
 #. module: stock_delivery_slip
-#: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Picking Responsible:"
-msgstr "Plockansvarig:"
+#: model:ir.model,name:stock_delivery_slip.model_stock_picking
+msgid "Packing List"
+msgstr "Packing List"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Picking Responsibles:"
-msgstr "Plockansvariga:"
+msgid "Phone:"
+msgstr "Telefon:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Picker:"
+msgstr "Picker:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Quantity"
-msgstr "Kvantitet"
+msgstr "Antal"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -73,12 +129,27 @@ msgstr "Lager följesedel"
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "Supplier Address:"
-msgstr "Leverantöradress:"
+msgstr "Supplier Address:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Total"
+msgstr "Total"
+
+#. module: stock_delivery_slip
+#: help:stock.picking,float_format_field:0
+msgid "Used to format floats supplied in context ({'float_format_field': 23.5})"
+msgstr "Used to format floats supplied in context ({'float_format_field': 23.5})"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
 msgid "VAT:"
-msgstr "VAT:"
+msgstr "Moms:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Warehouse Address:"
+msgstr "Lageradress:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
@@ -87,5 +158,16 @@ msgstr "Vikt"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Warehouse Address:"
-msgstr "Lageradress:"
+msgid "You are registered at"
+msgstr "Din personliga återförsäljare är"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "please contact your personal reseller."
+msgstr " "
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "with the following contact information"
+msgstr "och har följande kontaktuppgifter"
+

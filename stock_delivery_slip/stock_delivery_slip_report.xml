@@ -231,7 +231,31 @@
                                 </td>
                             </tr>
                         </tbody>
+
                     </table>
+
+
+                    <t t-if="o.sale_id.partner_id.commercial_partner_id.access_group_ids in request.env.ref('webshop_dermanord.group_dn_sk')">
+
+                        <p><i>Let’s make the world a more beautiful place. One non-toxic product at time</i></p>
+
+                        <p>Hello and thank you for choosing MARIA ÅKERBERG!</p>
+
+                        <p>Here is a summary of what products you have ordered. </p>
+                        <p> If you have specific questions regarding the products or how to use them, or if you wish to return or make a complaint, <br/> please contact your personal reseller. </p>
+
+                        <p>You are registered at 
+                        <t t-esc="o.sale_id.partner_id.agents.name"/>
+                        with the following contact information<b>
+                        <br/>Email:</b> 
+                        <t t-esc="o.sale_id.partner_id.agents.email"/> 
+                        <b><br/>Phone:</b> 
+                        <t t-esc="o.sale_id.partner_id.agents.phone"/></p>
+
+                        <p>Best regards from your MÅ Dream Team!</p>
+
+                    </t>
+
                 </div>
             </t>
         </template>
