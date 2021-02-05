@@ -32,7 +32,7 @@ Delivery Cavarosa AB.
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['delivery_carrier_data',],
+    'depends': ['delivery_carrier_data', 'base_import'],
     'data': [
         'stock_view.xml',
         'sale_view.xml',
