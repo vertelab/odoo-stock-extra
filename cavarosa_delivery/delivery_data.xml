@@ -47,17 +47,21 @@
             </field>
         </record>
 
-       <!--  <template id="payment_delivery" name="Delivery Costs" inherit_id="website_sale.payment">
-        <xpath expr="//div[@id='shipping_and_billing']" position="inside">
-            <t t-set="delivery_nb" t-value="deliveries and len(deliveries)"/>
-            <div t-if="delivery_nb == 1" id="delivery_carrier" class="mt4">
-                <b>Shipping Method: </b>
-                <t t-foreach="deliveries" t-as="delivery">
-                    <t t-call="website_sale_delivery.payment_delivery_methods"/>
-                </t>
-            </div>
+       <template id="payment_delivery_zip_code_comparison" name="Delivery Costs Zip Code Comparison" inherit_id="website_sale_delivery.payment_delivery">
+       
+        <xpath expr="//li[@class='list-group-item o_delivery_carrier_select']" position="attributes">
+	    <attribute name="t-if">
+		not delivery.postcode_ids or order.partner_shipping_id.zip in delivery.mapped('postcode_ids.name')
+	    </attribute>
         </xpath>
-        <xpath expr="//div[@id='payment_method']" position="before">
+
+        <xpath expr="//t[@t-call='website_sale_delivery.payment_delivery_methods']" position="replace">
+	    <p> hej2 </p>
+	    <t t-if="not delivery.postcode_ids or order.partner_shipping_id.zip in delivery.mapped('postcode_ids.name') ">
+		<t t-call="website_sale_delivery.payment_delivery_methods"/>
+	    </t>
+        </xpath>
+        <!--<xpath expr="//div[@id='payment_method']" position="replace">
             <div t-if="deliveries" id="delivery_carrier">
                 <t t-set="delivery_nb" t-value="len(deliveries)"/>
                 <h3 t-if="delivery_nb &gt; 1" class="mb24">Choose a delivery method</h3>
@@ -71,12 +75,12 @@
                     </ul>
                 </div>
             </div>
-        </xpath>
-         we shouldn't be able to pay if there is no way to deliver -->
-        <!-- <xpath expr="//div[@id='payment_method']" position="attributes">
+        </xpath>-->
+        <!--  we shouldn't be able to pay if there is no way to deliver -->
+        <xpath expr="//div[@id='payment_method']" position="attributes">
                 <attribute name="t-att-style">'display: none!important' if not deliveries and delivery_has_storable else ''</attribute>
         </xpath>
-    </template> -->     
+    </template>
 
             
 </odoo>

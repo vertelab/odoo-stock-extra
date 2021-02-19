@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from odoo import api, models, fields, _
+from odoo import api, models, fields, http, _
 from odoo.exceptions import except_orm, Warning, RedirectWarning
 from xlrd import open_workbook
 from xlrd.book import Book
@@ -112,7 +112,8 @@ class delivery_carrier(models.Model):
     postcode_ids = fields.Many2many(comodel_name="delivery.carrier.postcode",string="Postcode",help="Delivery options for customers that have these pricelists.")
 
 
-# def check_postcode(self, postcode):
+#def check_postcode(self, postcode):
+#    _logger.warn('check_postcode was called!!!')
 #         # mailing_lists = []
 #         # for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True),('country_ids','in',request.env.user.partner_id.commercial_partner_id.country_id.id)]):
 #         #     mailing_lists.append({
@@ -268,6 +269,11 @@ class delivery_grid_line(models.Model):
 
     from odoo.tools import misc
 
+#class PostcodeController(http.Controller):
+    
+#    @http.route('/shop/payment')
+#    def check_postcode(self):
+#        _logger.warn('check_postcode was called')
 
 # class ImportController(http.Controller):
 
