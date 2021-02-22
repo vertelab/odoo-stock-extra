@@ -56,7 +56,6 @@
         </xpath>
 
         <xpath expr="//t[@t-call='website_sale_delivery.payment_delivery_methods']" position="replace">
-	    <p> hej2 </p>
 	    <t t-if="not delivery.postcode_ids or order.partner_shipping_id.zip in delivery.mapped('postcode_ids.name') ">
 		<t t-call="website_sale_delivery.payment_delivery_methods"/>
 	    </t>
