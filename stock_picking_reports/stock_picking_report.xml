@@ -109,7 +109,7 @@
                   </t>
                </td>
                <td class="text-right">
-                  <span t-field="move.weight" />
+                  <span t-field="pack_operation.product_id.weight" />
                </td>
                <td>
                   <span t-if="pack_operation.lot_id">
