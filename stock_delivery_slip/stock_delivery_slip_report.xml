@@ -253,6 +253,7 @@
                         <t t-esc="o.sale_id.partner_id.agents.phone"/></p>
 
                         <p>Best regards from your MÅ Dream Team!</p>
+
                     </t>
 
                 </div>
