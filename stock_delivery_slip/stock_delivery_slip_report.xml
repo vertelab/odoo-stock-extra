@@ -112,23 +112,36 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-4 ">
-                            <span>
-                                <strong>Customer Number:</strong>
-                            </span>
-                            <span t-field="o.partner_id.customer_no"/>
-                        </div>
-                        <div class="col-xs-4 ">
-                            <span>
-                                <strong>Controlled by:</strong>
-                            </span>
-                            <span t-if="o.sudo().qc_id" t-field="o.sudo().qc_id"/>
-                        </div>
-                        <div class="col-xs-4 ">
-                            <span>
-                                <strong>Date printed:</strong>
-                            </span>
-                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        <div class="col-xs-6">
+                            <t t-set="delivery" t-value="o.partner_id.parent_id.child_ids.filtered(lambda c: c.name == 'delivery')"/>
+                            <div t-if="delivery">
+                                <span>
+                                    <strong>Your reference:</strong>
+                                </span>
+                                <span t-field="delivery.name"/>
+                                <span t-field="delivery.phone"/>
+                                <t t-if="delivery.mobile">,
+                                    <span t-field="delivery.mobile" />
+                                </t>
+                                <br />
+                            </div>
+                            <div t-if="not delivery">
+                                <span>
+                                    <strong>Your reference:</strong>
+                                </span>
+                                <span t-field="o.partner_id.name"/>
+                                <span t-field="o.partner_id.phone"/>
+                                <t t-if="o.partner_id.mobile">,
+                                    <span t-field="o.partner_id.mobile" />
+                                </t>
+                                <br />
+                            </div>
+                            <t t-if="o.sale_id.client_order_ref">
+                                <span>
+                                    <strong>Customer References:</strong>
+                                </span>
+                            <span t-field="o.sale_id.client_order_ref"/>
+                            </t>
                         </div>
                     </div>
                     <h2>

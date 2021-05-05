@@ -171,3 +171,13 @@ msgstr " "
 msgid "with the following contact information"
 msgstr "och har följande kontaktuppgifter"
 
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Your reference:"
+msgstr "Er referens:"
+
+#. module: stock_delivery_slip
+#: view:website:stock_delivery_slip.stock_delivery_slip_document
+msgid "Customer References:"
+msgstr "Kundreferens:"
+
