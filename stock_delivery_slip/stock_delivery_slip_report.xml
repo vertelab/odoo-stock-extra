@@ -113,21 +113,9 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
-                            <t t-set="delivery" t-value="o.partner_id.parent_id.child_ids.filtered(lambda c: c.name == 'delivery')"/>
-                            <div t-if="delivery">
+                            <div t-if="o.address_id.name.lower() != 'delivery'">
                                 <span>
-                                    <strong>Your reference:</strong>
-                                </span>
-                                <span t-field="delivery.name"/>
-                                <span t-field="delivery.phone"/>
-                                <t t-if="delivery.mobile">,
-                                    <span t-field="delivery.mobile" />
-                                </t>
-                                <br />
-                            </div>
-                            <div t-if="not delivery">
-                                <span>
-                                    <strong>Your reference:</strong>
+                                    <strong>Your contact:</strong>
                                 </span>
                                 <span t-field="o.partner_id.name"/>
                                 <span t-field="o.partner_id.phone"/>
@@ -138,7 +126,7 @@
                             </div>
                             <t t-if="o.sale_id.client_order_ref">
                                 <span>
-                                    <strong>Customer References:</strong>
+                                    <strong>Your order number:</strong>
                                 </span>
                             <span t-field="o.sale_id.client_order_ref"/>
                             </t>

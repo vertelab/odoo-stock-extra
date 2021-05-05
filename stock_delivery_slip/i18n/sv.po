@@ -173,11 +173,10 @@ msgstr "och har följande kontaktuppgifter"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Your reference:"
-msgstr "Er referens:"
+msgid "Your contact:"
+msgstr "Er kontakt:"
 
 #. module: stock_delivery_slip
 #: view:website:stock_delivery_slip.stock_delivery_slip_document
-msgid "Customer References:"
-msgstr "Kundreferens:"
-
+msgid "Your order number:"
+msgstr "Ert ordernummer/referens:"
