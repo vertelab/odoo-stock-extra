@@ -113,7 +113,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
-                            <div t-if="o.address_id.name.lower() != 'delivery'">
+                            <div t-if="o.address_id and o.address_id.name.lower() != 'delivery'">
                                 <span>
                                     <strong>Your contact:</strong>
                                 </span>
