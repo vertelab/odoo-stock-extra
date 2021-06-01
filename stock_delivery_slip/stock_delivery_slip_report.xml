@@ -132,6 +132,26 @@
                             </t>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Customer Number:</strong>
+                            </span>
+                            <span t-field="o.partner_id.customer_no"/>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Controlled by:</strong>
+                            </span>
+                            <span t-if="o.sudo().qc_id" t-field="o.sudo().qc_id"/>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span>
+                                <strong>Date printed:</strong>
+                            </span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        </div>
+                    </div>
                     <h2>
                         <span>Delivery slip</span>
                         :
