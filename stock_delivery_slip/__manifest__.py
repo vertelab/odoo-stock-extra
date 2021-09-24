@@ -20,7 +20,7 @@
 ##############################################################################
 {
 'name': 'stock_delivery_slip',
-'version': '0.1',
+'version': '14.1.0.0.1',
 'summary': '',
 'category': 'stock',
 'description': """Extended stock picking report with warehouse place.
@@ -33,7 +33,9 @@ Report financed by Dermanord-Svensk Hudvård AB""",
 'author': 'Vertel AB',
     'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
-'depends': ['stock', 'stock_dermanord', 'stock_multiple_picker'],
-'data': [ 'stock_delivery_slip_report.xml'],
+'depends': ['stock'], #'stock_dermanord', 'stock_multiple_picker'],
+'data': [ 
+    'data/stock_delivery_slip_report.xml'
+    ],
 'installable': True,
 }

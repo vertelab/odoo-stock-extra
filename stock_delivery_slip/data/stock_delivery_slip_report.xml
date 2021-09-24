@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="stock_delivery_slip_report"
+            model="stock.picking"
+            string="Stock Delivery Slip"
+            report_type="qweb-pdf"
+            name="stock_delivery_slip.stock_delivery_slip"
+            file="stock_delivery_slip"
+        />
+        <!--attachment="object._get_delivery_slip_name()"-->
+
+        <template id="stock_delivery_slip">
+            <t t-name="stock_delivery_slip.stock_delivery_slip">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="stock_delivery_slip.stock_delivery_slip_document" t-lang="doc.partner_id.lang"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="stock_delivery_slip_document">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+            <t t-set="original_qty" t-value="doc.get_original_quantities()"/>
+            <t t-call="web.external_layout">
+                <div class="page">
+                   <div>
+                        <span>
+                            <strong>Supplier Address:</strong>
+                        </span>
+                    </div>
+                    <div>
+                        <span>
+                            <strong>Warehouse Address:</strong>
+                        </span>
+                    </div>
+                    <div>
+                        <span>
+                            <strong>Picker:</strong><br />
+                            <span t-field="doc.name"/>
+                        </span>
+                    </div>
+
+                    <div>
+                        <span>
+                            <strong>Customer Address:</strong>
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>
