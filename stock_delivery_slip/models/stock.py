@@ -10,12 +10,22 @@ from odoo.modules.registry import Registry
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     
+    float_format_field = fields.Float(string='Float Format', compute='_compute_float_format_field', help="Used to format floats supplied in context ({'float_format_field': 23.5})")
+
+    def _compute_float_format_field(self):
+        for item in self:
+            item.float_format_field = item.env.context.get('float_format_field', 0.0)
+
+    def _get_delivery_slip_name(self):
+        return _('%s Delivery Slip.pdf') % object.name
+
     def get_original_quantities(self):
         """Returns a dict describing the originally ordered quantities."""
-        res = {} 
+        res = {}
         for line in self.move_lines:
             res[line.id] = {
                 'qty':  line.product_qty or 0.0,
