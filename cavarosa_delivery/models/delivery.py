@@ -24,10 +24,11 @@ from odoo.exceptions import except_orm, Warning, RedirectWarning
 from xlrd import open_workbook
 from xlrd.book import Book
 from xlrd.sheet import Sheet
-import openerp.addons.decimal_precision as dp
+import odoo.addons.decimal_precision as dp
 import os
 import base64
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -57,6 +58,7 @@ class CavarosaDeliveryCostImport(models.TransientModel):
     # postcode_id = fields.Many2one(comodel_name="delivery.carrier",string="Postcode",help="Delivery options for customers that have these pricelists.")
 
     data = fields.Binary(string='File')
+
     @api.model
     def _active_id(self):
         return self.env['delivery.carrier'].browse(self._context.get('active_id', []))
@@ -82,7 +84,7 @@ class CavarosaDeliveryCostImport(models.TransientModel):
                 _logger.warning('hej %s' % Iterator(ws))
                 for r in ws:
                     cost.env['delivery.grid.line'].create({
-                        'name': '%s - 1-3 kli' %int(r.get('postnummer')),
+                        'name': '%s - 1-3 kli' % int(r.get('postnummer')),
                         'type': 'quantity',
                         'operator': '<=',
                         'max_value': 3.0,
@@ -92,7 +94,7 @@ class CavarosaDeliveryCostImport(models.TransientModel):
                         'grid_id': pricelist.id,
                     })
                     cost.env['delivery.grid.line'].create({
-                        'name': '%s - 4-6 kli' %int(r.get('postnummer')),
+                        'name': '%s - 4-6 kli' % int(r.get('postnummer')),
                         'type': 'quantity',
                         'operator': '>=',
                         'max_value': 4.0,
@@ -106,32 +108,33 @@ class CavarosaDeliveryCostImport(models.TransientModel):
 class delivery_carrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    cavarosa_box = fields.Boolean(string="Cavarosa Box",help="Check this field if the Carrier Type is a Cavarosa Box.")
-    normal_price = fields.Float(string='Normal Price', help="Keep empty if the pricing depends on the advanced pricing per destination")
-    pricelist_ids = fields.Many2many(comodel_name="product.pricelist",string="Pricelists",help="Delivery options for customers that have these pricelists.")
-    postcode_ids = fields.Many2many(comodel_name="delivery.carrier.postcode",string="Postcode",help="Delivery options for customers that have these pricelists.")
+    cavarosa_box = fields.Boolean(string="Cavarosa Box", help="Check this field if the Carrier Type is a Cavarosa Box.")
+    normal_price = fields.Float(string='Normal Price',
+                                help="Keep empty if the pricing depends on the advanced pricing per destination")
+    pricelist_ids = fields.Many2many(comodel_name="product.pricelist", string="Pricelists",
+                                     help="Delivery options for customers that have these pricelists.")
+    postcode_ids = fields.Many2many(comodel_name="delivery.carrier.postcode", string="Postcode",
+                                    help="Delivery options for customers that have these pricelists.")
 
+    # def check_postcode(self, postcode):
+    #    _logger.warn('check_postcode was called!!!')
+    #         # mailing_lists = []
+    #         # for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True),('country_ids','in',request.env.user.partner_id.commercial_partner_id.country_id.id)]):
+    #         #     mailing_lists.append({
+    #         #         'name': mailing_list.name,
+    #         #         'id': mailing_list.id,
+    #         #         'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id)]) > 0,
+    #         #     })
+    #         # return mailing_lists
 
-#def check_postcode(self, postcode):
-#    _logger.warn('check_postcode was called!!!')
-#         # mailing_lists = []
-#         # for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True),('country_ids','in',request.env.user.partner_id.commercial_partner_id.country_id.id)]):
-#         #     mailing_lists.append({
-#         #         'name': mailing_list.name,
-#         #         'id': mailing_list.id,
-#         #         'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id)]) > 0,
-#         #     })
-#         # return mailing_lists
+    #         postcode = self.env['delivery.carrier.postcode'].search([('postcode_ids','in',self.env.user.partner_id.commercial_partner_id.zip)])
+    #         if postcode:
+    #             if self.name == "Hemleverans":
+    #                 self.active = True
+    #         else:
+    #             self.active = False
 
-#         postcode = self.env['delivery.carrier.postcode'].search([('postcode_ids','in',self.env.user.partner_id.commercial_partner_id.zip)])
-#         if postcode:
-#             if self.name == "Hemleverans":
-#                 self.active = True
-#         else:
-#             self.active = False
-
-
-# TODO: SUper for this function! fix it!
+    # TODO: SUper for this function! fix it!
     # def _match_address(self, partner):
 
     #     res = super(delivery_carrier,self)._match_address(partner)
@@ -141,16 +144,16 @@ class delivery_carrier(models.Model):
     #     # hur kan vi lösa aktive problem eller vi bygger en sök fun
     #     if not self.env.user.partner_id.commercial_partner_id.zip in self.postcode_ids.mapped('name'):
 
-            
-
     #     return res
 
     def _data_input(self):
         for pickup in self:
             if pickup.pickup_location:
                 pickup.data_input = '<select id="carrier_data" class="selectpicker" data-style="btn-primary"><option value="1">Choose location</option>%s</select>' % \
-                                   '\n'.join(['<option value="%s">%s</option>' % (p.id,p.name) for p in pickup.env['res.partner'].search([('pickup_location','=',True)])])
-    data_input = fields.Text(compute="_data_input",)
+                                    '\n'.join(['<option value="%s">%s</option>' % (p.id, p.name) for p in
+                                               pickup.env['res.partner'].search([('pickup_location', '=', True)])])
+
+    data_input = fields.Text(compute="_data_input", )
 
     def _carrier_data(self):
         for carry in self:
@@ -168,6 +171,7 @@ class delivery_carrier(models.Model):
         else:
             super(delivery_carrier, self).lookup_carrier(carrier_id, carrier_data, order)
 
+
 class delivery_carrier_postcode(models.Model):
     _name = "delivery.carrier.postcode"
 
@@ -179,14 +183,16 @@ class delivery_grid(models.Model):
     _description = "Delivery Grid"
 
     name = fields.Char(string='Grid Name', required=True)
-    sequence = fields.Integer(string='Sequence', help="Gives the sequence order when displaying a list of delivery grid.")
+    sequence = fields.Integer(string='Sequence',
+                              help="Gives the sequence order when displaying a list of delivery grid.")
     carrier_id = fields.Many2one('delivery.carrier', 'Carrier', ondelete='cascade')
     country_ids = fields.Many2many('res.country', 'delivery_grid_country_rel', 'grid_id', 'country_id', 'Countries')
     state_ids = fields.Many2many('res.country.state', 'delivery_grid_state_rel', 'grid_id', 'state_id', 'States')
     zip_from = fields.Char(string='Start Zip', size=12)
     zip_to = fields.Char(string='To Zip', size=12)
     line_ids = fields.One2many('delivery.grid.line', 'grid_id', 'Grid Line', copy=True)
-    active = fields.Boolean(string='Active', help="If the active field is set to False, it will allow you to hide the delivery grid without removing it.")
+    active = fields.Boolean(string='Active', help="If the active field is set to False, it will allow you to hide the "
+                                                  "delivery grid without removing it.")
 
     _defaults = {
         'active': lambda *a: 1,
@@ -205,10 +211,12 @@ class delivery_grid(models.Model):
             if line.state == 'cancel':
                 continue
             if line.is_delivery:
-                total_delivery += line.price_subtotal + self.pool['sale.order']._amount_line_tax(cr, uid, line, context=context)
+                total_delivery += line.price_subtotal + self.pool['sale.order']._amount_line_tax(cr, uid, line,
+                                                                                                 context=context)
             if not line.product_id or line.is_delivery:
                 continue
-            q = product_uom_obj._compute_qty(cr, uid, line.product_uom.id, line.product_uom_qty, line.product_id.uom_id.id)
+            q = product_uom_obj._compute_qty(cr, uid, line.product_uom.id, line.product_uom_qty,
+                                             line.product_id.uom_id.id)
             weight += (line.product_id.weight or 0.0) * q
             volume += (line.product_id.volume or 0.0) * q
             quantity += q
@@ -216,28 +224,30 @@ class delivery_grid(models.Model):
 
         ctx = context.copy()
         ctx['date'] = order.date_order
-        total = self.pool['res.currency'].compute(cr, uid, order.currency_id.id, order.company_id.currency_id.id, total, context=ctx)
-        return self.get_price_from_picking(cr, uid, id, total,weight, volume, quantity, context=context)
+        total = self.pool['res.currency'].compute(cr, uid, order.currency_id.id, order.company_id.currency_id.id, total,
+                                                  context=ctx)
+        return self.get_price_from_picking(cr, uid, id, total, weight, volume, quantity, context=context)
 
     def get_price_from_picking(self, cr, uid, id, total, weight, volume, quantity, context=None):
         grid = self.browse(cr, uid, id, context=context)
         price = 0.0
         ok = False
-        price_dict = {'price': total, 'volume':volume, 'weight': weight, 'wv':volume*weight, 'quantity': quantity}
+        price_dict = {'price': total, 'volume': volume, 'weight': weight, 'wv': volume * weight, 'quantity': quantity}
         for line in grid.line_ids:
-            test = eval(line.type+line.operator+str(line.max_value), price_dict)
+            test = eval(line.type + line.operator + str(line.max_value), price_dict)
             if test:
-                if line.price_type=='variable':
+                if line.price_type == 'variable':
                     price = line.list_price * price_dict[line.variable_factor]
                 else:
                     price = line.list_price
                 ok = True
                 break
         if not ok:
-            raise osv.except_osv(_("Unable to fetch delivery method!"), _("Selected product in the delivery method doesn't fulfill any of the delivery grid(s) criteria."))
+            raise osv.except_osv(_("Unable to fetch delivery method!"), _("Selected product in the delivery method "
+                                                                          "doesn't fulfill any of the delivery grid("
+                                                                          "s) criteria."))
 
         return price
-
 
 
 class delivery_grid_line(models.Model):
@@ -245,16 +255,19 @@ class delivery_grid_line(models.Model):
     _description = "Delivery Grid Line"
     name = fields.Char('Name', required=True)
     sequence = fields.Integer('Sequence', help="Gives the sequence order when calculating delivery grid.")
-    grid_id = fields.Many2one('delivery.grid', 'Grid',ondelete='cascade')
+    grid_id = fields.Many2one('delivery.grid', 'Grid', ondelete='cascade')
     # types = fields.selection([('weight','Weight'),('volume','Volume'),\
     #                               ('wv','Weight * Volume'), ('price','Price'), ('quantity','Quantity')],\
     #                               'Variable', required=True)
-    operator = fields.Selection([('==','='),('<=','<='),('<','<'),('>=','>='),('>','>')], 'Operator', required=True)
+    operator = fields.Selection([('==', '='), ('<=', '<='), ('<', '<'), ('>=', '>='), ('>', '>')], 'Operator',
+                                required=True)
     max_value = fields.Float('Maximum Value', required=True)
-    price_type = fields.Selection([('fixed','Fixed'),('variable','Variable')], 'Price Type', required=True)
-    variable_factor = fields.Selection([('weight','Weight'),('volume','Volume'),('wv','Weight * Volume'), ('price','Price'), ('quantity','Quantity')], 'Variable Factor', required=True)
-    list_price = fields.Float(string='Sale Price', digits_compute= dp.get_precision('Product Price'), required=True)
-    standard_price = fields.Float(string='Cost Price', digits_compute= dp.get_precision('Product Price'), required=True)
+    price_type = fields.Selection([('fixed', 'Fixed'), ('variable', 'Variable')], 'Price Type', required=True)
+    variable_factor = fields.Selection(
+        [('weight', 'Weight'), ('volume', 'Volume'), ('wv', 'Weight * Volume'), ('price', 'Price'),
+         ('quantity', 'Quantity')], 'Variable Factor', required=True)
+    list_price = fields.Float(string='Sale Price', digits_compute=dp.get_precision('Product Price'), required=True)
+    standard_price = fields.Float(string='Cost Price', digits_compute=dp.get_precision('Product Price'), required=True)
 
     _defaults = {
         'sequence': lambda *args: 10,
@@ -266,11 +279,8 @@ class delivery_grid_line(models.Model):
     _order = 'list_price'
 
 
+# class PostcodeController(http.Controller):
 
-    from odoo.tools import misc
-
-#class PostcodeController(http.Controller):
-    
 #    @http.route('/shop/payment')
 #    def check_postcode(self):
 #        _logger.warn('check_postcode was called')
@@ -288,5 +298,3 @@ class delivery_grid_line(models.Model):
 #         })
 
 #         return 'window.top.%s(%s)' % (misc.html_escape(jsonp), json.dumps({'result': written}))
-
-

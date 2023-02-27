@@ -18,27 +18,38 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Cavarosa Delivery',
-    'version': '0.1',
-    'summary': '',
-    'category': 'stock',
-    'description': """
-Delivery Cavarosa AB.
-=====================
-* Import delivery costs of Cavarosa AB.
-* New delivery method Cavarosafack.
-""",
-    'author': 'Vertel AB',
-    'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
-    'depends': ['delivery_carrier_data', 'base_import'],
-    'data': [
-        'stock_view.xml',
-        'sale_view.xml',
-        'procurement_view.xml',
-        'delivery_data.xml',
-        'delivery_view.xml',
-    ],
-    'installable': True,
-}
+
+from openerp import api, models, fields, _
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+from xlrd import open_workbook
+from xlrd.book import Book
+from xlrd.sheet import Sheet
+import os
+import logging
+
+_logger = logging.getLogger(__name__)
+
+wb = open_workbook(os.path.join(os.path.dirname(os.path.abspath(__file__)), u'cavarosa_20191018.xlsx'))
+ws = wb.sheet_by_index(0)
+
+
+class Iterator(object):
+    def __init__(self, data):
+        self.row = 0
+        self.data = data
+        self.rows = data.nrows - 3
+        self.header = [c.value.lower() for c in data.row(0)]
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.row >= self.rows:
+            raise StopIteration
+        r = self.data.row(self.row + 3)
+        self.row += 1
+        return {self.header[n]: r[n].value for n in range(len(self.header))}
+
+#
+# for r in Iterator(ws):
+#     print r
