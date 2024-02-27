@@ -52,11 +52,11 @@
 
         <xpath expr="//li[@class='list-group-item o_delivery_carrier_select']" position="attributes">
 	    <attribute name="t-if">
-		not delivery.postcode_ids or ''.join(order.partner_shipping_id.zip.split()) in delivery.mapped('postcode_ids.name')
+		not delivery.postcode_ids or ''.join(order.partner_shipping_id.zip.split() if order.partner_shipping_id.zip else []) in delivery.mapped('postcode_ids.name')
 	    </attribute>
         </xpath>
         <xpath expr="//li[@class='list-group-item o_delivery_carrier_select']" position="after">
-	    <t t-if ="delivery.postcode_ids and ''.join(order.partner_shipping_id.zip.split()) not in delivery.mapped('postcode_ids.name')">
+	    <t t-if ="delivery.postcode_ids and ''.join(order.partner_shipping_id.zip.split() if order.partner_shipping_id.zip else []) not in delivery.mapped('postcode_ids.name')">
 	        <li class="list-group-item o_delivery_carrier_select">
 		    <div style="display:flex; justify-content:space-between;">
 			<p> Hemleverans </p>
@@ -67,7 +67,7 @@
         </xpath>
 
         <xpath expr="//t[@t-call='website_sale_delivery.payment_delivery_methods']" position="replace">
-	    <t t-if="delivery.postcode_ids and ''.join(order.partner_shipping_id.zip.split()) not in delivery.mapped('postcode_ids.name') ">
+	    <t t-if="delivery.postcode_ids and ''.join(order.partner_shipping_id.zip.split() if order.partner_shipping_id.zip else []) not in delivery.mapped('postcode_ids.name') ">
 		<t t-call="website_sale_delivery.payment_delivery_methods"/>
 	    </t>
 	    <t t-else="">
