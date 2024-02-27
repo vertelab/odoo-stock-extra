@@ -57,7 +57,7 @@
         </xpath>
         <xpath expr="//li[@class='list-group-item o_delivery_carrier_select']" position="after">
 	    <t t-if ="delivery.postcode_ids and ''.join(order.partner_shipping_id.zip.split() if order.partner_shipping_id.zip else []) not in delivery.mapped('postcode_ids.name')">
-	        <li class="list-group-item o_delivery_carrier_select">
+	        <li class="list-group-item">
 		    <div style="display:flex; justify-content:space-between;">
 			<p> Hemleverans </p>
 			<p> Ej tillgängligt för ditt postnummer. </p>
@@ -78,9 +78,16 @@
 	   </t>
         </xpath>
         <!--  we shouldn't be able to pay if there is no way to deliver -->
-        <xpath expr="//div[@id='payment_method']" position="attributes">
+        <!--<xpath expr="//div[@id='payment_method']" position="attributes">
                 <attribute name="t-att-style">'display: none!important' if not deliveries and delivery_has_storable else ''</attribute>
+        </xpath>-->
+        <!--  we shouldn't be able to pay before a delivery method has been selected -->
+        <!--<xpath expr="//button[@id='o_payment_form_pay']" position="attributes">
+                <attribute name="class">btn btn-primary position-absolute</attribute>
         </xpath>
+        <xpath expr="//button[@id='o_payment_form_pay']" position="append">
+                <div id="btn_disabler" style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:green; color:white;">GGG</div>
+        </xpath>-->
     </template>
 
             
